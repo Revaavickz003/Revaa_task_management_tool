@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Picker</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Flatpickr CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="dateofbirth" class="form-label">Date of Birth</label>
+                <input type="text" class="form-control" id="dateofbirth" name="dateofbirth" placeholder="Select your date of birth">
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr("#dateofbirth", {
+                dateFormat: "d-M-Y",
+                allowInput: true,
+                disableMobile: true // Optionally disable the native date picker on mobile devices
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+{% load static %}
+  <!-- Modal -->
+  <div class="modal fade" id="newemployeecreateform" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Employee</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-3">
+                    <div class="d-flex align-items-end justify-content-between">
+                        <div style="position: relative;">
+                            <div class="profile-pic">
+                                <label class="label" for="file">
+                                    <span><i class='bx bx-pencil fs-5'></i></span>
+                                </label>
+                                <input id="file" type="file" name="company_logo" accept="image/*" hidden onchange="loadFile(event)"/>
+                                {% if get_data.org_img %}
+                                <img src="{{ get_data.org_img.url }}" id="output" width="150" />
+                                {% else %}
+                                <img src="{% static 'images/files.svg' %}" id="output" width="100" />
+                                {% endif %}
+                            </div>
+                            <script>
+                                var loadFile = function (event) {
+                                    var image = document.getElementById("output");
+                                    image.src = URL.createObjectURL(event.target.files[0]);
+                                };
+                            </script>
+                        </div>   
+                    </div>
+                    <label for="file">Employee Photo</label>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="ename" class="form-label">Emplayee Name</label>
+                        <input type="text" class="form-control" id="ename" name="ename" placeholder="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="AadarCardCopy" class="form-label">Aadar Card Copy</label>
+                        <input type="file" class="form-control" id="AadarCardCopy" name="AadarCardCopy" placeholder="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="mobilenumber" class="form-label">Mobile Number</label>
+                        <input type="number" class="form-control" id="mobilenumber" name="mobilenumber" placeholder="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="pancardcopy" class="form-label">Pan Card Copy</label>
+                        <input type="file" class="form-control" id="pancardcopy" name="pancardcopy" placeholder="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="dateofbirth" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dateofbirth" name="dateofbirth" placeholder="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="collegemarksheet" class="form-label">College Mark Sheet</label>
+                        <input type="file" class="form-control" id="collegemarksheet" name="collegemarksheet" placeholder="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="mobilenumber" class="form-label">Mobile Number</label>
+                        <input type="number" class="form-control" id="mobilenumber" name="mobilenumber" placeholder="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="pancardcopy" class="form-label">Pan Card Copy</label>
+                        <input type="file" class="form-control" id="pancardcopy" name="pancardcopy" placeholder="">
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
