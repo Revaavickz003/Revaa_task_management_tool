@@ -1,91 +1,282 @@
 {% load static %}
-  <!-- Modal -->
-  <div class="modal fade" id="newemployeecreateform" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- Modal -->
+<div class="modal fade" id="newemployeecreateform" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header border-0">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Employee</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-3">
-                    <div class="d-flex align-items-end justify-content-between">
-                        <div style="position: relative;">
-                            <div class="profile-pic">
-                                <label class="label" for="file">
-                                    <span><i class='bx bx-pencil fs-5'></i></span>
-                                </label>
-                                <input id="file" type="file" name="company_logo" accept="image/*" hidden onchange="loadFile(event)"/>
-                                {% if get_data.org_img %}
-                                <img src="{{ get_data.org_img.url }}" id="output" width="150" />
-                                {% else %}
-                                <img src="{% static 'images/files.svg' %}" id="output" width="100" />
-                                {% endif %}
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Employee</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="d-flex align-items-end justify-content-between">
+                                <div style="position: relative;">
+                                    <div class="profile-pic" style="border: 1px solid #E1EBFF">
+                                        <label class="label" for="file">
+                                            <span><i class='bx bx-pencil fs-5'></i></span>
+                                        </label>
+                                        <input id="file" type="file" name="company_logo" accept="image/*" hidden
+                                            onchange="loadFile(event)" />
+                                        {% if get_data.org_img %}
+                                        <img src="{{ get_data.org_img.url }}" id="output" width="150" />
+                                        {% else %}
+                                        <img src="{% static 'images/Employee_avathar.png' %}" alt="" id="output"
+                                            width="100%" />
+                                        {% endif %}
+                                    </div>
+                                    <script>
+                                        var loadFile = function (event) {
+                                            var image = document.getElementById("output");
+                                            image.src = URL.createObjectURL(event.target.files[0]);
+                                        };
+                                    </script>
+                                    <label for="file">Employee Photo</label>
+                                </div>
                             </div>
-                            <script>
-                                var loadFile = function (event) {
-                                    var image = document.getElementById("output");
-                                    image.src = URL.createObjectURL(event.target.files[0]);
-                                };
-                            </script>
-                        </div>   
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="trainer"
+                                    name="trainer">
+                                <label class="form-check-label" for="trainer">Trainee</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="is_team_member"
+                                    name="is_team_member">
+                                <label class="form-check-label" for="is_team_member">Team Member</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="is_team_leader"
+                                    name="is_team_leader">
+                                <label class="form-check-label" for="is_team_leader">Team Leader</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="is_admin_assistant"
+                                    name="is_admin_assistant">
+                                <label class="form-check-label" for="is_admin_assistant">Business development</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="is_admin"
+                                    name="is_admin">
+                                <label class="form-check-label" for="is_admin">Admin</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="manager"
+                                    name="manager">
+                                <label class="form-check-label" for="manager">Manager</label>
+                            </div>
+                        </div>
+                        <style>
+                            label{
+                                width: fit-content;
+                            }
+                            .sdccontainer {
+                                display: none;
+                            }
+                        </style>
+                        <div class="col">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input main-checkbox" type="checkbox" role="switch" id="creative" name="creative">
+                                <label class="form-check-label" for="creative">Creative</label>
+                                <div class="sdccontainer">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="graphicdesigner" name="graphicdesigner">
+                                        <label class="form-check-label" for="graphicdesigner">Graphic designer</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="Videoediting" name="Videoediting">
+                                        <label class="form-check-label" for="Videoediting">Video Editing</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="SMM" name="SMM">
+                                        <label class="form-check-label" for="SMM">Social Media Management</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="contentcreation" name="contentcreation">
+                                        <label class="form-check-label" for="contentcreation">Content Creation</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input main-checkbox" type="checkbox" role="switch" id="Digitalmarketing" name="Digitalmarketing">
+                                <label class="form-check-label" for="Digitalmarketing">Digital Marketing</label>
+                                <div class="sdccontainer">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="SEO" name="SEO">
+                                        <label class="form-check-label" for="SEO">Search Engine Optimization</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="contantwriting" name="contantwriting">
+                                        <label class="form-check-label" for="contantwriting">Contant Writing</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input main-checkbox" type="checkbox" role="switchswitch" id="Development" name="Development">
+                                <label class="form-check-label" for="Development">Development</label>
+                                <div class="sdccontainer">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="websidedevelopment" name="websidedevelopment">
+                                        <label class="form-check-label" for="websidedevelopment">Webside Development</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="Softwaredevelopment" name="Softwaredevelopment">
+                                        <label class="form-check-label" for="Softwaredevelopment">Software Development</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="appdevelpment" name="appdevelpment">
+                                        <label class="form-check-label" for="appdevelpment">App Development</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="Tester" name="Tester">
+                                        <label class="form-check-label" for="Tester">Testing</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input main-checkbox" type="checkbox" role="switch" id="Clientrelationship" name="Clientrelationship">
+                                <label class="form-check-label" for="Clientrelationship">Client Relationship</label>
+                                <div class="sdccontainer">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="Accountmanager" name="Accountmanager">
+                                        <label class="form-check-label" for="Accountmanager">Account Manager</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="Admin" name="Admin">
+                                        <label class="form-check-label" for="Admin">Admin</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                       
                     </div>
-                    <label for="file">Employee Photo</label>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="ename" class="form-label">Emplayee Name</label>
-                        <input type="text" class="form-control" id="ename" name="ename" placeholder="">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="ename" class="form-label">Employee Name</label>
+                                <input type="text" class="form-control" id="ename" name="ename">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="AadarCardCopy" class="form-label">Aadhar Card Copy</label>
+                                <input type="file" class="form-control" id="AadarCardCopy" name="AadarCardCopy">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="mobilenumber" class="form-label">Mobile Number</label>
+                                <input type="number" class="form-control" id="mobilenumber" name="mobilenumber">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="pancardcopy" class="form-label">Pan Card Copy</label>
+                                <input type="file" class="form-control" id="pancardcopy" name="pancardcopy">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="dateofbirth" class="form-label">Date of Birth</label>
+                                <input type="text" class="form-control" id="dateofbirth" name="dateofbirth" placeholder="dd-mm-yyyy" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="collegemarksheet" class="form-label">College Mark Sheet</label>
+                                <input type="file" class="form-control" id="collegemarksheet" name="collegemarksheet">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="parentname" class="form-label">Parent Name</label>
+                                <input type="text" class="form-control" id="parentname" name="parentname">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="twelfthmarksheet" class="form-label">Twelfth Mark Sheet</label>
+                                <input type="file" class="form-control" id="twelfthmarksheet" name="twelfthmarksheet">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="secondmobilenum" class="form-label">Parent Mobile Number</label>
+                                <input type="number" class="form-control" id="secondmobilenum" name="secondmobilenum">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="tenthmarksheet" class="form-label">Tenth Mark Sheet</label>
+                                <input type="file" class="form-control" id="tenthmarksheet" name="tenthmarksheet">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="Address" class="form-label">Address</label>
+                                <textarea class="form-control" id="Address" name="Address" rows="3"></textarea>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="AadarCardCopy" class="form-label">Aadar Card Copy</label>
-                        <input type="file" class="form-control" id="AadarCardCopy" name="AadarCardCopy" placeholder="">
+                    <script>
+                        document.addEventListener('DOMContentLoaded', (event) => {
+                            const mainCheckboxes = document.querySelectorAll('.main-checkbox');
+                    
+                            mainCheckboxes.forEach(checkbox => {
+                                checkbox.addEventListener('change', function() {
+                                    const subContainer = this.closest('.form-check').querySelector('.sdccontainer');
+                                    const subCheckboxes = subContainer.querySelectorAll('.form-check-input');
+                                    const subLabels = subContainer.querySelectorAll('.form-check-label');
+                    
+                                    // Hide all sub-content containers and uncheck all checkboxes inside them
+                                    document.querySelectorAll('.sdccontainer').forEach(container => {
+                                        container.style.display = 'none';
+                                        container.querySelectorAll('.form-check-input').forEach(subCheckbox => {
+                                            subCheckbox.checked = false;
+                                        });
+                                        container.querySelectorAll('.form-check-label').forEach(subLabel => {
+                                            subLabel.style.display = 'none';
+                                        });
+                                    });
+                    
+                    
+                                    // Uncheck all main checkboxes and hide them
+                                    mainCheckboxes.forEach(cb => {
+                                        const parentCheck = cb.closest('.form-check');
+                                        if (cb !== this) {
+                                            cb.checked = false;
+                                            parentCheck.style.display = 'none';
+                                        } else {
+                                            parentCheck.style.display = 'block';
+                                            parentCheck.querySelector('.form-check-label').style.display = 'block'; // Show the heading of the checked checkbox
+                                        }
+                                    });
+                    
+                                    // If the current checkbox is checked, show its sub-content container and labels
+                                    if (this.checked) {
+                                        subContainer.style.display = 'block';
+                                        subLabels.forEach(label => {
+                                            label.style.display = 'block';
+                                        });
+                                    } else {
+                                        // Show all main checkboxes if none is checked
+                                        mainCheckboxes.forEach(cb => {
+                                            cb.closest('.form-check').style.display = 'block';
+                                            cb.closest('.form-check').querySelector('.form-check-label').style.display = 'block'; // Show the heading of the unchecked checkbox
+                                        });
+                                    }
+                                });
+                            });
+                        });
+                    </script>                                        
+                    <div class="d-flex align-items-center justify-content-end">
+                        <input type="submit" class="btn btn-primary" value="Save Employee">
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="mobilenumber" class="form-label">Mobile Number</label>
-                        <input type="number" class="form-control" id="mobilenumber" name="mobilenumber" placeholder="">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="pancardcopy" class="form-label">Pan Card Copy</label>
-                        <input type="file" class="form-control" id="pancardcopy" name="pancardcopy" placeholder="">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="dateofbirth" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control" id="dateofbirth" name="dateofbirth" placeholder="">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="collegemarksheet" class="form-label">College Mark Sheet</label>
-                        <input type="file" class="form-control" id="collegemarksheet" name="collegemarksheet" placeholder="">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="mobilenumber" class="form-label">Mobile Number</label>
-                        <input type="number" class="form-control" id="mobilenumber" name="mobilenumber" placeholder="">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="pancardcopy" class="form-label">Pan Card Copy</label>
-                        <input type="file" class="form-control" id="pancardcopy" name="pancardcopy" placeholder="">
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
