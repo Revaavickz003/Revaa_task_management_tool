@@ -1,0 +1,98 @@
+{% load static %}
+<!-- Modal -->
+<style>
+    .form-control{
+        border: 1px solid #DCE5F6 !important;
+    }
+</style>
+<div class="modal fade" id="newteamscreate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Team Logo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="d-flex align-items-end justify-content-between">
+                                <div style="position: relative;">
+                                    <div class="profile-pic" style="border: 1px solid #E1EBFF">
+                                        <label class="label" for="team_logo">
+                                            <span><i class='bx bx-pencil fs-5'></i></span>
+                                        </label>
+                                        <input id="team_logo" type="file" name="team_logo" accept="image/*" hidden onchange="loadTeamLogo(event)" />
+                                        {% if get_data.team_img %}
+                                        <img src="{{ get_data.team_img.url }}" id="team_output" width="150" />
+                                        {% else %}
+                                        <img src="{% static 'images/camera.png' %}" alt="" id="team_output" width="100%" />
+                                        {% endif %}
+                                    </div>
+                                    <script>
+                                        var loadTeamLogo = function (event) {
+                                        var image = document.getElementById("team_output");
+                                        image.src = URL.createObjectURL(event.target.files[0]);
+                                        };
+                                    </script>
+                                    <label for="team_logo">Team Logo</label>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="col-9">
+                            <div class="mb-3">
+                                <label for="teamlead" class="form-label">Add Team Lead</label>
+                                <select name="teamlead" id="teamlead" class="form-control">
+                                    <option value="">One</option>
+                                    <option value="">Two</option>
+                                    <option value="">Three</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="teamdiscriptions" class="form-label">Discription</label>
+                                <textarea name="teamdiscriptions" id="teamdiscriptions" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="dropdown">
+                                <label for="teamlead" class="form-label">Select Employees</label>
+                                <div class="form-control selected-items-container" onclick="toggleDropdown(event, 'employeeOptions')" style="min-height: 45px;">
+                                    <input type="text" class="selected-items"  name="selectemployees" readonly placeholder="Select Employees" hidden>
+                                    <div class="selected-tags"></div>
+                                </div>
+                                <div id="employeeOptions" class="dropdown-content w-100">
+                                    <input type="text" id="employeeSearch" placeholder="Search.." class="form-control" onkeyup="filterOptions('employeeSearch', 'employeeOptions')">
+                                    <label class="w-100"><input class="form-check-input" type="checkbox" role="switch" value="Branding"> Branding</label>
+                                    <label class="w-100"><input type="checkbox" value="Design"> Design</label>
+                                    <label class="w-100"><input type="checkbox" value="Video Editing"> Video Editing</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dropdown">
+                                <label for="teamlead" class="form-label">Select Projects</label>
+                                <div class="form-control selected-items-container" onclick="toggleDropdown(event, 'projectOptions')" style="min-height: 45px;">
+                                    <input type="text" class="selected-items"  name="selectprojects" readonly placeholder="Select Projects" hidden>
+                                    <div class="selected-tags"></div>
+                                </div>
+                                <div id="projectOptions" class="dropdown-content w-100">
+                                    <input type="text" id="projectSearch" placeholder="Search.." class="form-control" onkeyup="filterOptions('projectSearch', 'projectOptions')">
+                                    <label class="w-100"><input type="checkbox" value="Branding"> Branding</label>
+                                    <label class="w-100"><input type="checkbox" value="Design"> Design</label>
+                                    <label class="w-100"><input type="checkbox" value="Video Editing"> Video Editing</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="d-flex justify-content-end mt-3">
+                        <input type="submit" class="btn btn-primary" value="Save Team">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

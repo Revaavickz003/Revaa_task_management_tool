@@ -10,126 +10,27 @@
             <div class="row">
                 <div class="col-md-4">
                     <div style="height: 80vh; overflow-y: scroll;">
+                        {% if all_employees %}
+                        {% for employee in all_employees %}
                         <a href="" class="text-decoration-none">
                             <div class="profile-container message-active py-2 px-3 d-flex align-items-center mb-1">
                                 <div class="bg-dark rounded-circle me-2" style="overflow: hidden;">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="45"
+                                    {% if employee.employee_photo %}
+                                    <img src="{{employee.employee_photo.url}}" alt="" width="45"
                                         height="45">
+                                    {% else %}
+                                    <img src="{% static 'images/Employee_avathar.png' %}" alt="" width="45"
+                                        height="45">
+                                    {% endif %}
                                 </div>
                                 <div class="profile-name">
-                                    <p class="p-0 m-0 fw-bold">Name</p>
-                                    <p class="p-0 m-0">RDS023</p>
+                                    <p class="p-0 m-0 fw-bold">{{employee.name}}</p>
+                                    <p class="p-0 m-0">{{employee.employee_id}}</p>
                                 </div>
                             </div>
                         </a>
-                        <a href="" class="text-decoration-none">
-                            <div class="profile-container py-2 px-3 d-flex align-items-center">
-                                <div class="bg-dark rounded-circle me-2" style="overflow: hidden;">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="45"
-                                        height="45">
-                                </div>
-                                <div class="profile-name">
-                                    <p class="p-0 m-0 fw-bold">Name</p>
-                                    <p class="p-0 m-0">RDS023</p>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="text-decoration-none">
-                            <div class="profile-container py-2 px-3 d-flex align-items-center mb-1">
-                                <div class="bg-dark rounded-circle me-2" style="overflow: hidden;">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="45"
-                                        height="45">
-                                </div>
-                                <div class="profile-name">
-                                    <p class="p-0 m-0 fw-bold">Name</p>
-                                    <p class="p-0 m-0">RDS023</p>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="text-decoration-none">
-                            <div class="profile-container py-2 px-3 d-flex align-items-center">
-                                <div class="bg-dark rounded-circle me-2" style="overflow: hidden;">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="45"
-                                        height="45">
-                                </div>
-                                <div class="profile-name">
-                                    <p class="p-0 m-0 fw-bold">Name</p>
-                                    <p class="p-0 m-0">RDS023</p>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="text-decoration-none">
-                            <div class="profile-container py-2 px-3 d-flex align-items-center mb-1">
-                                <div class="bg-dark rounded-circle me-2" style="overflow: hidden;">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="45"
-                                        height="45">
-                                </div>
-                                <div class="profile-name">
-                                    <p class="p-0 m-0 fw-bold">Name</p>
-                                    <p class="p-0 m-0">RDS023</p>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="text-decoration-none">
-                            <div class="profile-container py-2 px-3 d-flex align-items-center">
-                                <div class="bg-dark rounded-circle me-2" style="overflow: hidden;">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="45"
-                                        height="45">
-                                </div>
-                                <div class="profile-name">
-                                    <p class="p-0 m-0 fw-bold">Name</p>
-                                    <p class="p-0 m-0">RDS023</p>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="text-decoration-none">
-                            <div class="profile-container py-2 px-3 d-flex align-items-center mb-1">
-                                <div class="bg-dark rounded-circle me-2" style="overflow: hidden;">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="45"
-                                        height="45">
-                                </div>
-                                <div class="profile-name">
-                                    <p class="p-0 m-0 fw-bold">Name</p>
-                                    <p class="p-0 m-0">RDS023</p>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="text-decoration-none">
-                            <div class="profile-container py-2 px-3 d-flex align-items-center">
-                                <div class="bg-dark rounded-circle me-2" style="overflow: hidden;">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="45"
-                                        height="45">
-                                </div>
-                                <div class="profile-name">
-                                    <p class="p-0 m-0 fw-bold">Name</p>
-                                    <p class="p-0 m-0">RDS023</p>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="text-decoration-none">
-                            <div class="profile-container py-2 px-3 d-flex align-items-center mb-1">
-                                <div class="bg-dark rounded-circle me-2" style="overflow: hidden;">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="45"
-                                        height="45">
-                                </div>
-                                <div class="profile-name">
-                                    <p class="p-0 m-0 fw-bold">Name</p>
-                                    <p class="p-0 m-0">RDS023</p>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="text-decoration-none">
-                            <div class="profile-container py-2 px-3 d-flex align-items-center">
-                                <div class="bg-dark rounded-circle me-2" style="overflow: hidden;">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="45"
-                                        height="45">
-                                </div>
-                                <div class="profile-name">
-                                    <p class="p-0 m-0 fw-bold">Name</p>
-                                    <p class="p-0 m-0">RDS023</p>
-                                </div>
-                            </div>
-                        </a>
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -143,149 +44,312 @@
                                     <i class='bx bx-plus fs-5 pe-1 text-light'></i>
                                     <h6 class="m-0 p-0 text-light">New Members</h6>
                                 </button>
+                                {% include 'alert_popup/new_teams_create.html' %}
                                 <button type="button" class="btn btn-primary px-3 d-flex align-items-center justify-content-center"
-                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    data-bs-toggle="modal" data-bs-target="#newteamscreate">
                                     <i class='bx bx-plus fs-5 pe-1 text-light'></i>
                                     <h6 class="m-0 p-0 text-light">New Teams</h6>
                                 </button>
                             </div>
                         </div>
-                        <div class="border mt-1 rounded-1 p-2 position-relative">
-                            <div class="p-2 position-absolute" style="top: 0; right: 0;">
-                                <i class='bx bx-dots-vertical-rounded fs-4' id="dotButton" style="cursor: pointer;"></i>
-                                <div id="optionsList" class="dropdown-menu dropdown-menu-right p-0" style="position: absolute; top: 0; right: 0;">
-                                    <a class="dropdown-item" href="#">Show Details</a>
-                                    <a class="dropdown-item" href="#">Edit</a>
-                                    <a class="dropdown-item" href="#">Delete</a>
+                        <div class="" style="overflow-y: auto; height: 73vh; overflow-x: hidden;">
+                            <div class="border mt-1 rounded-1 p-2 position-relative team-block">
+                                <div class="p-2 position-absolute" style="top: 0; right: 0;">
+                                    <i class='bx bx-dots-vertical-rounded fs-4 dot-button' style="cursor: pointer;"></i>
+                                    <div class="options-list dropdown-menu dropdown-menu-right p-0" style="position: absolute; top: 0; right: 0;">
+                                        <a class="dropdown-item" href="#">Show Details</a>
+                                        <a class="dropdown-item" href="#">Edit</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="tl-container d-flex">
+                                            <div class="rounded-2 overflow-hidden me-2">
+                                                <img src="{% static 'Tesing imgs/CRM logo.jpg' %}" alt="" width="80" height="80">
+                                            </div>
+                                            <div>
+                                                <p class="m-0 p-0 fs-5 fw-bold">Team Name</p>
+                                                <p class="m-0 p-0">Employee Name</p>
+                                                <small class="bg-warning m-0 p-0 small fw-bold bg-warning py-1 px-3 rounded-pill" style="font-size: .7rem;">Python Developer</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <h6>Members</h6>
+                                        <div class="d-flex mt-2">
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5 bg-light d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                                <span class="small fw-bold">+4</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6>Last Project</h6>
+                                        <ul class="list-unstyled p-0 m-0">
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-                            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-                            <script>
-                                document.getElementById('dotButton').addEventListener('click', function() {
-                                    var optionsList = document.getElementById('optionsList');
-                                    optionsList.classList.toggle('show');
-                                });
-
-                                // Close the menu if clicked outside
-                                document.addEventListener('click', function(event) {
-                                    var dotButton = document.getElementById('dotButton');
-                                    var optionsList = document.getElementById('optionsList');
-                                    if (!dotButton.contains(event.target) && !optionsList.contains(event.target)) {
-                                        optionsList.classList.remove('show');
-                                    }
-                                });
-                            </script>
-                            <div class="row">
-                                <div class="col-5">
-                                    <div class="tl-container d-flex">
-                                        <div class="rounded-2 overflow-hidden me-2">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="80" height="80">
-                                        </div>
-                                        <div>
-                                            <p class="m-0 p-0 fs-5 fw-bold">Team Name</p>
-                                            <p class="m-0 p-0">Employee Name</p>
-                                            <small class="bg-warning m-0 p-0  small fw-bold bg-warning py-1 px-3 rounded-pill" style="font-size: .7rem;">Python Developer</small>
-                                        </div>
+                            <!-- Second Team Block (similar to the first) -->
+                            <div class="border mt-1 rounded-1 p-2 position-relative team-block">
+                                <div class="p-2 position-absolute" style="top: 0; right: 0;">
+                                    <i class='bx bx-dots-vertical-rounded fs-4 dot-button' style="cursor: pointer;"></i>
+                                    <div class="options-list dropdown-menu dropdown-menu-right p-0" style="position: absolute; top: 0; right: 0;">
+                                        <a class="dropdown-item" href="#">Show Details</a>
+                                        <a class="dropdown-item" href="#">Edit</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    <h6>Members</h6>
-                                    <div class="d-flex mt-2">
-                                        <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
-                                            <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
-                                        </div>
-                                        <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
-                                            <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
-                                        </div>
-                                        <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
-                                            <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
-                                        </div>
-                                        <div class="rounded-5 bg-light d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
-                                            <span class="small fw-bold">+4</span>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="tl-container d-flex">
+                                            <div class="rounded-2 overflow-hidden me-2">
+                                                <img src="{% static 'Tesing imgs/CRM logo.jpg' %}" alt="" width="80" height="80">
+                                            </div>
+                                            <div>
+                                                <p class="m-0 p-0 fs-5 fw-bold">Team Name</p>
+                                                <p class="m-0 p-0">Employee Name</p>
+                                                <small class="bg-warning m-0 p-0 small fw-bold bg-warning py-1 px-3 rounded-pill" style="font-size: .7rem;">Python Developer</small>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col-3">
+                                        <h6>Members</h6>
+                                        <div class="d-flex mt-2">
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5 bg-light d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                                <span class="small fw-bold">+4</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6>Last Project</h6>
+                                        <ul class="list-unstyled p-0 m-0">
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="col-4">
-                                    <h6>Last Project</h6>
-                                    <ul class="list-unstyled p-0 m-0"> 
-                                        <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
-                                        <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
-                                    </ul>
+                            </div>
+                            <div class="border mt-1 rounded-1 p-2 position-relative team-block">
+                                <div class="p-2 position-absolute" style="top: 0; right: 0;">
+                                    <i class='bx bx-dots-vertical-rounded fs-4 dot-button' style="cursor: pointer;"></i>
+                                    <div class="options-list dropdown-menu dropdown-menu-right p-0" style="position: absolute; top: 0; right: 0;">
+                                        <a class="dropdown-item" href="#">Show Details</a>
+                                        <a class="dropdown-item" href="#">Edit</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="tl-container d-flex">
+                                            <div class="rounded-2 overflow-hidden me-2">
+                                                <img src="{% static 'Tesing imgs/CRM logo.jpg' %}" alt="" width="80" height="80">
+                                            </div>
+                                            <div>
+                                                <p class="m-0 p-0 fs-5 fw-bold">Team Name</p>
+                                                <p class="m-0 p-0">Employee Name</p>
+                                                <small class="bg-warning m-0 p-0 small fw-bold bg-warning py-1 px-3 rounded-pill" style="font-size: .7rem;">Python Developer</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <h6>Members</h6>
+                                        <div class="d-flex mt-2">
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5 bg-light d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                                <span class="small fw-bold">+4</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6>Last Project</h6>
+                                        <ul class="list-unstyled p-0 m-0">
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border mt-1 rounded-1 p-2 position-relative team-block">
+                                <div class="p-2 position-absolute" style="top: 0; right: 0;">
+                                    <i class='bx bx-dots-vertical-rounded fs-4 dot-button' style="cursor: pointer;"></i>
+                                    <div class="options-list dropdown-menu dropdown-menu-right p-0" style="position: absolute; top: 0; right: 0;">
+                                        <a class="dropdown-item" href="#">Show Details</a>
+                                        <a class="dropdown-item" href="#">Edit</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="tl-container d-flex">
+                                            <div class="rounded-2 overflow-hidden me-2">
+                                                <img src="{% static 'Tesing imgs/CRM logo.jpg' %}" alt="" width="80" height="80">
+                                            </div>
+                                            <div>
+                                                <p class="m-0 p-0 fs-5 fw-bold">Team Name</p>
+                                                <p class="m-0 p-0">Employee Name</p>
+                                                <small class="bg-warning m-0 p-0 small fw-bold bg-warning py-1 px-3 rounded-pill" style="font-size: .7rem;">Python Developer</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <h6>Members</h6>
+                                        <div class="d-flex mt-2">
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5 bg-light d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                                <span class="small fw-bold">+4</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6>Last Project</h6>
+                                        <ul class="list-unstyled p-0 m-0">
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border mt-1 rounded-1 p-2 position-relative team-block">
+                                <div class="p-2 position-absolute" style="top: 0; right: 0;">
+                                    <i class='bx bx-dots-vertical-rounded fs-4 dot-button' style="cursor: pointer;"></i>
+                                    <div class="options-list dropdown-menu dropdown-menu-right p-0" style="position: absolute; top: 0; right: 0;">
+                                        <a class="dropdown-item" href="#">Show Details</a>
+                                        <a class="dropdown-item" href="#">Edit</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="tl-container d-flex">
+                                            <div class="rounded-2 overflow-hidden me-2">
+                                                <img src="{% static 'Tesing imgs/CRM logo.jpg' %}" alt="" width="80" height="80">
+                                            </div>
+                                            <div>
+                                                <p class="m-0 p-0 fs-5 fw-bold">Team Name</p>
+                                                <p class="m-0 p-0">Employee Name</p>
+                                                <small class="bg-warning m-0 p-0 small fw-bold bg-warning py-1 px-3 rounded-pill" style="font-size: .7rem;">Python Developer</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <h6>Members</h6>
+                                        <div class="d-flex mt-2">
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5 bg-light d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                                <span class="small fw-bold">+4</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6>Last Project</h6>
+                                        <ul class="list-unstyled p-0 m-0">
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border mt-1 rounded-1 p-2 position-relative team-block">
+                                <div class="p-2 position-absolute" style="top: 0; right: 0;">
+                                    <i class='bx bx-dots-vertical-rounded fs-4 dot-button' style="cursor: pointer;"></i>
+                                    <div class="options-list dropdown-menu dropdown-menu-right p-0" style="position: absolute; top: 0; right: 0;">
+                                        <a class="dropdown-item" href="#">Show Details</a>
+                                        <a class="dropdown-item" href="#">Edit</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="tl-container d-flex">
+                                            <div class="rounded-2 overflow-hidden me-2">
+                                                <img src="{% static 'Tesing imgs/CRM logo.jpg' %}" alt="" width="80" height="80">
+                                            </div>
+                                            <div>
+                                                <p class="m-0 p-0 fs-5 fw-bold">Team Name</p>
+                                                <p class="m-0 p-0">Employee Name</p>
+                                                <small class="bg-warning m-0 p-0 small fw-bold bg-warning py-1 px-3 rounded-pill" style="font-size: .7rem;">Python Developer</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <h6>Members</h6>
+                                        <div class="d-flex mt-2">
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
+                                                <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
+                                            </div>
+                                            <div class="rounded-5 bg-light d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                                <span class="small fw-bold">+4</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6>Last Project</h6>
+                                        <ul class="list-unstyled p-0 m-0">
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                            <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="border mt-1 rounded-1 p-2 position-relative">
-                            <div class="p-2 position-absolute" style="top: 0; right: 0;">
-                                <i class='bx bx-dots-vertical-rounded fs-4' id="dotButton" style="cursor: pointer;"></i>
-                                <div id="optionsList" class="dropdown-menu dropdown-menu-right p-0" style="position: absolute; top: 0; right: 0;">
-                                    <a class="dropdown-item" href="#">Show Details</a>
-                                    <a class="dropdown-item" href="#">Edit</a>
-                                    <a class="dropdown-item" href="#">Delete</a>
-                                </div>
-                            </div>
-                            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-                            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-                            <script>
-                                document.getElementById('dotButton').addEventListener('click', function() {
-                                    var optionsList = document.getElementById('optionsList');
-                                    optionsList.classList.toggle('show');
-                                });
-
-                                // Close the menu if clicked outside
-                                document.addEventListener('click', function(event) {
-                                    var dotButton = document.getElementById('dotButton');
-                                    var optionsList = document.getElementById('optionsList');
-                                    if (!dotButton.contains(event.target) && !optionsList.contains(event.target)) {
-                                        optionsList.classList.remove('show');
-                                    }
-                                });
-                            </script>
-                            <div class="row">
-                                <div class="col-5">
-                                    <div class="tl-container d-flex">
-                                        <div class="rounded-2 overflow-hidden me-2">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="80" height="80">
-                                        </div>
-                                        <div>
-                                            <p class="m-0 p-0 fs-5 fw-bold">Team Name</p>
-                                            <p class="m-0 p-0">Employee Name</p>
-                                            <small class="bg-warning m-0 p-0  small fw-bold bg-warning py-1 px-3 rounded-pill" style="font-size: .7rem;">Python Developer</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-3">
-                                    <h6>Members</h6>
-                                    <div class="d-flex mt-2">
-                                        <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
-                                            <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
-                                        </div>
-                                        <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
-                                            <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
-                                        </div>
-                                        <div class="rounded-5" style="width: 35px; height: 35px; overflow: hidden;">
-                                            <img src="{% static 'images/vimal.jpg' %}" alt="" width="35">
-                                        </div>
-                                        <div class="rounded-5 bg-light d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
-                                            <span class="small fw-bold">+4</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <h6>Last Project</h6>
-                                    <ul class="list-unstyled p-0 m-0"> 
-                                        <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
-                                        <li class="list-unstyled"><a href="" class="text-decoration-none">Project</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </div>                 
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+{% block script %}
+<script src="{% static 'js/team_page.js' %}"></script>
 {% endblock %}
