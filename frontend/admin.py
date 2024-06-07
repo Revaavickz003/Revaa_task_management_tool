@@ -1,10 +1,17 @@
+# employees/admin.py
 from django.contrib import admin
-from .models import *
+from .models import (
+    ProductTable,
+    ProjectCategories,
+    CustomerTable, 
+    EmployeeDetail, 
+    Team, 
+    TaskSheet,
+)
 
-# Register your models here.
-
+admin.site.register(ProductTable)
+admin.site.register(ProjectCategories)
+admin.site.register(CustomerTable)
 admin.site.register(EmployeeDetail)
 admin.site.register(Team)
-admin.site.register(ClientDetail)
 admin.site.register(TaskSheet)
-admin.site.register(EmployeeRole)

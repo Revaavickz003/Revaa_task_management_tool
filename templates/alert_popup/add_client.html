@@ -1,0 +1,119 @@
+{% load static %}
+<!-- Modal -->
+<style>
+  .form-control {
+    border: 1px solid #DCE5F6 !important;
+  }
+</style>
+<div class="modal fade" id="addnewclient" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">New Project</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="projectname" class="form-label">Project Name</label>
+                <input type="text" class="form-control" id="projectname" name="projectname">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="discription" class="form-label">Short Discription</label>
+                <textarea class="form-control" id="discription" name="discription" rows="5"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="selectteam" class="form-label">Select Team</label>
+                <select class="form-control" id="selectteam" name="selectteam">
+                  {% for team in teams %}
+                  <option value="{{ team.id }}">{{ team.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="projectname" class="form-label">Priority</label>
+                <select class="form-control" id="selectteam" name="selectteam">
+                  {% for team in teams %}
+                  <option value="{{ team.id }}">{{ team.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="projectname" class="form-label">Status</label>
+                <select class="form-control" id="selectteam" name="selectteam">
+                  {% for team in teams %}
+                  <option value="{{ team.id }}">{{ team.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="projectname" class="form-label">Start Date</label>
+                <select class="form-control" id="selectteam" name="selectteam">
+                  {% for team in teams %}
+                  <option value="{{ team.id }}">{{ team.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="projectname" class="form-label">End Date</label>
+                <select class="form-control" id="selectteam" name="selectteam">
+                  {% for team in teams %}
+                  <option value="{{ team.id }}">{{ team.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <input type="submit" class="btn btn-primary" value="Save">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div style="position: relative;">
+  <div class="profile-pic" style="border: 1px solid #E1EBFF">
+    <label class="label" for="team_logo">
+      <span><i class='bx bx-pencil fs-5'></i></span>
+    </label>
+    <input id="team_logo" type="file" name="team_logo" accept="image/*" hidden
+      onchange="loadTeamLogo(event)" />
+    {% if get_data.team_img %}
+    <img src="{{ get_data.team_img.url }}" id="team_output" width="150" />
+    {% else %}
+    <img src="{% static 'images/camera.png' %}" alt="" id="team_output" width="100%" />
+    {% endif %}
+  </div>
+  <script>
+    var loadTeamLogo = function (event) {
+      var image = document.getElementById("team_output");
+      image.src = URL.createObjectURL(event.target.files[0]);
+    };
+  </script>
+</div> -->

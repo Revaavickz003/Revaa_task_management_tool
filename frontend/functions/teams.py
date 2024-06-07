@@ -1,8 +1,10 @@
 from django.shortcuts import render
-import datetime
+from frontend.models import EmployeeDetail
 
 def teams(request):
     context = {
-        'teams':'active'
+        'teams':'active',
+        "all_employees": EmployeeDetail.objects.all()
     }
     return render(request, 'tmt-tool/teams.html', context)
+

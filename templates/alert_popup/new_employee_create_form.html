@@ -9,7 +9,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="">
+                <form action="{% url 'addemployee' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="d-flex align-items-end justify-content-between">
@@ -18,7 +19,7 @@
                                         <label class="label" for="file">
                                             <span><i class='bx bx-pencil fs-5'></i></span>
                                         </label>
-                                        <input id="file" type="file" name="company_logo" accept="image/*" hidden
+                                        <input id="file" type="file" name="employee_photo" accept="image/*" hidden
                                             onchange="loadFile(event)" />
                                         {% if get_data.org_img %}
                                         <img src="{{ get_data.org_img.url }}" id="output" width="150" />
@@ -54,9 +55,9 @@
                                 <label class="form-check-label" for="is_team_leader">Team Leader</label>
                             </div>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="is_admin_assistant"
-                                    name="is_admin_assistant">
-                                <label class="form-check-label" for="is_admin_assistant">Business development</label>
+                                <input class="form-check-input" type="checkbox" role="switch" id="business_development"
+                                    name="business_development">
+                                <label class="form-check-label" for="business_development">Business development</label>
                             </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="is_admin"
@@ -156,9 +157,10 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="ename" class="form-label">Employee Name</label>
-                                <input type="text" class="form-control" id="ename" name="ename">
+                                <label for="employee_id" class="form-label">Employee ID</label>
+                                <input type="text" class="form-control" id="employee_id" name="employee_id">
                             </div>
+                            
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -168,9 +170,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="mobilenumber" class="form-label">Mobile Number</label>
-                                <input type="number" class="form-control" id="mobilenumber" name="mobilenumber">
+                                <label for="ename" class="form-label">Employee Name</label>
+                                <input type="text" class="form-control" id="ename" name="ename">
                             </div>
+                            
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -180,9 +183,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="dateofbirth" class="form-label">Date of Birth</label>
-                                <input type="text" class="form-control" id="dateofbirth" name="dateofbirth" placeholder="dd-mm-yyyy" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                <label for="mobilenumber" class="form-label">Mobile Number</label>
+                                <input type="number" class="form-control" id="mobilenumber" name="mobilenumber">
                             </div>
+                            
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -192,9 +196,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="parentname" class="form-label">Parent Name</label>
-                                <input type="text" class="form-control" id="parentname" name="parentname">
+                                <label for="dateofbirth" class="form-label">E-mail ID</label>
+                                <input type="email" class="form-control" id="Emailid" name="Emailid">
                             </div>
+                            
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -204,9 +209,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="secondmobilenum" class="form-label">Parent Mobile Number</label>
-                                <input type="number" class="form-control" id="secondmobilenum" name="secondmobilenum">
+                                <label for="dateofbirth" class="form-label">Date of Birth</label>
+                                <input type="text" class="form-control" id="dateofbirth" name="dateofbirth" placeholder="dd-mm-yyyy" onfocus="(this.type='date')" onblur="(this.type='text')">
                             </div>
+                            
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -214,64 +220,23 @@
                                 <input type="file" class="form-control" id="tenthmarksheet" name="tenthmarksheet">
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-6">
                             <div class="mb-3">
-                                <label for="Address" class="form-label">Address</label>
-                                <textarea class="form-control" id="Address" name="Address" rows="3"></textarea>
+                                <label for="secondmobilenum" class="form-label">Parent Mobile Number</label>
+                                <input type="number" class="form-control" id="secondmobilenum" name="secondmobilenum">
+                            </div>
+                            <div class="mb-3">
+                                <label for="blood-group" class="form-label">Blood Group</label>
+                                <input type="text" class="form-control" id="blood-group" name="blood-group">
                             </div>
                         </div>
-                    </div>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', (event) => {
-                            const mainCheckboxes = document.querySelectorAll('.main-checkbox');
-                    
-                            mainCheckboxes.forEach(checkbox => {
-                                checkbox.addEventListener('change', function() {
-                                    const subContainer = this.closest('.form-check').querySelector('.sdccontainer');
-                                    const subCheckboxes = subContainer.querySelectorAll('.form-check-input');
-                                    const subLabels = subContainer.querySelectorAll('.form-check-label');
-                    
-                                    // Hide all sub-content containers and uncheck all checkboxes inside them
-                                    document.querySelectorAll('.sdccontainer').forEach(container => {
-                                        container.style.display = 'none';
-                                        container.querySelectorAll('.form-check-input').forEach(subCheckbox => {
-                                            subCheckbox.checked = false;
-                                        });
-                                        container.querySelectorAll('.form-check-label').forEach(subLabel => {
-                                            subLabel.style.display = 'none';
-                                        });
-                                    });
-                    
-                    
-                                    // Uncheck all main checkboxes and hide them
-                                    mainCheckboxes.forEach(cb => {
-                                        const parentCheck = cb.closest('.form-check');
-                                        if (cb !== this) {
-                                            cb.checked = false;
-                                            parentCheck.style.display = 'none';
-                                        } else {
-                                            parentCheck.style.display = 'block';
-                                            parentCheck.querySelector('.form-check-label').style.display = 'block'; // Show the heading of the checked checkbox
-                                        }
-                                    });
-                    
-                                    // If the current checkbox is checked, show its sub-content container and labels
-                                    if (this.checked) {
-                                        subContainer.style.display = 'block';
-                                        subLabels.forEach(label => {
-                                            label.style.display = 'block';
-                                        });
-                                    } else {
-                                        // Show all main checkboxes if none is checked
-                                        mainCheckboxes.forEach(cb => {
-                                            cb.closest('.form-check').style.display = 'block';
-                                            cb.closest('.form-check').querySelector('.form-check-label').style.display = 'block'; // Show the heading of the unchecked checkbox
-                                        });
-                                    }
-                                });
-                            });
-                        });
-                    </script>                                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="Address" class="form-label">Address</label>
+                                <textarea class="form-control" id="Address" name="Address" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>                                       
                     <div class="d-flex align-items-center justify-content-end">
                         <input type="submit" class="btn btn-primary" value="Save Employee">
                     </div>
