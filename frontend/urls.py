@@ -16,7 +16,7 @@ urlpatterns = [
     path('', home.home, name='home'),
     path('login/', login_page.login_view, name='login'),
     path('home/<str:date>/', home.date_view, name='datehome'),
-    path('project/', project.project, name='project'),
+    path('project/', project.projects_page, name='project'),
     path('messages/', messages.messages, name='messages'),
     path('teams/', teams.teams, name='teams'),
 

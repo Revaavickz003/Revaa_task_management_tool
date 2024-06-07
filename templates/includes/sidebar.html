@@ -1,5 +1,5 @@
 {% load static %}
-<div class="sidebar bg-primary" style="width: 250px; height: 100vh;">
+<div class="sidebar bg-primary d-none d-lg-block" style="width: 250px; height: 100vh;">
     <a href="{% url 'home' %}"  style="margin-top: 30px; margin-left: 38px; width: 100px;">
         <img src="{% static 'images/reva_logo.svg' %}" alt="100"
            >
@@ -32,16 +32,6 @@
                         Project
                     </li>
                 </a>
-                <a href="{% url 'messages' %}" class="text-decoration-none text-white ">
-                    <li class="text-light {{messages}}">
-                        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M3.25 21.6666L4.65833 17.4416C2.14067 13.7182 3.1135 8.91363 6.93333 6.20313C10.7532 3.49371 16.2392 3.71579 19.7654 6.72313C23.2917 9.73154 23.7683 14.5946 20.8802 18.0992C17.992 21.6038 12.6306 22.6655 8.34167 20.5833L3.25 21.6666Z"
-                                stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Message
-                    </li>
-                </a>
                 <a href="{% url 'teams' %}" class="text-decoration-none text-white ">
                     <li class="text-light {{teams}}">
                         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,6 +40,16 @@
                                 stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         Team
+                    </li>
+                </a>
+                <a href="{% url 'messages' %}" class="text-decoration-none text-white ">
+                    <li class="text-light {{messages}}">
+                        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M3.25 21.6666L4.65833 17.4416C2.14067 13.7182 3.1135 8.91363 6.93333 6.20313C10.7532 3.49371 16.2392 3.71579 19.7654 6.72313C23.2917 9.73154 23.7683 14.5946 20.8802 18.0992C17.992 21.6038 12.6306 22.6655 8.34167 20.5833L3.25 21.6666Z"
+                                stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Message
                     </li>
                 </a>
                 <a href="" class="text-decoration-none text-white ">

@@ -1,117 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Timeline Chart</title>
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-  }
-
-  .chart-container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .axis text {
-    font-size: 12px;
-  }
-
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-  }
-
-  .event-circle {
-    fill: steelblue;
-    stroke: steelblue;
-    stroke-width: 2px;
-  }
-
-  .event-text {
-    font-size: 12px;
-    fill: black;
-    text-anchor: middle;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .project-card {
+            margin-bottom: 1rem;
+        }
+        .badge-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+    </style>
 </head>
 <body>
-<div class="chart-container">
-  <svg id="timelineChart"></svg>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>4 Open</h4>
+        <button class="btn btn-primary">New project</button>
+    </div>
+    <div class="list-group">
+        <div class="card project-card">
+            <div class="card-body">
+                <h5 class="card-title">RDS - Task Management System <span class="badge badge-warning">At risk</span></h5>
+                <p class="card-text">Updated 13 minutes ago</p>
+                <p class="card-text"><small class="text-muted">Jun 06, 2024 - Jul 31, 2024</small></p>
+            </div>
+        </div>
+        <div class="card project-card">
+            <div class="card-body">
+                <h5 class="card-title">Feature release</h5>
+                <p class="card-text">Updated 18 minutes ago</p>
+            </div>
+        </div>
+        <div class="card project-card">
+            <div class="card-body">
+                <h5 class="card-title">RDS</h5>
+                <p class="card-text">Updated 33 minutes ago</p>
+            </div>
+        </div>
+        <div class="card project-card">
+            <div class="card-body">
+                <h5 class="card-title">@Revaavickz003's untitled project</h5>
+                <p class="card-text">Updated 1 hour ago</p>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script>
-  var data = [
-    { date: '2023-01-01', label: 'Event A' },
-    { date: '2023-03-15', label: 'Event B' },
-    { date: '2023-05-20', label: 'Event C' },
-    { date: '2023-07-10', label: 'Event D' },
-    { date: '2023-09-05', label: 'Event E' },
-    { date: '2023-11-25', label: 'Event F' }
-  ];
-
-  var margin = { top: 20, right: 30, bottom: 30, left: 40 },
-    width = 800 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
-
-  var svg = d3.select("#timelineChart")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  var parseTime = d3.timeParse("%Y-%m-%d");
-
-  data.forEach(function(d) {
-    d.date = parseTime(d.date);
-  });
-
-  var x = d3.scaleTime()
-    .domain(d3.extent(data, function(d) { return d.date; }))
-    .range([0, width]);
-
-  var y = d3.scaleLinear()
-    .domain([0, d3.max(data, function(d, i) { return i + 1; })])
-    .range([height, 0]);
-
-  var xAxis = d3.axisBottom(x)
-    .tickFormat(d3.timeFormat("%b %Y"));
-
-  var yAxis = d3.axisLeft(y)
-    .ticks(data.length)
-    .tickFormat(function(d, i) { return data[i].label; });
-
-  svg.append("g")
-    .attr("class", "axis x-axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis);
-
-  svg.append("g")
-    .attr("class", "axis y-axis")
-    .call(yAxis);
-
-  svg.selectAll(".event-circle")
-    .data(data)
-    .enter().append("circle")
-    .attr("class", "event-circle")
-    .attr("cx", function(d) { return x(d.date); })
-    .attr("cy", function(d, i) { return y(i + 1); })
-    .attr("r", 5);
-
-  svg.selectAll(".event-text")
-    .data(data)
-    .enter().append("text")
-    .attr("class", "event-text")
-    .attr("x", function(d) { return x(d.date); })
-    .attr("y", function(d, i) { return y(i + 1); })
-    .attr("dy", "-10px")
-    .text(function(d) { return d.label; });
-</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
