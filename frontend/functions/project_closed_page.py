@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from frontend.models import Team, Project
 from django.contrib import messages
 
-def projects_page(request):
+def close_projects_page(request):
     if request.method == 'POST':
         project_name = request.POST.get('projectname')
         project_description = request.POST.get('discription')
@@ -22,31 +22,33 @@ def projects_page(request):
             updated_by = request.user,
         )
         new_project.save()
-        messages.success(request, 'Project Created Successfully')
         return redirect('project')
 
     context = {
         'Project': 'active',
+        'closed_project_page':True,
         'all_teams': Team.objects.all(),
-        'all_projects': Project.objects.exclude(status='Closed').order_by('-id'),
-        'closed_projects': Project.objects.filter(status='Closed'),
+        'all_projects': Project.objects.filter(status='Closed').order_by('-id'),
+        'closed_projects': Project.objects.exclude(status='Closed').order_by('-id'),
     }
     
     return render(request, 'tmt-tool/project.html', context)
 
-def closeproject(request, pk):
-    project = Project.objects.get(pk=pk)
-    project.status = 'Closed'
-    project.save()
-    messages.success(request, 'Project Closed Successfully')
-    return redirect('project')
 
-def openprojectteam(request, team):
+def Reopen(request, pk):
+    project = Project.objects.get(pk=pk)
+    project.status = 'On Process'
+    project.save()
+    messages.success(request, 'Project Reopen Successfully')
+    return redirect('close_projects_page')
+
+def closeprojectteam(request, team):
     team = Team.objects.get(name=team)
     context = {'Project': 'active',
         'team':team,
+        'closed_project_page':True,
         'all_teams': Team.objects.all(),
-        'all_projects' : Project.objects.exclude(status='Closed').filter(Team=team).order_by('-id'),
+        'all_projects' : Project.objects.filter(status='Closed').filter(Team=team).order_by('-id'),
         'closed_projects': Project.objects.filter(status='Closed'),
     }
     

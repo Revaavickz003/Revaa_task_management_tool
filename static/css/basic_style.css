@@ -304,6 +304,10 @@ i, #currentMonthYear{
     background-color: var(--bs-active-blue)
 }
 
+.page_active{
+    color: var(--bs-muted);
+}
+
 .profile-pic {
     display: inline-block;
     position: relative;
@@ -437,7 +441,7 @@ i, #currentMonthYear{
     border-radius: 50px !important;
 }
 
-.cs-alert-high {
+.cs-alert-danger {
     background-color : rgb(255, 204, 204) !important;
     width: fit-content;
     color: var(--bs-danger);
@@ -448,9 +452,59 @@ i, #currentMonthYear{
 }
 
 .cs-alert-gray{
-    background-color : rgb(204, 204, 204)!important;
+    background-color : rgb(230, 230, 230)!important;
     width: fit-content;
-    color: gray;
+    color: var(--bs-gray);
+    font-weight: 600;
+    font-size: small;
+    padding: .2rem .7rem !important;
+    border-radius: 50px !important;
+}
+
+.cs-alert-green{
+    background-color : rgb(204, 255, 204)!important;
+    width: fit-content;
+    color: var(--bs-green);
+    font-weight: 600;
+    font-size: small;
+    padding: .2rem .7rem !important;
+    border-radius: 50px !important;
+}
+
+.cs-alert-yellow{
+    background-color : rgb(255, 255, 145)!important;
+    width: fit-content;
+    color: rgb(107, 107, 0);
+    font-weight: 600;
+    font-size: small;
+    padding: .2rem .7rem !important;
+    border-radius: 50px !important;
+}
+
+.cs-alert-orange{
+    background-color : rgb(255, 234, 192)!important;
+    width: fit-content;
+    color: var(--bs-orange);
+    font-weight: 600;
+    font-size: small;
+    padding: .2rem .7rem !important;
+    border-radius: 50px !important;
+}
+
+.cs-alert-pink{
+    background-color : rgb(255, 212, 219)!important;
+    width: fit-content;
+    color: var(--bs-pink);
+    font-weight: 600;
+    font-size: small;
+    padding: .2rem .7rem !important;
+    border-radius: 50px !important;
+}
+
+.cs-alert-purple{
+    background-color : rgb(255, 208, 255)!important;
+    width: fit-content;
+    color: var(--bs-purple);
     font-weight: 600;
     font-size: small;
     padding: .2rem .7rem !important;

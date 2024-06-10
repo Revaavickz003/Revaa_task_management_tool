@@ -41,13 +41,27 @@
                             </div>
                         </div>                        
                         <div class="col-9">
-                            <div class="mb-3">
-                                <label for="teamlead" class="form-label">Add Team Lead</label>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="mb-3">
+                                        <label for="teamlead" class="form-label">Add Team Lead</label>
+                                        <select name="teamlead" id="teamlead" class="form-control">
+                                            <option>-----</option>
+                                            {% for team_leader in team_leaders %}
+                                            <option value="{{team_leader.user}}">{{team_leader.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="teamlead" class="form-label">Add Team Lead</label>
                                 <select name="teamlead" id="teamlead" class="form-control">
-                                    <option value="">One</option>
-                                    <option value="">Two</option>
-                                    <option value="">Three</option>
+                                    <option>-----</option>
+                                    {% for team_leader in team_leaders %}
+                                    <option value="{{team_leader.user}}">{{team_leader.name}}</option>
+                                    {% endfor %}
                                 </select>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="teamdiscriptions" class="form-label">Discription</label>
@@ -57,7 +71,7 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="dropdown">
                                 <label for="teamlead" class="form-label">Select Employees</label>
                                 <div class="form-control selected-items-container" onclick="toggleDropdown(event, 'employeeOptions')" style="min-height: 45px;">
@@ -66,24 +80,9 @@
                                 </div>
                                 <div id="employeeOptions" class="dropdown-content w-100">
                                     <input type="text" id="employeeSearch" placeholder="Search.." class="form-control" onkeyup="filterOptions('employeeSearch', 'employeeOptions')">
-                                    <label class="w-100"><input class="form-check-input" type="checkbox" role="switch" value="Branding"> Branding</label>
-                                    <label class="w-100"><input type="checkbox" value="Design"> Design</label>
-                                    <label class="w-100"><input type="checkbox" value="Video Editing"> Video Editing</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="dropdown">
-                                <label for="teamlead" class="form-label">Select Projects</label>
-                                <div class="form-control selected-items-container" onclick="toggleDropdown(event, 'projectOptions')" style="min-height: 45px;">
-                                    <input type="text" class="selected-items"  name="selectprojects" readonly placeholder="Select Projects" hidden>
-                                    <div class="selected-tags"></div>
-                                </div>
-                                <div id="projectOptions" class="dropdown-content w-100">
-                                    <input type="text" id="projectSearch" placeholder="Search.." class="form-control" onkeyup="filterOptions('projectSearch', 'projectOptions')">
-                                    <label class="w-100"><input type="checkbox" value="Branding"> Branding</label>
-                                    <label class="w-100"><input type="checkbox" value="Design"> Design</label>
-                                    <label class="w-100"><input type="checkbox" value="Video Editing"> Video Editing</label>
+                                    {% for all_employe in all_employees %}
+                                    <label class="w-100"><input class="form-check-input" type="checkbox" role="switch" value="{{all_employe.name}}">  {{all_employe.name}} | {{all_employe.employee_id}}</label>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
