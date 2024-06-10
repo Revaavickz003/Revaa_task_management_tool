@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import (
     ProductTable,
     ProjectCategories,
-    CustomerTable, 
+    Project, 
     EmployeeDetail, 
     Team, 
     TaskSheet,
@@ -11,7 +11,7 @@ from .models import (
 
 admin.site.register(ProductTable)
 admin.site.register(ProjectCategories)
-admin.site.register(CustomerTable)
+admin.site.register(Project)
 admin.site.register(EmployeeDetail)
 admin.site.register(Team)
 admin.site.register(TaskSheet)
