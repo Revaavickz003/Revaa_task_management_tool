@@ -95,7 +95,7 @@ document.querySelectorAll('.dropdown-content input[type="checkbox"]').forEach(ch
     checkbox.addEventListener('change', function() {
         const selectedTagsContainer = checkbox.closest('.dropdown').querySelector('.selected-tags');
         let selectedValues = Array.from(checkbox.closest('.dropdown-content').querySelectorAll('input[type="checkbox"]:checked'))
-                                  .map(cb => cb.value);
+                                  .map(cb => ({id: cb.value, name: cb.getAttribute('data-name')}));
         updateSelectedTags(selectedValues, selectedTagsContainer);
     });
 });
@@ -105,20 +105,18 @@ function updateSelectedTags(selectedValues, container) {
     selectedValues.forEach(value => {
         const tag = document.createElement('div');
         tag.className = 'tag';
-        tag.innerHTML = `<span>${value}</span><span class="remove-tag" onclick="removeTag('${value}', this)">x</span>`;
+        tag.innerHTML = `<span>${value.name}</span><span class="remove-tag" onclick="removeTag('${value.id}', this)">x</span>`;
         container.appendChild(tag);
     });
-    const selectedItems = container.closest('.selected-items-container').querySelector('.selected-items');
-    selectedItems.value = selectedValues.join(', ');
 }
 
-function removeTag(value, element) {
-    const checkbox = element.closest('.dropdown').querySelector(`input[value="${value}"]`);
+function removeTag(id, element) {
+    const checkbox = element.closest('.dropdown').querySelector(`input[value="${id}"]`);
     if (checkbox) {
         checkbox.checked = false;
         const selectedTagsContainer = checkbox.closest('.dropdown').querySelector('.selected-tags');
         let selectedValues = Array.from(checkbox.closest('.dropdown-content').querySelectorAll('input[type="checkbox"]:checked'))
-                                  .map(cb => cb.value);
+                                  .map(cb => ({id: cb.value, name: cb.getAttribute('data-name')}));
         updateSelectedTags(selectedValues, selectedTagsContainer);
     }
 }

@@ -1,15 +1,32 @@
 {% if messages %}
-{% for message in messages %}
-<div class="alert alert-primary alert-dismissible fade show" role="alert">
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> 
-    {{ message }}
-</div>
-
-<script>
-    var alertList = document.querySelectorAll(".alert");
-    alertList.forEach(function (alert) {
-        new bootstrap.Alert(alert);
-    });
-</script>
-{% endfor %}
+<style>
+    .fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+</style>
+    {% for message in messages %}
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> 
+        {{ message }}
+    </div>
+    {% endfor %}
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var alertList = document.querySelectorAll(".alert");
+            alertList.forEach(function (alert) {
+                new bootstrap.Alert(alert);
+                setTimeout(function() {
+                    alert.classList.add('fade-out');
+                    setTimeout(function() {
+                        var bsAlert = bootstrap.Alert.getInstance(alert);
+                        if (bsAlert) {
+                            bsAlert.close();
+                        }
+                    }, 500); 
+                }, 5000); 
+            });
+        });
+    </script>
 {% endif %}
