@@ -14,7 +14,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="">
+                <form action="{% url 'create_team' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="d-flex align-items-end justify-content-between">
@@ -32,39 +33,34 @@
                                     </div>
                                     <script>
                                         var loadTeamLogo = function (event) {
-                                        var image = document.getElementById("team_output");
-                                        image.src = URL.createObjectURL(event.target.files[0]);
+                                            var image = document.getElementById("team_output");
+                                            image.src = URL.createObjectURL(event.target.files[0]);
                                         };
                                     </script>
                                     <label for="team_logo">Team Logo</label>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                         <div class="col-9">
                             <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <div class="mb-3">
+                                <div class="col-md-6">
+                                    <label for="teamname" class="form-label">Team Name</label>
+                                    <input type="text" name="teamname" id="teamname" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
                                         <label for="teamlead" class="form-label">Add Team Lead</label>
                                         <select name="teamlead" id="teamlead" class="form-control">
                                             <option>-----</option>
                                             {% for team_leader in team_leaders %}
-                                            <option value="{{team_leader.user}}">{{team_leader.name}}</option>
+                                            <option value="{{team_leader.pk}}">{{team_leader.name}}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="teamlead" class="form-label">Add Team Lead</label>
-                                <select name="teamlead" id="teamlead" class="form-control">
-                                    <option>-----</option>
-                                    {% for team_leader in team_leaders %}
-                                    <option value="{{team_leader.user}}">{{team_leader.name}}</option>
-                                    {% endfor %}
-                                </select>
-                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="teamdiscriptions" class="form-label">Discription</label>
+                            <div class="mt-3">
+                                <label for="teamdiscriptions" class="form-label">Description</label>
                                 <textarea name="teamdiscriptions" id="teamdiscriptions" class="form-control"></textarea>
                             </div>
                         </div>
@@ -75,22 +71,24 @@
                             <div class="dropdown">
                                 <label for="teamlead" class="form-label">Select Employees</label>
                                 <div class="form-control selected-items-container" onclick="toggleDropdown(event, 'employeeOptions')" style="min-height: 45px;">
-                                    <input type="text" class="selected-items"  name="selectemployees" readonly placeholder="Select Employees" hidden>
                                     <div class="selected-tags"></div>
                                 </div>
                                 <div id="employeeOptions" class="dropdown-content w-100">
                                     <input type="text" id="employeeSearch" placeholder="Search.." class="form-control" onkeyup="filterOptions('employeeSearch', 'employeeOptions')">
                                     {% for all_employe in all_employees %}
-                                    <label class="w-100"><input class="form-check-input" type="checkbox" role="switch" value="{{all_employe.name}}">  {{all_employe.name}} | {{all_employe.employee_id}}</label>
+                                    <label class="w-100">
+                                        <input class="form-check-input" type="checkbox" role="switch" value="{{all_employe.pk}}" data-name="{{all_employe.name}}" name="selectemployees">
+                                        {{all_employe.name}} | {{all_employe.employee_id}}
+                                    </label>
                                     {% endfor %}
                                 </div>
                             </div>
                         </div>
-                    </div>                    
+                    </div>                                       
                     <div class="d-flex justify-content-end mt-3">
                         <input type="submit" class="btn btn-primary" value="Save Team">
                     </div>
-                </form>
+                </form>                
             </div>
         </div>
     </div>

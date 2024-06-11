@@ -510,3 +510,16 @@ i, #currentMonthYear{
     padding: .2rem .7rem !important;
     border-radius: 50px !important;
 }
+
+.w-35{
+    width: 30% !important
+}
+.btn-check:checked+.btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active {
+    color: var(--bs-btn-active-color);
+    background-color: var(--bs-btn-active-bg);
+    border-color: var(--bs-btn-active-border-color)
+}

@@ -37,6 +37,7 @@
               <div class="mb-3">
                 <label for="selectteam" class="form-label">Select Team</label>
                 <select class="form-control" id="selectteam" name="selectteam">
+                  <option>-----------</option>
                   {% for team in all_teams %}
                   <option value="{{ team.id }}">{{ team.name }}</option>
                   {% endfor %}

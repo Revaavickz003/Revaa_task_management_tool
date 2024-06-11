@@ -9,6 +9,9 @@ from frontend.functions import (
     teams,
     add_employee,
     project_closed_page,
+    new_team_create,
+    team_details,
+    project_details,
 )
 
 urlpatterns = [
@@ -32,6 +35,11 @@ urlpatterns = [
 
     # Add employee
     path('addemployee/', add_employee.addemployee, name='addemployee'),
+
+    # Teams
+    path('newteam/',new_team_create.create_team, name='create_team'),
+    path('team/<int:pk>/',team_details.teams_details, name='teams_details'),
+        path('team/<int:team_pk>/<int:project_pk>/', project_details.projects_details, name='project_details'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

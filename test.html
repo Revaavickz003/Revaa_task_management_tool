@@ -3,59 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Dashboard</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Task Management Board</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
+        .board {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            height: 74vh;
+            overflow-x: auto;
+            gap: 5px;
+        }
+        .board-column {
+            min-width: 30%;
+            max-width: 30%;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            height: 100%;
+            padding: 0;
+            background-color: #fff;
+        }
+        .board-column-header {
+            width: 100%;
             background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #dee2e6;
         }
-        .project-card {
-            margin-bottom: 1rem;
-        }
-        .badge-warning {
-            background-color: #ffc107;
-            color: #212529;
+        .board-column-header i {
+            margin-right: 0.5rem;
         }
     </style>
 </head>
 <body>
-
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>4 Open</h4>
-        <button class="btn btn-primary">New project</button>
-    </div>
-    <div class="list-group">
-        <div class="card project-card">
-            <div class="card-body">
-                <h5 class="card-title">RDS - Task Management System <span class="badge badge-warning">At risk</span></h5>
-                <p class="card-text">Updated 13 minutes ago</p>
-                <p class="card-text"><small class="text-muted">Jun 06, 2024 - Jul 31, 2024</small></p>
+    <div class="d-flex align-items-start justify-content-start" style="height: 74vh; overflow-x: auto; gap: 5px;">
+        <div class="container border rounded-1 h-100 p-0 board-column">
+            <div class="w-100 bg-gray d-flex align-items-center px-3 py-1 border-bottom board-column-header">
+                <i class='bx bx-radio-circle fs-3 fw-bold text-danger'></i>
+                <p class="m-0">Assigned</p>
             </div>
+            <!-- Add your items here -->
         </div>
-        <div class="card project-card">
-            <div class="card-body">
-                <h5 class="card-title">Feature release</h5>
-                <p class="card-text">Updated 18 minutes ago</p>
+        <div class="container border rounded-1 h-100 p-0 board-column">
+            <div class="w-100 bg-gray d-flex align-items-center px-3 py-1 border-bottom board-column-header">
+                <i class='bx bx-radio-circle fs-3 fw-bold text-danger'></i>
+                <p class="m-0">Assigned</p>
             </div>
-        </div>
-        <div class="card project-card">
-            <div class="card-body">
-                <h5 class="card-title">RDS</h5>
-                <p class="card-text">Updated 33 minutes ago</p>
-            </div>
-        </div>
-        <div class="card project-card">
-            <div class="card-body">
-                <h5 class="card-title">@Revaavickz003's untitled project</h5>
-                <p class="card-text">Updated 1 hour ago</p>
-            </div>
+            <!-- Add your items here -->
         </div>
     </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
