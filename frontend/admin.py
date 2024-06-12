@@ -7,6 +7,7 @@ from .models import (
     EmployeeDetail, 
     Team, 
     TaskSheet,
+    status,
 )
 
 admin.site.register(ProductTable)
@@ -15,3 +16,4 @@ admin.site.register(Project)
 admin.site.register(EmployeeDetail)
 admin.site.register(Team)
 admin.site.register(TaskSheet)
+admin.site.register(status)
