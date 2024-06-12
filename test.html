@@ -1,60 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Management Board</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .board {
-            display: flex;
-            align-items: flex-start;
-            justify-content: flex-start;
-            height: 74vh;
-            overflow-x: auto;
-            gap: 5px;
-        }
-        .board-column {
-            min-width: 30%;
-            max-width: 30%;
-            border: 1px solid #dee2e6;
-            border-radius: 0.25rem;
-            height: 100%;
-            padding: 0;
-            background-color: #fff;
-        }
-        .board-column-header {
-            width: 100%;
-            background-color: #f8f9fa;
-            display: flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            border-bottom: 1px solid #dee2e6;
-        }
-        .board-column-header i {
-            margin-right: 0.5rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Date Picker Example</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #2d2d2d;
+      margin: 0;
+    }
+    .editor-container {
+      background-color: #1e1e1e;
+      border: 1px solid #444;
+      border-radius: 5px;
+      width: 600px;
+      padding: 20px;
+      color: #ccc;
+    }
+    .flatpickr-calendar {
+      z-index: 9999;
+    }
+  </style>
 </head>
 <body>
-    <div class="d-flex align-items-start justify-content-start" style="height: 74vh; overflow-x: auto; gap: 5px;">
-        <div class="container border rounded-1 h-100 p-0 board-column">
-            <div class="w-100 bg-gray d-flex align-items-center px-3 py-1 border-bottom board-column-header">
-                <i class='bx bx-radio-circle fs-3 fw-bold text-danger'></i>
-                <p class="m-0">Assigned</p>
-            </div>
-            <!-- Add your items here -->
-        </div>
-        <div class="container border rounded-1 h-100 p-0 board-column">
-            <div class="w-100 bg-gray d-flex align-items-center px-3 py-1 border-bottom board-column-header">
-                <i class='bx bx-radio-circle fs-3 fw-bold text-danger'></i>
-                <p class="m-0">Assigned</p>
-            </div>
-            <!-- Add your items here -->
-        </div>
+  <div class="border rounded-1 mb-4 editor-container">
+    <div class="d-flex align-items-center border-bottom p-2">
+      <i class='bx bx-pulse text-danger me-2 fs-4'></i>
+      <span class="text-danger fw-semibold">Project Status</span>
     </div>
+    <div class="row p-2">
+      <div class="col-3">
+        <i class='bx bxs-calendar me-1'></i>
+        <span>Start date : </span>
+      </div>
+      <div class="col">
+        <span id="start-date-display" class="text-primary" style="cursor: pointer;">2024-06-06</span>
+        <input type="text" id="start-date" class="d-none form-control">
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-3">
+        <i class='bx bx-target-lock'></i>
+        <span>Target date : </span>
+      </div>
+      <div class="col">
+        <span id="target-date-display" class="text-primary" style="cursor: pointer;">2024-06-06</span>
+        <input type="text" id="target-date" class="d-none form-control">
+      </div>
+    </div>
+    <div class="row p-2">
+      <div class="col-3">
+        <i class='bx bx-network-chart'></i>
+        <span>Status : </span>
+      </div>
+      <div class="col">
+        <span class="cs-alert-primary">Software development</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize Flatpickr
+      const startDatePicker = flatpickr("#start-date", {
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+          document.getElementById('start-date-display').innerText = dateStr;
+          document.getElementById('start-date').classList.add('d-none');
+        }
+      });
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+      const targetDatePicker = flatpickr("#target-date", {
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+          document.getElementById('target-date-display').innerText = dateStr;
+          document.getElementById('target-date').classList.add('d-none');
+        }
+      });
+
+      // Show the datepicker when the date display is clicked
+      document.getElementById('start-date-display').addEventListener('click', function () {
+        document.getElementById('start-date').classList.remove('d-none');
+        startDatePicker.open();
+      });
+
+      document.getElementById('target-date-display').addEventListener('click', function () {
+        document.getElementById('target-date').classList.remove('d-none');
+        targetDatePicker.open();
+      });
+    });
+  </script>
 </body>
 </html>

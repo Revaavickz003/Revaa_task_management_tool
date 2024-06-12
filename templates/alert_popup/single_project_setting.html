@@ -1,0 +1,96 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel"
+    style="width: 45vw; height: 100vh; overflow: scroll !important;">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Project Name</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="px-3 mt-3">
+        <div class="border rounded-1 mb-4 editor-container">
+            <div class="d-flex align-items-center border-bottom p-2">
+                <i class='bx bx-pulse text-danger me-2 fs-4'></i>
+                <span class="text-danger fw-semibold">Project Status</span>
+            </div>
+            <form action="">
+                <div class="row p-2">
+                    <div class="col-3">
+                        <i class='bx bxs-calendar me-1'></i>
+                        <span>Start date : </span>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group">
+                            <span id="start-date-display" class="text-primary" style="cursor: pointer;"
+                                data-bs-toggle="dropdown" aria-expanded="false">2024-06-06</span>
+                            <input type="text" id="start-date" class="d-none form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-3">
+                        <i class='bx bx-target-lock'></i>
+                        <span>Target date : </span>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group">
+                            <span id="target-date-display" class="text-primary" style="cursor: pointer;"
+                                data-bs-toggle="dropdown" aria-expanded="false">2024-06-06</span>
+                            <input type="text" id="target-date" class="d-none form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-3">
+                        <i class='bx bx-network-chart'></i>
+                        <span>Status : </span>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group">
+                            <span class="cs-alert-primary" id="current-status-display" style="cursor: pointer;"
+                                data-bs-toggle="dropdown" aria-expanded="false">Waiting to Start</span>
+                            <div id="status-options" class="status-options dropdown-menu dropdown-menu-end px-1">
+                                <span class="cs-alert-orange status-option dropdown-item m-1">Waiting to Start</span>
+                                <span class="cs-alert-primary status-option dropdown-item m-1">On Process</span>
+                                <span class="cs-alert-green status-option dropdown-item m-1">Completed</span>
+                                <span class="cs-alert-danger status-option dropdown-item m-1">Hold</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="form-conrainer mt-3">
+            <input type="submit" class="btn btn-primary" value="Save status">
+        </div>
+        </form>
+        <hr>
+        <form action="" class="mb-3 mt-3">
+            <div class="form-conrainer">
+                <label for="" class="fw-semibold">Project Name</label>
+                <input type="text" class="form-control mt-2" name="projectname">
+            </div>
+            <div class="form-conrainer mt-3">
+                <label for="" class="fw-semibold">Project Description</label>
+                <div class="editor-container mt-2">
+                    <div class="toolbar mb-1">
+                        <span class="cs-alert-gray rounded-1 btn toolbar-button me-2" onclick="execCmd('bold')"><b
+                                class="text-gray">B</b></span>
+                        <span class="cs-alert-gray rounded-1 btn toolbar-button me-2" onclick="execCmd('italic')"><i
+                                class="text-gray">I</i></span>
+                        <span class="cs-alert-gray rounded-1 btn toolbar-button me-2" onclick="execCmd('underline')"><u
+                                class="text-gray">U</u></span>
+                        <span class="cs-alert-gray rounded-1 btn toolbar-button me-2"
+                            onclick="execCmd('insertUnorderedList')">&bull;</span>
+                        <span class="cs-alert-gray rounded-1 btn toolbar-button me-2"
+                            onclick="execCmd('insertOrderedList')">1.</span>
+                        <span class="cs-alert-gray rounded-1 btn toolbar-button me-2"
+                            onclick="execCmd('createLink')">Link</span>
+                        <span class="cs-alert-gray rounded-1 btn toolbar-button me-2"
+                            onclick="execCmd('removeFormat')">Clear</span>
+                    </div>
+                    <div contenteditable="true" class="editor form-control" id="editor" name="discriptions"></div>
+                </div>
+            </div>
+            <div class="form-conrainer mt-3">
+                <input type="submit" class="btn btn-primary" value="Save Changes">
+            </div>
+        </form>
+    </div>
+</div>
