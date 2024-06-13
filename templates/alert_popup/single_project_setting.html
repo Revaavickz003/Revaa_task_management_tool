@@ -1,7 +1,7 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel"
     style="width: 45vw; height: 100vh; overflow: scroll !important;">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Project Name</h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">{{get_project.project_name}}</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="px-3 mt-3">
@@ -19,7 +19,13 @@
                     <div class="col">
                         <div class="btn-group">
                             <span id="start-date-display" class="text-primary" style="cursor: pointer;"
-                                data-bs-toggle="dropdown" aria-expanded="false">2024-06-06</span>
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                {% if get_project.start_date %}
+                                {{get_project.start_date | date:"Y-m-d" }}
+                                {% else %}
+                                Start date
+                                {% endif %}
+                            </span>
                             <input type="text" id="start-date" class="d-none form-control">
                         </div>
                     </div>
@@ -32,7 +38,13 @@
                     <div class="col">
                         <div class="btn-group">
                             <span id="target-date-display" class="text-primary" style="cursor: pointer;"
-                                data-bs-toggle="dropdown" aria-expanded="false">2024-06-06</span>
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                {% if get_project.end_of_date %}
+                                {{get_project.end_of_date |date:"Y-m-d" }}
+                                {% else %}
+                                Target date
+                                {% endif %}
+                            </span>
                             <input type="text" id="target-date" class="d-none form-control">
                         </div>
                     </div>
@@ -44,27 +56,82 @@
                     </div>
                     <div class="col">
                         <div class="btn-group">
-                            <span class="cs-alert-primary" id="current-status-display" style="cursor: pointer;"
-                                data-bs-toggle="dropdown" aria-expanded="false">Waiting to Start</span>
-                            <div id="status-options" class="status-options dropdown-menu dropdown-menu-end px-1">
-                                <span class="cs-alert-orange status-option dropdown-item m-1">Waiting to Start</span>
-                                <span class="cs-alert-primary status-option dropdown-item m-1">On Process</span>
-                                <span class="cs-alert-green status-option dropdown-item m-1">Completed</span>
-                                <span class="cs-alert-danger status-option dropdown-item m-1">Hold</span>
-                            </div>
+                            <p class="m-0 p-0 me-md-3
+                    {% if get_project.status == 'Waiting to Start' %}
+                    cs-alert-orange
+                    {% elif get_project.status == 'Hold' %}
+                    cs-alert-danger
+                    {% elif get_project.status == 'Closed' %}
+                    cs-alert-danger
+                    {% elif get_project.status == 'Completed' %}
+                    cs-alert-green
+                    {% elif get_project.status == 'On Process' %}
+                    cs-alert-primary
+                    {% endif %}
+                    mt-1">{{get_project.status}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-3">
+                        <i class='bx bx-network-chart'></i>
+                        <span>Priority : </span>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group">
+                            <span class="cs-alert-primary
+                            {% if get_project.priority == 'High' %}
+                            cs-alert-danger
+                            {% elif get_project.priority == 'Medium' %}
+                            cs-alert-orange
+                            {% elif get_project.priority == 'Low' %}
+                            cs-alert-green
+                            {% endif %}" id="current-status-display">{{get_project.priority}}</span>
                         </div>
                     </div>
                 </div>
         </div>
-        <div class="form-conrainer mt-3">
-            <input type="submit" class="btn btn-primary" value="Save status">
-        </div>
         </form>
+        <div class="border rounded-1 mb-4 editor-container">
+            <div class="d-flex align-items-center justify-content-between border-bottom p-2">
+                <div class="d-flex align-items-center">
+                    <i class='bx bx-pulse text-primary me-2 fs-4'></i>
+                    <span class="text-primary fw-semibold">Project Task Types</span>
+                </div>
+            </div>
+            {% if types %}
+            <div class="p-2 d-flex align-items-center">
+                {% for type in types %}
+                <p class="m-0 p-0 me-md-3
+                {% if type.color == 'Gray' %}
+                cs-alert-gray
+                {% elif type.color == 'Blue' %}
+                cs-alert-primary
+                {% elif type.color == 'Green' %}
+                cs-alert-green
+                {% elif type.color == 'Yellow' %}
+                cs-alert-yellow
+                {% elif type.color == 'Orange' %}
+                cs-alert-orange
+                {% elif type.color == 'Red' %}
+                cs-alert-danger
+                {% elif type.color == 'Pink' %}
+                cs-alert-pink
+                {% elif type.color == 'Purple' %}
+                cs-alert-purple
+                {% endif %}
+                mt-1">{{type.name}}</p>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-center p-2 text-danger fw-semibold">No Task Types Available</p>
+            {% endif %}
+        </div>
         <hr>
         <form action="" class="mb-3 mt-3">
             <div class="form-conrainer">
                 <label for="" class="fw-semibold">Project Name</label>
-                <input type="text" class="form-control mt-2" name="projectname">
+                <input type="text" class="form-control mt-2" name="projectname" value="{{get_project.project_name}}">
             </div>
             <div class="form-conrainer mt-3">
                 <label for="" class="fw-semibold">Project Description</label>
@@ -85,7 +152,8 @@
                         <span class="cs-alert-gray rounded-1 btn toolbar-button me-2"
                             onclick="execCmd('removeFormat')">Clear</span>
                     </div>
-                    <div contenteditable="true" class="editor form-control" id="editor" name="discriptions"></div>
+                    <div contenteditable="true" class="editor form-control" id="editor" name="discriptions">
+                        {{get_project.project_discription}}</div>
                 </div>
             </div>
             <div class="form-conrainer mt-3">

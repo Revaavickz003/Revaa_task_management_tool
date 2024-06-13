@@ -147,8 +147,8 @@ class Project(models.Model):
 
 
 class status(models.Model):
-    NONE = 'High'
-    GRAY = 'Medium'
+    NONE = 'None'
+    GRAY = 'Gray'
     BLUE = 'Blue'
     GREEN = 'Green'
     YELLOW = 'Yellow'
@@ -176,7 +176,39 @@ class status(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+# Task Type
+
+class Type(models.Model):
+    NONE = 'None'
+    GRAY = 'Gray'
+    BLUE = 'Blue'
+    GREEN = 'Green'
+    YELLOW = 'Yellow'
+    ORANGE = 'Orange'
+    RED = 'Red'
+    PINK = 'Pink'
+    PURPLE = 'Purple'
+
+    COLOR = [
+        (NONE, 'None'),
+        (GRAY, 'Gray'),
+        (BLUE, 'Blue'),
+        (GREEN, 'Green'),
+        (YELLOW, 'Yellow'),
+        (ORANGE, 'Orange'),
+        (RED, 'Red'),
+        (PINK, 'Pink'),
+        (PURPLE, 'Purple'),
+    ]
+
+    name = models.CharField(max_length=255)
+    color = models.CharField(choices=COLOR, max_length=16, null=True, blank=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='type_project')
+
+    def __str__(self):
+        return self.name
+
 # Task Sheet
 class TaskSheet(models.Model):
     title = models.CharField(max_length=255)

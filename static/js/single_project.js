@@ -64,3 +64,75 @@ function saveEdit() {
 function cancelEdit() {
     document.getElementById('editor').innerHTML = '';
 }
+
+// 
+//  Create a new Status
+// 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const statusNameInput = document.getElementById('statusname');
+    const outputLabel = document.getElementById('outputforstatus');
+    const colorSelect = document.getElementById('color-select');
+
+    const colorClasses = [
+        'border-gray', 'border-blue', 'border-green', 'border-yellow', 
+        'border-orange', 'border-red', 'border-pink', 'border-purple'
+    ];
+
+    // Function to update the border class
+    function updateBorderClass(color) {
+        // Remove all existing border classes
+        colorClasses.forEach(c => outputLabel.classList.remove(c));
+        // Add the selected border class
+        if (color !== 'none') {
+            outputLabel.classList.add(`border-${color}`);
+        }
+    }
+
+    // Update label text with the status name input value
+    statusNameInput.addEventListener('input', function () {
+        outputLabel.textContent = statusNameInput.value;
+    });
+
+    // Update label border color based on selected color
+    colorSelect.addEventListener('change', function () {
+        const selectedColor = colorSelect.value.toLowerCase();
+        updateBorderClass(selectedColor);
+    });
+});
+
+// 
+// Create a new Type
+// 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const typeNameInput = document.getElementById('typename');
+    const outputLabel = document.getElementById('outputfortype');
+    const colorSelect = document.getElementById('type-color-select');
+
+    const colorClasses = [
+        'border-gray', 'border-blue', 'border-green', 'border-yellow', 
+        'border-orange', 'border-red', 'border-pink', 'border-purple'
+    ];
+
+    // Function to update the border class
+    function updateBorderClass(color) {
+        // Remove all existing border classes
+        colorClasses.forEach(c => outputLabel.classList.remove(c));
+        // Add the selected border class
+        if (color !== 'none') {
+            outputLabel.classList.add(`border-${color}`);
+        }
+    }
+
+    // Update label text with the type name input value
+    typeNameInput.addEventListener('input', function () {
+        outputLabel.textContent = typeNameInput.value;
+    });
+
+    // Update label border color based on selected color
+    colorSelect.addEventListener('change', function () {
+        const selectedColor = colorSelect.value.toLowerCase();
+        updateBorderClass(selectedColor);
+    });
+});

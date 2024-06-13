@@ -1,102 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Date Picker Example</title>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #2d2d2d;
-      margin: 0;
-    }
-    .editor-container {
-      background-color: #1e1e1e;
-      border: 1px solid #444;
-      border-radius: 5px;
-      width: 600px;
-      padding: 20px;
-      color: #ccc;
-    }
-    .flatpickr-calendar {
-      z-index: 9999;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Form</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.1/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            margin-bottom: 1rem;
+        }
+        .color-selector i {
+            cursor: pointer;
+        }
+        #outputforstatus {
+            padding: 5px 10px;
+            display: inline-block;
+            border: 2px solid black; /* Ensure border is always visible */
+        }
+    </style>
 </head>
 <body>
-  <div class="border rounded-1 mb-4 editor-container">
-    <div class="d-flex align-items-center border-bottom p-2">
-      <i class='bx bx-pulse text-danger me-2 fs-4'></i>
-      <span class="text-danger fw-semibold">Project Status</span>
+    <div class="modal-body">
+        <div class="d-flex align-items-center justify-content-center">
+            <label for="" id="outputforstatus" class="border rounded-pill px-2">Test</label>
+        </div>
+        <hr>
+        <form id="add-status-form" action="">
+            <div class="form-container">
+                <label for="statusname">Status Name</label>
+                <input type="text" id="statusname" name="statusname" class="form-control mt-1">
+            </div>
+            <div class="form-container mt-3">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control mt-1"></textarea>
+            </div>
+            <div class="form-container mt-3">
+                <label for="color">Color</label>
+                <div class="d-flex align-items-center justify-content-between color-selector" name="color">
+                    <i class="bx bx-radio-circle fs-3 fw-bold text-dark"></i>
+                    <i class="bx bx-radio-circle fs-3 fw-bold text-secondary"></i>
+                    <i class="bx bx-radio-circle fs-3 fw-bold text-primary"></i>
+                    <i class="bx bx-radio-circle fs-3 fw-bold text-success"></i>
+                    <i class="bx bx-radio-circle fs-3 fw-bold text-warning"></i>
+                    <i class="bx bx-radio-circle fs-3 fw-bold text-orange"></i>
+                    <i class="bx bx-radio-circle fs-3 fw-bold text-danger"></i>
+                    <i class="bx bx-radio-circle fs-3 fw-bold text-pink"></i>
+                    <i class="bx bx-radio-circle fs-3 fw-bold text-purple"></i>
+                </div>
+            </div>
+            <div class="form-container mt-3">
+                <input type="submit" value="Save" class="btn btn-primary">
+            </div>
+        </form>
     </div>
-    <div class="row p-2">
-      <div class="col-3">
-        <i class='bx bxs-calendar me-1'></i>
-        <span>Start date : </span>
-      </div>
-      <div class="col">
-        <span id="start-date-display" class="text-primary" style="cursor: pointer;">2024-06-06</span>
-        <input type="text" id="start-date" class="d-none form-control">
-      </div>
-    </div>
-    <div class="row p-2">
-      <div class="col-3">
-        <i class='bx bx-target-lock'></i>
-        <span>Target date : </span>
-      </div>
-      <div class="col">
-        <span id="target-date-display" class="text-primary" style="cursor: pointer;">2024-06-06</span>
-        <input type="text" id="target-date" class="d-none form-control">
-      </div>
-    </div>
-    <div class="row p-2">
-      <div class="col-3">
-        <i class='bx bx-network-chart'></i>
-        <span>Status : </span>
-      </div>
-      <div class="col">
-        <span class="cs-alert-primary">Software development</span>
-      </div>
-    </div>
-  </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Initialize Flatpickr
-      const startDatePicker = flatpickr("#start-date", {
-        dateFormat: "Y-m-d",
-        onChange: function(selectedDates, dateStr, instance) {
-          document.getElementById('start-date-display').innerText = dateStr;
-          document.getElementById('start-date').classList.add('d-none');
-        }
-      });
 
-      const targetDatePicker = flatpickr("#target-date", {
-        dateFormat: "Y-m-d",
-        onChange: function(selectedDates, dateStr, instance) {
-          document.getElementById('target-date-display').innerText = dateStr;
-          document.getElementById('target-date').classList.add('d-none');
-        }
-      });
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const statusNameInput = document.getElementById('statusname');
+            const outputLabel = document.getElementById('outputforstatus');
+            const colorIcons = document.querySelectorAll('.color-selector i');
+            let selectedColor = '#000000'; // Default color
 
-      // Show the datepicker when the date display is clicked
-      document.getElementById('start-date-display').addEventListener('click', function () {
-        document.getElementById('start-date').classList.remove('d-none');
-        startDatePicker.open();
-      });
+            // Update label text with the status name input value
+            statusNameInput.addEventListener('input', function () {
+                outputLabel.textContent = statusNameInput.value;
+            });
 
-      document.getElementById('target-date-display').addEventListener('click', function () {
-        document.getElementById('target-date').classList.remove('d-none');
-        targetDatePicker.open();
-      });
-    });
-  </script>
+            // Update label border color based on selected color
+            colorIcons.forEach(icon => {
+                icon.addEventListener('click', function () {
+                    selectedColor = icon.getAttribute('data-color');
+                    outputLabel.style.borderColor = selectedColor;
+                });
+            });
+
+            // Form submit event
+            document.getElementById('add-status-form').addEventListener('submit', function (e) {
+                e.preventDefault(); // Prevent form submission
+                console.log('Status Name:', statusNameInput.value);
+                console.log('Description:', document.getElementById('description').value);
+                console.log('Selected Color:', selectedColor);
+            });
+        });
+    </script>
 </body>
 </html>
