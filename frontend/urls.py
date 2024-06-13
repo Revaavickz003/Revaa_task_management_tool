@@ -32,6 +32,8 @@ urlpatterns = [
     path('project/closed/', project_closed_page.close_projects_page, name='close_projects_page'),
     path('project/closed/<str:team>/', project_closed_page.closeprojectteam, name='closeprojectteam'),
     path('project/reopen/<int:pk>/', project_closed_page.Reopen, name='reopen'),
+    path('createprojectstatus/<int:team_pk>/<int:project_pk>/', project_details.new_status, name='createprojectstatus'),
+    path('createprojecttype/<int:team_pk>/<int:project_pk>/', project_details.new_type, name='createprojecttype'),
 
     # Add employee
     path('addemployee/', add_employee.addemployee, name='addemployee'),
@@ -39,7 +41,8 @@ urlpatterns = [
     # Teams
     path('newteam/',new_team_create.create_team, name='create_team'),
     path('team/<int:pk>/',team_details.teams_details, name='teams_details'),
-        path('team/<int:team_pk>/<int:project_pk>/', project_details.projects_details, name='project_details'),
+    path('team/<int:team_pk>/<int:project_pk>/', project_details.projects_details, name='project_details'),
+    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

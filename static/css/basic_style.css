@@ -297,6 +297,16 @@ i, #currentMonthYear{
     display: block;
 }
 
+.text-orange{
+    color: orangered !important;
+}
+.text-pink{
+    color: pink !important;
+}
+.text-Purple{
+    color: purple !important;
+}
+
 .dropdown-item.active,
 .dropdown-item:active {
     color: var(--bs-dropdown-link-active-color);
@@ -509,6 +519,31 @@ i, #currentMonthYear{
     font-size: small;
     padding: .2rem .7rem !important;
     border-radius: 50px !important;
+}
+
+.border-gray {
+    border-color: gray !important;
+}
+.border-blue {
+    border-color: blue !important;
+}
+.border-green {
+    border-color: green !important;
+}
+.border-yellow {
+    border-color: yellow !important;
+}
+.border-orange {
+    border-color: orange !important;
+}
+.border-red {
+    border-color: red !important;
+}
+.border-pink {
+    border-color: pink !important;
+}
+.border-purple {
+    border-color: purple !important;
 }
 
 .w-35{

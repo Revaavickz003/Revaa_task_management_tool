@@ -15,13 +15,30 @@
                 {% include 'includes/message.html' %}
             </div>
             <div class="container d-flex align-items-center justify-content-between">
-                <p class="fs-5 fw-bold m-0 p-0">Project Name</p>
+                <p class="fs-5 fw-bold m-0 p-0">{{get_project.project_name}}</p>
                 <div class="d-flex align-items-center justify-content-between">
-                    <p class="m-0 p-0 cs-alert-orange me-md-3" id="current-status">Waiting to Start</p>
+                    <p class="m-0 p-0 me-md-3
+                    {% if get_project.status == 'Waiting to Start' %}
+                    cs-alert-orange
+                    {% elif get_project.status == 'Hold' %}
+                    cs-alert-danger
+                    {% elif get_project.status == 'Closed' %}
+                    cs-alert-danger
+                    {% elif get_project.status == 'Completed' %}
+                    cs-alert-green
+                    {% elif get_project.status == 'On Process' %}
+                    cs-alert-primary
+                    {% endif %}
+                    mt-1">{{get_project.status}}</p>
                     {% include 'alert_popup/addnewstatus.html' %}
                     <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center"
                         data-bs-toggle="modal" data-bs-target="#addnewstatus">
                         <h6 class="m-0 p-0 text-light">New Status</h6>
+                    </button>
+                    {% include 'alert_popup/addnewtype.html' %}
+                    <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center"
+                        data-bs-toggle="modal" data-bs-target="#addnewtype">
+                        <h6 class="m-0 p-0 text-light">New Type</h6>
                     </button>
                     <nav class="navbar">
                         <div class="">
@@ -35,22 +52,49 @@
             </div>
             <hr>
             <div class="d-flex align-items-start justify-content-start" style="height: 82vh; gap: 10px; overflow-x: auto;">
+                {% if statuss %}
+                {% for status in statuss %}
                 <div class="h-100" style="min-width: 30%; width: 30%;">
                     <div class="container px-0 rounded border" style="height: 100%; overflow-x: auto;">
                         <div class="py-2 px-3 bg-gray rounded-top ">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="d-flex align-items-center">
-                                    <i class='bx bx-radio-circle fs-3 fw-bold text-danger'></i>
-                                    <p class="m-0 fw-semibold">Assigned</p>
+                                    <i class="bx bx-radio-circle fs-3 fw-bold
+                                    {% if status.color == 'None' %}
+                                    text-dark
+                                    {% elif status.color == 'Gray' %}
+                                    text-gray
+                                    {% elif status.color == 'Blue' %}
+                                    text-primary
+                                    {% elif status.color == 'Green' %}
+                                    text-success
+                                    {% elif status.color == 'Yellow' %}
+                                    text-warning
+                                    {% elif status.color == 'Orange' %}
+                                    text-orange
+                                    {% elif status.color == 'Red' %}
+                                    text-danger
+                                    {% elif status.color == 'Pink' %}
+                                    text-pink
+                                    {% elif status.color == 'Purple' %}
+                                    text-Purple
+                                    {% endif %}
+                                    "></i>
+                                    <p class="m-0 fw-semibold">{{status.name}}</p>
                                 </div>
                                 <div class="btn-group">
                                     <i class='bx bx-dots-horizontal-rounded fs-4' data-bs-toggle="dropdown" aria-expanded="false"></i>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><button class="dropdown-item" type="button">Edit</button></li>
+                                        {% include 'alert_popup/addtask.html' %}
+                                        <li><button class="dropdown-item" type="button"type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">Task Assigne</button></li>
+                                        <li>{% include 'alert_popup/addnewstatus.html' %}
+                                            <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#addnewstatus">
+                                                New Status
+                                            </button></li>
                                     </ul>
                                 </div>
                             </div>
-                            <p class="p-0 m-0 small text-muted">This item hasn't been started</p>
+                            <p class="p-0 m-0 small text-muted">{{status.description}}</p>
                         </div>
                         <div class="pb-1">
                             <div class="task-body border mt-2 p-1 px-2 mx-1 bg-gray rounded">
@@ -68,6 +112,12 @@
                         </div>
                     </div>
                 </div>
+                {% endfor %}
+                {% else %}
+                <div class="d-flex align-items-center justify-content-center w-100 h-100">
+                    <img src="{% static 'images/task.jpg' %}" alt="" class="w-50">
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
