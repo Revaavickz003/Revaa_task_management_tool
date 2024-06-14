@@ -31,18 +31,16 @@
                     {% endif %}
                     mt-1">{{get_project.status}}</p>
                     {% include 'alert_popup/addnewstatus.html' %}
-                    <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center"
-                        data-bs-toggle="modal" data-bs-target="#addnewstatus">
-                        <h6 class="m-0 p-0 text-light">New Status</h6>
-                    </button>
+                    {% if statuss %}
+                    
                     {% include 'alert_popup/addnewtype.html' %}
                     <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center"
-                        data-bs-toggle="modal" data-bs-target="#addnewtype">
-                        <h6 class="m-0 p-0 text-light">New Type</h6>
+                        data-bs-toggle="modal" data-bs-target="#addnewtype">New Type
                     </button>
+                    {% endif %}
                     <nav class="navbar">
                         <div class="">
-                            <button class="btn btn-primary px-3 me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                            <button class="btn btn-primary px-3 me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#projectsettingalert" aria-controls="offcanvasNavbar">
                                 Project Setting 
                             </button>
                             {% include 'alert_popup/single_project_setting.html' %}
@@ -85,12 +83,13 @@
                                 <div class="btn-group">
                                     <i class='bx bx-dots-horizontal-rounded fs-4' data-bs-toggle="dropdown" aria-expanded="false"></i>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        {% include 'alert_popup/addtask.html' %}
-                                        <li><button class="dropdown-item" type="button"type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">Task Assigne</button></li>
-                                        <li>{% include 'alert_popup/addnewstatus.html' %}
-                                            <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#addnewstatus">
-                                                New Status
-                                            </button></li>
+                                        <li>
+                                            <button class="dropdown-item" type="button" data-bs-toggle="offcanvas" data-bs-target="#newTaskSidebar" 
+                                                data-status-name="{{status.name}}" 
+                                                data-status-id="{{status.id}}" 
+                                                aria-controls="newTaskSidebar">New Task</button>
+                                            <!-- Other options -->
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -113,16 +112,50 @@
                     </div>
                 </div>
                 {% endfor %}
+                <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center"
+                        data-bs-toggle="modal" data-bs-target="#addnewstatus" style="border-radius: 5px !important;"> New
+                </button>
                 {% else %}
-                <div class="d-flex align-items-center justify-content-center w-100 h-100">
+                <div class="d-flex flex-column align-items-center justify-content-center w-100 h-100">
                     <img src="{% static 'images/task.jpg' %}" alt="" class="w-50">
+                    <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center"
+                    data-bs-toggle="modal" data-bs-target="#addnewstatus">Create a New Status
+                </button>
                 </div>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+{% include 'alert_popup/addtask.html' %}
 {% endblock %}
 {% block script %}
 <script src="{% static 'js/single_project.js' %}" ></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#dueDate", {
+            enableTime: false,
+            dateFormat: "Y-m-d",
+        });
+
+        // Update the sidebar with the selected status details
+        const newTaskSidebar = document.getElementById('newTaskSidebar');
+        newTaskSidebar.addEventListener('show.bs.offcanvas', function(event) {
+            const button = event.relatedTarget;
+            const statusName = button.getAttribute('data-status-name');
+            const statusId = button.getAttribute('data-status-id');
+            
+            // Update the sidebar header with the status name
+            const sidebarTitle = newTaskSidebar.querySelector('.offcanvas-title');
+            sidebarTitle.textContent = `Add New Task to ${statusName}`;
+            
+            // Optional: Store the status ID in a hidden input if needed in the form submission
+            const hiddenStatusInput = document.createElement('input');
+            hiddenStatusInput.type = 'hidden';
+            hiddenStatusInput.name = 'status_id';
+            hiddenStatusInput.value = statusId;
+            newTaskSidebar.querySelector('form').appendChild(hiddenStatusInput);
+        });
+    });
+</script>
 {% endblock %}

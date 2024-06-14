@@ -1,4 +1,4 @@
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel"
+<div class="offcanvas offcanvas-end" tabindex="-1" id="projectsettingalert" aria-labelledby="offcanvasNavbarLabel"
     style="width: 45vw; height: 100vh; overflow: scroll !important;">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">{{get_project.project_name}}</h5>
@@ -101,27 +101,11 @@
             </div>
             {% if types %}
             <div class="p-2 d-flex align-items-center">
+                <ol>
                 {% for type in types %}
-                <p class="m-0 p-0 me-md-3
-                {% if type.color == 'Gray' %}
-                cs-alert-gray
-                {% elif type.color == 'Blue' %}
-                cs-alert-primary
-                {% elif type.color == 'Green' %}
-                cs-alert-green
-                {% elif type.color == 'Yellow' %}
-                cs-alert-yellow
-                {% elif type.color == 'Orange' %}
-                cs-alert-orange
-                {% elif type.color == 'Red' %}
-                cs-alert-danger
-                {% elif type.color == 'Pink' %}
-                cs-alert-pink
-                {% elif type.color == 'Purple' %}
-                cs-alert-purple
-                {% endif %}
-                mt-1">{{type.name}}</p>
+                <li class="mb-1">{{type.name}}</li>
                 {% endfor %}
+            </ol>
             </div>
             {% else %}
             <p class="text-center p-2 text-danger fw-semibold">No Task Types Available</p>
