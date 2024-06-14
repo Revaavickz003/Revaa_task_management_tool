@@ -1,88 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status Form</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.1/css/boxicons.min.css" rel="stylesheet">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Custom Dropdown</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        .form-container {
-            margin-bottom: 1rem;
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
         }
-        .color-selector i {
-            cursor: pointer;
+
+        .container {
+            position: relative;
         }
-        #outputforstatus {
-            padding: 5px 10px;
+
+        .dropdown {
+            position: relative;
             display: inline-block;
-            border: 2px solid black; /* Ensure border is always visible */
+        }
+
+        .dropdown-toggle {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 200px;
+        }
+
+        .dropdown-toggle::after {
+            content: '\25BC'; /* Downward arrow */
+            margin-left: 10px;
+            font-size: 12px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            margin-top: 5px;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown-menu .circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .dropdown-menu .circle.red {
+            background-color: #ff0000;
+        }
+
+        .dropdown-menu .circle.yellow {
+            background-color: #ffcc00;
+        }
+
+        .dropdown-menu .circle.green {
+            background-color: #00cc00;
         }
     </style>
 </head>
+
 <body>
-    <div class="modal-body">
-        <div class="d-flex align-items-center justify-content-center">
-            <label for="" id="outputforstatus" class="border rounded-pill px-2">Test</label>
-        </div>
-        <hr>
-        <form id="add-status-form" action="">
-            <div class="form-container">
-                <label for="statusname">Status Name</label>
-                <input type="text" id="statusname" name="statusname" class="form-control mt-1">
-            </div>
-            <div class="form-container mt-3">
-                <label for="description">Description</label>
-                <textarea id="description" name="description" class="form-control mt-1"></textarea>
-            </div>
-            <div class="form-container mt-3">
-                <label for="color">Color</label>
-                <div class="d-flex align-items-center justify-content-between color-selector" name="color">
-                    <i class="bx bx-radio-circle fs-3 fw-bold text-dark"></i>
-                    <i class="bx bx-radio-circle fs-3 fw-bold text-secondary"></i>
-                    <i class="bx bx-radio-circle fs-3 fw-bold text-primary"></i>
-                    <i class="bx bx-radio-circle fs-3 fw-bold text-success"></i>
-                    <i class="bx bx-radio-circle fs-3 fw-bold text-warning"></i>
-                    <i class="bx bx-radio-circle fs-3 fw-bold text-orange"></i>
-                    <i class="bx bx-radio-circle fs-3 fw-bold text-danger"></i>
-                    <i class="bx bx-radio-circle fs-3 fw-bold text-pink"></i>
-                    <i class="bx bx-radio-circle fs-3 fw-bold text-purple"></i>
+    <div class="container">
+        <div class="dropdown">
+            <button class="dropdown-toggle" id="dropdownMenuButton">Choose an option...</button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-item" data-value="P0">
+                    <span class="circle red"></span>
+                    <span>P0</span>
+                </div>
+                <div class="dropdown-item" data-value="P1">
+                    <span class="circle yellow"></span>
+                    <span>P1</span>
+                </div>
+                <div class="dropdown-item" data-value="P2">
+                    <span class="circle green"></span>
+                    <span style="background-color: red;">P2</span>
                 </div>
             </div>
-            <div class="form-container mt-3">
-                <input type="submit" value="Save" class="btn btn-primary">
-            </div>
-        </form>
+        </div>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const statusNameInput = document.getElementById('statusname');
-            const outputLabel = document.getElementById('outputforstatus');
-            const colorIcons = document.querySelectorAll('.color-selector i');
-            let selectedColor = '#000000'; // Default color
+            const dropdownToggle = document.getElementById('dropdownMenuButton');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
 
-            // Update label text with the status name input value
-            statusNameInput.addEventListener('input', function () {
-                outputLabel.textContent = statusNameInput.value;
+            dropdownToggle.addEventListener('click', function () {
+                dropdownMenu.classList.toggle('show');
             });
 
-            // Update label border color based on selected color
-            colorIcons.forEach(icon => {
-                icon.addEventListener('click', function () {
-                    selectedColor = icon.getAttribute('data-color');
-                    outputLabel.style.borderColor = selectedColor;
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    const value = this.getAttribute('data-value');
+                    const text = this.innerText.trim();
+                    dropdownToggle.innerText = text;
+                    dropdownMenu.classList.remove('show');
                 });
             });
 
-            // Form submit event
-            document.getElementById('add-status-form').addEventListener('submit', function (e) {
-                e.preventDefault(); // Prevent form submission
-                console.log('Status Name:', statusNameInput.value);
-                console.log('Description:', document.getElementById('description').value);
-                console.log('Selected Color:', selectedColor);
+            document.addEventListener('click', function (event) {
+                if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.remove('show');
+                }
             });
         });
     </script>
 </body>
+
 </html>
