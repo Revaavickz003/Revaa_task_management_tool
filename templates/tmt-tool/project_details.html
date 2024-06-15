@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Teams Page | Revaa {% endblock %}
+{% block title %}{{get_project.project_name}} | Revaa {% endblock %}
 {% load static %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/singile_project.css' %}">
@@ -51,6 +51,7 @@
             <hr>
             <div class="d-flex align-items-start justify-content-start" style="height: 82vh; gap: 10px; overflow-x: auto;">
                 {% if statuss %}
+                <!-- Task Columns -->
                 {% for status in statuss %}
                 <div class="h-100" style="min-width: 30%; width: 30%;">
                     <div class="container px-0 rounded border" style="height: 100%; overflow-x: auto;">
@@ -58,62 +59,69 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="d-flex align-items-center">
                                     <i class="bx bx-radio-circle fs-3 fw-bold
-                                    {% if status.color == 'None' %}
-                                    text-dark
-                                    {% elif status.color == 'Gray' %}
-                                    text-gray
-                                    {% elif status.color == 'Blue' %}
-                                    text-primary
-                                    {% elif status.color == 'Green' %}
-                                    text-success
-                                    {% elif status.color == 'Yellow' %}
-                                    text-warning
-                                    {% elif status.color == 'Orange' %}
-                                    text-orange
-                                    {% elif status.color == 'Red' %}
-                                    text-danger
-                                    {% elif status.color == 'Pink' %}
-                                    text-pink
-                                    {% elif status.color == 'Purple' %}
-                                    text-Purple
-                                    {% endif %}
-                                    "></i>
+                                    {% if status.color == 'None' %} text-dark
+                                    {% elif status.color == 'Gray' %} text-gray
+                                    {% elif status.color == 'Blue' %} text-primary
+                                    {% elif status.color == 'Green' %} text-success
+                                    {% elif status.color == 'Yellow' %} text-warning
+                                    {% elif status.color == 'Orange' %} text-orange
+                                    {% elif status.color == 'Red' %} text-danger
+                                    {% elif status.color == 'Pink' %} text-pink
+                                    {% elif status.color == 'Purple' %} text-purple
+                                    {% endif %}"></i>
                                     <p class="m-0 fw-semibold">{{status.name}}</p>
                                 </div>
                                 <div class="btn-group">
                                     <i class='bx bx-dots-horizontal-rounded fs-4' data-bs-toggle="dropdown" aria-expanded="false"></i>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
-                                            <button class="dropdown-item" type="button" data-bs-toggle="offcanvas" data-bs-target="#newTaskSidebar" 
-                                                data-status-name="{{status.name}}" 
-                                                data-status-id="{{status.id}}" 
-                                                aria-controls="newTaskSidebar">New Task</button>
-                                            <!-- Other options -->
+                                            <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#{{status.name}}{{status.pk}}">New Task</button>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <p class="p-0 m-0 small text-muted">{{status.description}}</p>
                         </div>
+                        <!-- Task Body -->
                         <div class="pb-1">
+                            {% for task in tasks %}
+                            {% if task.status.id == status.id %}
                             <div class="task-body border mt-2 p-1 px-2 mx-1 bg-gray rounded">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <p class="m-0 p-0">Development</p>
-                                    <div class="d-flex align-items-center justify-content-center rounded-circle" style="width: 28px; height: 28px;">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <p class="m-0 p-0 text-truncate me-2">{{task.title}}</p>
+                                    <div class="d-flex align-items-center justify-content-center" style="width: 35px; height: 28px; border-radius: 50%; overflow: hidden;">
+                                        {% if task.assigned_to.employee_photo %}
+                                        <img src="{{task.assigned_to.employee_photo.url}}" alt="" class="w-100 h-100">
+                                        {% else %}
                                         <img src="https://www.svgrepo.com/show/384676/account-avatar-profile-user-6.svg" alt="" class="w-100 h-100">
+                                        {% endif %}
                                     </div>
                                 </div>
-                                <p class="m-0 p-0 small text-muted">Login page js function</p>
+                                <p class="m-0 p-0 small text-muted text-truncate">{{task.title}}</p>
                                 <div class="d-flex align-items-center justify-content-between mt-2">
-                                    <p class="m-0 p-0 small cs-alert-primary">High</p>
+                                    <p class="m-0 p-0 small 
+                                    {% if task.priority == 'Low' %}
+                                    cs-alert-primary
+                                    {% elif task.priority == 'Medium' %}
+                                    cs-alert-purple
+                                    {% elif task.priority == 'High' %}
+                                    cs-alert-danger
+                                    {% else %}
+                                    cs-alert-yellow
+                                    {% endif %}">Priority : {{task.priority}}</p>
+                                    <p class="p-0 m-0 text-muted small border px-2 rounded">Task ID : #{{task.pk}}</p>
                                 </div>
                             </div>
+                            {% endif %}
+                            {% endfor %}
                         </div>
+                        
                     </div>
                 </div>
+                <!-- New Task Modal -->
+                {% include 'alert_popup/addtask.html' %}
                 {% endfor %}
-                <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center"
-                        data-bs-toggle="modal" data-bs-target="#addnewstatus" style="border-radius: 5px !important;"> New
+                <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addnewstatus" style="border-radius: 5px !important;"> New
                 </button>
                 {% else %}
                 <div class="d-flex flex-column align-items-center justify-content-center w-100 h-100">
@@ -127,35 +135,7 @@
         </div>
     </div>
 </div>
-{% include 'alert_popup/addtask.html' %}
 {% endblock %}
 {% block script %}
 <script src="{% static 'js/single_project.js' %}" ></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        flatpickr("#dueDate", {
-            enableTime: false,
-            dateFormat: "Y-m-d",
-        });
-
-        // Update the sidebar with the selected status details
-        const newTaskSidebar = document.getElementById('newTaskSidebar');
-        newTaskSidebar.addEventListener('show.bs.offcanvas', function(event) {
-            const button = event.relatedTarget;
-            const statusName = button.getAttribute('data-status-name');
-            const statusId = button.getAttribute('data-status-id');
-            
-            // Update the sidebar header with the status name
-            const sidebarTitle = newTaskSidebar.querySelector('.offcanvas-title');
-            sidebarTitle.textContent = `Add New Task to ${statusName}`;
-            
-            // Optional: Store the status ID in a hidden input if needed in the form submission
-            const hiddenStatusInput = document.createElement('input');
-            hiddenStatusInput.type = 'hidden';
-            hiddenStatusInput.name = 'status_id';
-            hiddenStatusInput.value = statusId;
-            newTaskSidebar.querySelector('form').appendChild(hiddenStatusInput);
-        });
-    });
-</script>
 {% endblock %}
