@@ -8,16 +8,24 @@ def projects_details(request, team_pk, project_pk):
         get_project = Project.objects.get(pk=project_pk)
         statuss = status.objects.filter(project=get_project)
         types = Type.objects.filter(project=get_project)
+        team_members = get_team.members.all()
+        Priority = TaskSheet.PRIORITY_CHOICES
+        tasks = TaskSheet.objects.filter(project=get_project)
+        
     except:
         messages.error(request, "Invalid team or project")
         messages.error(request, 'Team is not found')
         return redirect('teams')
+    
     context = {
         'teams_page': 'active',
         'get_team':get_team,
         'get_project':get_project,
         'statuss':statuss,
         'types':types,
+        'team_members':team_members,
+        'Priority':Priority,
+        'tasks':tasks,
     }
     return render(request, 'tmt-tool/project_details.html', context)
 

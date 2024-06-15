@@ -39,7 +39,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'frontend',
+    'tinymce',
 ]
+
+CKEDITOR_UPLOAD_PATH = "uploads/"  # Optional: Set upload path
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',  # Use a custom toolbar
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],  # Customize the toolbar as needed
+            ['NumberedList', 'BulletedList'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat'],
+        ],
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

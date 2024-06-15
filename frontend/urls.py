@@ -12,6 +12,7 @@ from frontend.functions import (
     new_team_create,
     team_details,
     project_details,
+    new_task,
 )
 
 urlpatterns = [
@@ -37,6 +38,9 @@ urlpatterns = [
 
     # Add employee
     path('addemployee/', add_employee.addemployee, name='addemployee'),
+
+    # Task
+    path('newtask/<int:team_pk>/<int:project_pk>/', new_task.new_task, name='newtask'),
 
     # Teams
     path('newteam/',new_team_create.create_team, name='create_team'),

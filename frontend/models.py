@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
     
 class ProductTable(models.Model):
@@ -209,16 +210,32 @@ class Type(models.Model):
     def __str__(self):
         return self.name
 
-# Task Sheet
+def attachment_upload_to(instance, filename):
+    return f'Attachment/{instance.project}/{instance.task_type}/{filename}'
+
 class TaskSheet(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    assigned_to = models.ForeignKey(EmployeeDetail, on_delete=models.CASCADE)
-    assigned_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    status = models.CharField(max_length=50)
-    due_date = models.DateField()
+    HIGH = 'High'
+    MEDIUM = 'Medium'
+    LOW = 'Low'
+
+    PRIORITY_CHOICES = [
+        (HIGH, 'High'),
+        (MEDIUM, 'Medium'),
+        (LOW, 'Low'),
+    ]
+
+    title = models.CharField(max_length=250)
+    description = models.TextField(max_length=1000)
+    task_type = models.ForeignKey(Type, on_delete=models.CASCADE)
+    priority = models.CharField(choices=PRIORITY_CHOICES, max_length=10, null=True, blank=True)
+    status = models.ForeignKey(status, on_delete=models.CASCADE)
+    start_date_time = models.DateTimeField( null=True, blank=True)
+    ETA = models.IntegerField( null=True, blank=True) # Estimated Time of Arrival in minutes/hours/days (specify unit in a comment)
+    end_date_time = models.DateTimeField( null=True, blank=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    assigned_to = models.ForeignKey(EmployeeDetail, related_name='tasks_assigned_to', on_delete=models.CASCADE)
+    assigned_from = models.ForeignKey(EmployeeDetail, related_name='tasks_assigned_from', on_delete=models.CASCADE)
+    attachment = models.FileField(upload_to=attachment_upload_to, blank=True, null=True)
 
     def __str__(self):
-        return self.title
-
+        return f"{self.title}"
