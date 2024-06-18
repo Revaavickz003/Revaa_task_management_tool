@@ -8,7 +8,7 @@ def teams_details(request, pk):
     except:
         messages.error(request, 'Team is not found')
         return redirect('teams')
-    all_projects = Project.objects.filter(Team=get_team)
+    all_projects = Project.objects.filter(Team=get_team)[::-1]
     context = {
         'teams_page': 'active',
         'get_team':get_team,

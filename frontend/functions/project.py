@@ -55,9 +55,28 @@ def openprojectteam(request, team):
 def singleprojectopen(request, pk):
     project = Project.objects.get(pk=pk)
     tasks = TaskSheet.objects.filter(project =project)[::-1]
+    statuses = [status for status, _ in Project.STATUS_CHOICES]
+    prioritis = [priority for priority, _ in Project.PRIORITY_CHOICES]
+    
     context = {
         'Project': 'active',
         'project': project,
         'tasks':tasks,
+        'statuses':statuses,
+        'prioritis':prioritis,
+        
     }
     return render(request, 'tmt-tool/singleprojectopen.html', context)  
+
+def update_project_details(request, pk):
+    project = Project.objects.get(pk=pk)
+    if request.method == 'POST':
+        project_name = request.POST.get('project_name')
+        project_description = request.POST.get('project_description')
+
+        project.project_name = project_name
+        project.project_discription = project_description
+        project.save()
+        messages.success(request, 'Project Details Updated Successfully')
+        return redirect('singleprojectopen', pk)
+    
