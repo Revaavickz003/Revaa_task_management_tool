@@ -10,12 +10,115 @@
             {% include 'includes/message.html' %}
         </div>
         <div class="container mt-4">
-            <div class="d-flex align-items-center justify-content-start">
-                
-                <a href="{% url 'project' %}" class="btn btn-primary me-2" style="border-radius: 5px !important;">Back</a>
-                <h5>{{project}}</h5>
+            <div class="d-flex align-items-end justify-content-between">
+                <div class="d-flex align-items-end ">
+                    <a href="{% url 'project' %}" class="btn btn-primary me-2 d-flex align-items-center"
+                        style="border-radius: 5px !important;"><i
+                            class='bx bx-chevron-left text-white fs-3 m-0 p-0'></i>
+                        <p class="text-white m-0 p-0">Back</p>
+                    </a>
+                </div>
+                <div class="d-flex align-items-start">
+                    <nav class="navbar p-0">
+                        <div class="">
+                            <button class="btn btn-primary px-3 me-2" style="border-radius: 5px !important;" type="button" data-bs-toggle="offcanvas" data-bs-target="#projectsettingalert" aria-controls="offcanvasNavbar">
+                                Project Setting 
+                            </button>
+                            {% include 'alert_popup/single_project_update.html' %}
+                        </div>
+                    </nav>
+                    <a href="" class="btn btn-primary  me-2 d-flex align-items-center"
+                        style="border-radius: 5px !important ;"><i
+                            class='bx bx-cloud-download text-white fs-4 me-2'></i>
+                        <p class="m-0 p-0 text-white">Download Report</p>
+                    </a>
+                </div>
             </div>
-            
+
+            <div class="row align-items-start mt-4">
+                <div class="col-md-6">
+                    <div class=" d-flex align-items-end">
+                        <div class="border image-container d-flex align-items-center justify-content-center me-3"
+                            style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;">
+                            {% if project.project_img %}
+                            <img src="{{project.project_img.url}}" alt=""
+                                style="width: 100%; height: 100%;">
+                            {% else %}
+                            <img src="https://cdn-icons-png.flaticon.com/512/1087/1087815.png" alt=""
+                                style="width: 100%; height: 100%;" class="p-2">
+                            {% endif %}
+                        </div>
+                        <div class="me-3">
+                            <p class="fs-5 fw-semibold mb-2 p-0">{{project.project_name}}</p>
+                            <p class="cs-alert-primary m-0 p-0 mb-2">Priority : {{project.priority}}</p>
+                            <p class="cs-alert-primary m-0 p-0">Status : {{project.status}}</p>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="m-0 p-0">Start Date : </p>
+                                <p class="m-0 p-0">Deadline : </p>
+                            </div>
+                            <div class="col-3">
+                                <p class="m-0 p-0 text-success">{{project.start_date}}</p>
+                                <p class="m-0 p-0 text-danger">{{project.end_of_date}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <p class="fs-5 fw-semibold mb-2 p-0">Project Discriptions</p>
+                        <p>{{project.project_discription}}</p>
+                    </div>
+                    <span class="small text-muted" style="text-align: end;">Updated : June 13, 2024</span>
+                </div>
+            </div>
+            <hr>
+            <section class="task-section" style="overflow-y: auto;">
+                <p class="fs-5 fw-semibold mb-2 p-0">Project Task</p>
+                <div style="width: 77vw; overflow-x: auto;">
+                    <table class="table align-middle mb-0 mt-3" style="width: 110vw;">
+                        <thead class="bg-primary">
+                            <tr>
+                                <td class="text-white">#</td>
+                                <td class="text-white">Task Title</td>
+                                <td class="text-white">Task type</td>
+                                <td class="text-white">Priority</td>
+                                <td class="text-white">Status</td>
+                                <td class="text-white">ETA</td>
+                                <td class="text-white">Start date time</td>
+                                <td class="text-white">End date time</td>
+                                <td class="text-white">Assigned to</td>
+                                <td class="text-white">Assigned from</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if tasks %}
+                            {% for task in tasks %}
+                            <tr  class="{% if forloop.counter|divisibleby:2 == True %}bg-gray{% endif %}">
+                                <td>{{forloop.counter}}</td>
+                                <td>{{task.title}}</td>
+                                <td> <p class="fw-normal mb-1">{{task.task_type}}</p></td>
+                                <td> <span class="badge cs-alert-green rounded-pill d-inline">{{task.priority}}</span></td>
+                                <td> <span class="badge cs-alert-green rounded-pill d-inline">{{task.status}}</span></td>
+                                <td>{{task.ETA}}</td>
+                                <td>{{task.start_date_time}}</td>
+                                <td>{{task.end_date_time}}</td>
+                                <td>{{task.assigned_to}}</td>
+                                <td>{{task.assigned_from}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr class="">
+                                <td colspan="7" class="text-center">No tasks available</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
     </div>
 </div>

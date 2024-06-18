@@ -306,7 +306,10 @@ i, #currentMonthYear{
 .text-Purple{
     color: purple !important;
 }
-
+.cs-border-primary {
+    --bs-border-opacity: 1;
+    border-color: rgba(var(--bs-primary-rgb), var(--bs-border-opacity)) !important
+}
 .dropdown-item.active,
 .dropdown-item:active {
     color: var(--bs-dropdown-link-active-color);

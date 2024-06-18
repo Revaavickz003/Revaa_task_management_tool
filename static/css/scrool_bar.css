@@ -1,8 +1,9 @@
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 10px;
-  border-radius: 2rem;
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 10rem !important;
 }
+
 ::-webkit-scrollbar-track {
   background: #b5b5b5;
   border-left: 2px solid transparent;
