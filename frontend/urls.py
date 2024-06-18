@@ -27,6 +27,7 @@ urlpatterns = [
     
     # Open project page
     path('project/closed/<int:pk>/', project.closeproject, name='closeproject'),
+    path('project/project/<int:pk>/', project.singleprojectopen, name='singleprojectopen'),
     path('project/team/<str:team>/', project.openprojectteam, name='openprojectteam'),
 
     # Close project page

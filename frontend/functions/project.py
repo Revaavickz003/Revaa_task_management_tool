@@ -51,3 +51,11 @@ def openprojectteam(request, team):
     }
     
     return render(request, 'tmt-tool/project.html', context)
+
+def singleprojectopen(request, pk):
+    project = Project.objects.get(pk=pk)
+    context = {
+        'Project': 'active',
+        'project': project,
+    }
+    return render(request, 'tmt-tool/singleprojectopen.html', context)  
