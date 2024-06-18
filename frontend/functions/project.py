@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from frontend.models import Team, Project
+from frontend.models import *
 from django.contrib import messages
 
 def projects_page(request):
@@ -54,8 +54,10 @@ def openprojectteam(request, team):
 
 def singleprojectopen(request, pk):
     project = Project.objects.get(pk=pk)
+    tasks = TaskSheet.objects.filter(project =project)[::-1]
     context = {
         'Project': 'active',
         'project': project,
+        'tasks':tasks,
     }
     return render(request, 'tmt-tool/singleprojectopen.html', context)  
