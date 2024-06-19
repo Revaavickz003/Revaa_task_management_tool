@@ -49,9 +49,31 @@
                             {% endif %}
                         </div>
                         <div class="me-3">
-                            <p class="fs-5 fw-semibold mb-2 p-0">{{project.project_name}}</p>
-                            <p class="cs-alert-primary m-0 p-0 mb-2">Priority : {{project.priority}}</p>
-                            <p class="cs-alert-primary m-0 p-0">Status : {{project.status}}</p>
+                            <p class="fs-5 fw-semibold mb-2 p-0 text-truncate" style="width: 300px;">{{project.project_name}}</p>
+                            <p class="m-0 p-0 mb-2
+                            {% if project.priority == 'Low' %}
+                            cs-alert-primary
+                            {% elif project.priority == 'Medium' %}
+                            cs-alert-orange
+                            {% elif project.priority == 'High' %}
+                            cs-alert-danger
+                            {% else %}
+                            cs-alert-yellow
+                            {% endif %}
+                            ">Priority : {{project.priority}}</p>
+                            <p class="m-0 p-0
+                            {% if project.status == 'Waiting to Start' %}
+                            cs-alert-orange
+                            {% elif project.status == 'Hold' %}
+                            cs-alert-danger
+                            {% elif project.status == 'Closed' %}
+                            cs-alert-danger
+                            {% elif project.status == 'Completed' %}
+                            cs-alert-green
+                            {% elif project.status == 'On Process' %}
+                            cs-alert-primary
+                            {% endif %}
+                            ">Status : {{project.status}}</p>
                         </div>
                     </div>
                     <div class="mt-5">
@@ -60,7 +82,7 @@
                                 <p class="m-0 p-0">Start Date : </p>
                                 <p class="m-0 p-0">Deadline : </p>
                             </div>
-                            <div class="col-3">
+                            <div class="col">
                                 <p class="m-0 p-0 text-success">{{project.start_date}}</p>
                                 <p class="m-0 p-0 text-danger">{{project.end_of_date}}</p>
                             </div>
@@ -70,9 +92,9 @@
                 <div class="col-md-6">
                     <div>
                         <p class="fs-5 fw-semibold mb-2 p-0">Project Discriptions</p>
-                        <p>{{project.project_discription}}</p>
+                        <p style="overflow: hidden; height: 120px;">{{project.project_discription}}</p>
                     </div>
-                    <span class="small text-muted" style="text-align: end;">Updated : June 13, 2024</span>
+                    <span class="small text-muted" style="text-align: end;">Last Update : {{project.updated_date}}</span>
                 </div>
             </div>
             <hr>
@@ -90,8 +112,8 @@
                                 <td class="text-white">ETA</td>
                                 <td class="text-white">Start date time</td>
                                 <td class="text-white">End date time</td>
-                                <td class="text-white">Assigned to</td>
                                 <td class="text-white">Assigned from</td>
+                                <td class="text-white">Assigned to</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -106,8 +128,8 @@
                                 <td>{{task.ETA}}</td>
                                 <td>{{task.start_date_time}}</td>
                                 <td>{{task.end_date_time}}</td>
-                                <td>{{task.assigned_to}}</td>
                                 <td>{{task.assigned_from}}</td>
+                                <td>{{task.assigned_to}}</td>
                             </tr>
                             {% endfor %}
                             {% else %}

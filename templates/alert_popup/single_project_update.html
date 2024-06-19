@@ -10,7 +10,8 @@
                 <i class='bx bx-pulse text-danger me-2 fs-4'></i>
                 <span class="text-danger fw-semibold">Project Status</span>
             </div>
-            <form action="">
+            <form action="{% url 'update_status_details' pk=project.pk %}" method="post">
+                {% csrf_token %}
                 <div class="row p-2">
                     <div class="col-3">
                         <i class='bx bxs-calendar me-1'></i>
@@ -26,7 +27,7 @@
                         <span>Target date : </span>
                     </div>
                     <div class="col">
-                        <input type="date" name="end_date" id="end_date" class="form-control" value="{{project.end_date|date:'d-F-Y' }}">
+                        <input type="date" name="end_date" id="end_date" class="form-control" value="{{project.end_of_date|date:'Y-m-d' }}">
                     </div>
                 </div>
                 <div class="row p-2">
@@ -35,7 +36,7 @@
                         <span>Status : </span>
                     </div>
                     <div class="col">
-                        <select class="form-select form-control" name="" id="" >
+                        <select class="form-select form-control" name="projectstatus" id="projectstatus" >
                             {% for status in statuses %}
                             <option {% if project.status == status %} selected {% endif %} value="{{status}}">{{status}}</option>
                             {% endfor %}
@@ -48,8 +49,8 @@
                         <span>Priority : </span>
                     </div>
                     <div class="col">
-                        <select class="form-select form-control" name="" id="" >
-                            <option selected>---------------</option>
+                        <select class="form-select form-control" name="projectpriority" id="projectpriority" >
+                            <option selected value="">---------------</option>
                             {% for priority in prioritis %}
                             <option value="{{priority}}" {% if project.priority == priority %} selected {% endif %} >{{priority}}</option>
                             {% endfor %}
@@ -62,8 +63,18 @@
             </div>
         </form>
         <hr>
-        <form action="" class="mb-3 mt-3">
+        <form action="{% url 'update_project_details' pk=project.pk %}" class="mb-3 mt-3" method="post">
+            {% csrf_token %}
             <div class="form-conrainer">
+                <label for="" class="fw-semibold">Client Details</label>
+                <select class="form-select form-control mt-2" name="projectpriority" id="projectpriority" >
+                    <option selected value="">---------------</option>
+                    {% for priority in prioritis %}
+                    <option value="{{priority}}" {% if project.priority == priority %} selected {% endif %} >{{priority}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-conrainer mt-3">
                 <label for="" class="fw-semibold">Project Name</label>
                 <input type="text" class="form-control mt-2" name="projectname" value="{{project.project_name}}">
             </div>

@@ -27,6 +27,19 @@
           <div class="row">
             <div class="col-12">
               <div class="mb-3">
+                <label for="Clientdetails" class="form-label">Client Details</label>
+                <select class="form-control" id="Clientdetails" name="Clientdetails">
+                  <option selected value="">---------------</option>
+                  {% for priority in prioritis %}
+                  <option value="{{priority}}" {% if project.priority == priority %} selected {% endif %} >{{priority}}</option>
+                  {% endfor %}
+              </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
                 <label for="discription" class="form-label">Short Discription</label>
                 <textarea class="form-control" id="discription" name="discription" rows="5"></textarea>
               </div>
@@ -53,25 +66,3 @@
     </div>
   </div>
 </div>
-
-
-<!-- <div style="position: relative;">
-  <div class="profile-pic" style="border: 1px solid #E1EBFF">
-    <label class="label" for="team_logo">
-      <span><i class='bx bx-pencil fs-5'></i></span>
-    </label>
-    <input id="team_logo" type="file" name="team_logo" accept="image/*" hidden
-      onchange="loadTeamLogo(event)" />
-    {% if get_data.team_img %}
-    <img src="{{ get_data.team_img.url }}" id="team_output" width="150" />
-    {% else %}
-    <img src="{% static 'images/camera.png' %}" alt="" id="team_output" width="100%" />
-    {% endif %}
-  </div>
-  <script>
-    var loadTeamLogo = function (event) {
-      var image = document.getElementById("team_output");
-      image.src = URL.createObjectURL(event.target.files[0]);
-    };
-  </script>
-</div> -->
