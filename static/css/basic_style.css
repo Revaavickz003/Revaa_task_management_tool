@@ -76,6 +76,10 @@
     color: #373737;
     transform: translate(.5s);
 }
+.form-control {
+    border: 1px solid #DCE5F6 !important;
+  }
+  
 .input-container{
     display: flex;
     border: 1px solid #D0D0D0;

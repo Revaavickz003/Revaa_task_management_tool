@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from frontend.models import *
 from django.contrib import messages
+from django.urls import reverse
+import datetime as dt
 
 def projects_page(request):
     if request.method == 'POST':
@@ -71,12 +73,37 @@ def singleprojectopen(request, pk):
 def update_project_details(request, pk):
     project = Project.objects.get(pk=pk)
     if request.method == 'POST':
-        project_name = request.POST.get('project_name')
-        project_description = request.POST.get('project_description')
+        project_name = request.POST.get('projectname')
+        project_description = request.POST.get('project_discription')
 
         project.project_name = project_name
         project.project_discription = project_description
+        project.updated_by = request.user
+        project.updated_date = dt.datetime.today()
         project.save()
+
         messages.success(request, 'Project Details Updated Successfully')
-        return redirect('singleprojectopen', pk)
+        return redirect(reverse('singleprojectopen', kwargs={'pk': pk}))
+    else:
+        return redirect(reverse('singleprojectopen', kwargs={'pk': pk}))
     
+def update_status_details(request, pk):
+    project = Project.objects.get(pk=pk)
+    if request.method == 'POST':
+        startdate = request.POST.get('start_date')
+        enddate = request.POST.get('end_date')
+        status = request.POST.get('projectstatus')
+        priority = request.POST.get('projectpriority')
+
+        project.start_date = startdate
+        project.end_of_date = enddate
+        project.status = status
+        project.priority = priority
+        project.updated_by = request.user
+        project.updated_date = dt.datetime.today()
+        project.save()
+
+        messages.success(request, 'Project status Updated Successfully')
+        return redirect(reverse('singleprojectopen', kwargs={'pk': pk}))
+    else:
+        return redirect(reverse('singleprojectopen', kwargs={'pk': pk}))
