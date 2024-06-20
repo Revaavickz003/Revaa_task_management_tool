@@ -467,6 +467,9 @@ i, #currentMonthYear{
     padding: .2rem .7rem !important;
     border-radius: 50px !important;
 }
+.cs-text-primary{
+    color: var(--bs-blue) !important;
+}
 
 .cs-alert-gray{
     background-color : rgb(230, 230, 230)!important;

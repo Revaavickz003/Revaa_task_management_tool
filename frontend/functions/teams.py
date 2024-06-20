@@ -9,7 +9,7 @@ def teams(request):
     # Add project count to each team
     teams_with_project_count = []
     for team in all_teams:
-        project_count = Project.objects.filter(Team=team).count()
+        project_count = Project.objects.filter(team=team).count()
         teams_with_project_count.append({
             'team': team,
             'project_count': project_count

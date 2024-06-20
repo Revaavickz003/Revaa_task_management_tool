@@ -1,29 +1,49 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from frontend.models import *
 from django.contrib import messages
 from django.urls import reverse
 import datetime as dt
+from django.http import JsonResponse
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def projects_page(request):
     if request.method == 'POST':
         project_name = request.POST.get('projectname')
         project_description = request.POST.get('discription')
         project_team = request.POST.get('selectteam')
+        client_id = request.POST.get('Clientdetails')
 
         try:
+            project = ProductTable.objects.get(pk=int(project_name))
             project_team = Team.objects.get(pk=project_team)
-        except:
-            project_team = None
+            client = customersTable.objects.get(pk=client_id)
+        except :
+            messages.error(request, 'Fill All Fields')
+            return redirect('project')
 
         new_project = Project.objects.create(
-            project_name = project_name,
-            project_discription = project_description,
-            Team = project_team,
-
-            created_by = request.user,
-            updated_by = request.user,
+            project_name=f"{client.companyname} {project.Product_Name}",
+            project_description=project_description,
+            team=project_team,
+            client=client,
+            created_by=request.user,
+            updated_by=request.user,
         )
         new_project.save()
+        statuses = [
+            {'name': 'To Do', 'description': 'Task is pending', 'color': status.GRAY},
+            {'name': 'On Process', 'description': 'Task is in progress', 'color': status.BLUE},
+            {'name': 'Completed', 'description': 'Task is completed', 'color': status.GREEN},
+        ]
+        for status_data in statuses:
+            status.objects.create(
+                project=new_project,
+                name=status_data['name'],
+                description=status_data['description'],
+                color=status_data['color']
+            )
+
         messages.success(request, 'Project Created Successfully')
         return redirect('project')
 
@@ -32,9 +52,16 @@ def projects_page(request):
         'all_teams': Team.objects.all(),
         'all_projects': Project.objects.exclude(status='Closed').order_by('-id'),
         'closed_projects': Project.objects.filter(status='Closed'),
+        'all_customers': customersTable.objects.all()[::-1]
     }
-    
+
     return render(request, 'tmt-tool/project.html', context)
+
+def get_projects(request, client_id):
+    client = get_object_or_404(customersTable, pk=client_id)
+    products = client.products.all()
+    project_list = [{'id': product.id, 'name': product.Product_Name} for product in products]
+    return JsonResponse({'projects': project_list})
 
 def closeproject(request, pk):
     project = Project.objects.get(pk=pk)
@@ -48,7 +75,7 @@ def openprojectteam(request, team):
     context = {'Project': 'active',
         'team':team,
         'all_teams': Team.objects.all(),
-        'all_projects' : Project.objects.exclude(status='Closed').filter(Team=team).order_by('-id'),
+        'all_projects' : Project.objects.exclude(status='Closed').filter(team=team).order_by('-id'),
         'closed_projects': Project.objects.filter(status='Closed'),
     }
     

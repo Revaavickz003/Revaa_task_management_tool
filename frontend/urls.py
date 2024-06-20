@@ -13,6 +13,7 @@ from frontend.functions import (
     team_details,
     project_details,
     new_task,
+    statusdetails,
 )
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
     path('login/', login_page.login_view, name='login'),
     path('home/<str:date>/', home.date_view, name='datehome'),
     path('project/', project.projects_page, name='project'),
+    path('get_projects/<int:client_id>/', project.get_projects, name='get_projects'),
     path('messages/', messages.messages, name='messages'),
     path('teams/', teams.teams, name='teams'),
     
@@ -46,6 +48,11 @@ urlpatterns = [
     path('newteam/',new_team_create.create_team, name='create_team'),
     path('team/<int:pk>/',team_details.teams_details, name='teams_details'),
     path('team/<int:team_pk>/<int:project_pk>/', project_details.projects_details, name='project_details'),
+
+    # Status
+    path('team/<int:tpk>project/<int:ppk>/deletestatus/<int:spk>/', statusdetails.delete_status, name='deletestatus'),
+    path('team/<int:tpk>project/<int:ppk>/update_status/<int:spk>/', statusdetails.update_status, name='update_status'),
+    
 
     # Task
     path('newtask/<int:team_pk>/<int:project_pk>/', new_task.new_task, name='newtask'),

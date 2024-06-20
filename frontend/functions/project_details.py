@@ -76,6 +76,7 @@ def new_type(request, team_pk, project_pk):
             messages.error(request, f'Error adding new type: {str(e)}')
             return redirect(reverse('project_details', kwargs={'team_pk': team_pk, 'project_pk': project_pk}))
 
+
 def taskopen(request, team_pk, project_pk, task_pk):
     task = TaskSheet.objects.get(pk=task_pk)
     context = {

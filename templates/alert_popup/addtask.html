@@ -1,5 +1,5 @@
 <!-- New Task Sidebar -->
-<div class="modal fade" id="{{status.name}}{{status.pk}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="addnewtask" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -7,12 +7,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="taskForm-{{status.pk}}" class="taskForm" action="{% url 'newtask' team_pk=get_project.Team.pk project_pk=get_project.pk %}" method="post" enctype="multipart/form-data">
+                <form id="taskForm-{{status.pk}}" class="taskForm" action="{# url 'newtask' team_pk=get_project.Team.pk project_pk=get_project.pk #}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="offcanvas-body" style="overflow-x: hidden;">
                         <div class="inputcontainer mb-3">
                             <label for="taskname">Title</label>
-                            <input type="text" class="form-control mt-1" id="taskname" name="taskname">
+                            <input type="text" class="form-control mt-1" id="taskname" name="taskname" value="{{get_project.pk}}">
                         </div>
                         <div class="border rounded-1 mb-4 editor-container">
                             <div class="d-flex align-items-center border-bottom p-2">
@@ -32,6 +32,21 @@
                                         {% endfor %}
                                     </select>
                                 </div>
+                            </div>
+                            <div class="row p-2">
+                                <div class="col-5">
+                                    <i class='bx bxs-calendar me-1'></i>
+                                    <span>Status</span>
+                                </div>
+                                <div class="col-5">
+                                    <select class="form-control" name="assigne">
+                                        <option value="">--------------</option>
+                                        {% for status in statuss %}
+                                        <option value="{{status.pk}}">{{status.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
                             </div>
                             <div class="row p-2">
                                 <div class="col-5">

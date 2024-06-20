@@ -1,24 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-    
-class ProductTable(models.Model):
-    Product_Name = models.CharField(max_length=25)
-    creaded_by =  models.CharField(max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_by = models.CharField(max_length=255, blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
-    def __str__(self):
-        return self.Product_Name
-    
-class ProjectCategories(models.Model):
-    category_name = models.CharField(max_length=255)
-    creaded_by =  models.CharField(max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_by = models.CharField(max_length=255, blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
-    def __str__(self):
-        return self.category_name
+from django.contrib.auth.models import User
 
 # Files Created
 def lead_and_customer_companylogo(instance, org_name):
@@ -33,7 +15,6 @@ def generate_customer_id():
     else:
         new_id = 1
     return f'RDSCUS{new_id:04d}'
-
 
 # Employee Details
 class EmployeeDetail(models.Model):
@@ -84,10 +65,17 @@ class EmployeeDetail(models.Model):
     updated_by = models.CharField(max_length=255, blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
 
-
-
     def __str__(self):
         return self.name
+# Product Table
+class ProductTable(models.Model):
+    Product_Name = models.CharField(max_length=25)
+    creaded_by =  models.ForeignKey(EmployeeDetail, on_delete=models.SET_NULL, null=True, related_name='Product_created_by')
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_by = models.ForeignKey(EmployeeDetail, on_delete=models.SET_NULL, null=True, related_name='Project_updated_by')
+    updated_at = models.DateTimeField(blank=True, null=True)
+    def __str__(self):
+        return self.Product_Name
 
 # Team
 class Team(models.Model):
@@ -100,6 +88,23 @@ class Team(models.Model):
     def __str__(self):
         return self.name
 
+# Customer Table
+class customersTable(models.Model):
+    companyname = models.CharField(max_length=30)
+    clientname = models.CharField(max_length=30)  # Fixed typo from clentname to clientname
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=15)
+    address = models.TextField()
+    companylogo = models.ImageField(upload_to='path/to/upload/', blank=True, null=True)
+    products = models.ManyToManyField('ProductTable', related_name='products')
+    createdby = models.ForeignKey('EmployeeDetail', on_delete=models.CASCADE, related_name='created_customers')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updatedby = models.ForeignKey('EmployeeDetail', on_delete=models.CASCADE, related_name='updated_customers')
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.companyname
+    
 # Project details
 class Project(models.Model):
     WAITING_TO_START = 'Waiting to Start'
@@ -112,9 +117,9 @@ class Project(models.Model):
     STATUS_CHOICES = [
         (WAITING_TO_START, 'Waiting to Start'),
         (DROPPED, 'Dropped'),
+        (HOLD, 'Hold'),
         (ON_PROCESS, 'On Process'),
         (COMPLETED, 'Completed'),
-        (HOLD, 'Hold'),
         (CLOSED, 'Closed'),
     ]
 
@@ -128,23 +133,22 @@ class Project(models.Model):
         (LOW, 'Low'),
     ]
 
-    project_img = models.ImageField(upload_to= lead_and_customer_companylogo, null=True, blank=True)
-    project_name = models.CharField(max_length=30)
-    project_discription = models.TextField(null=True, blank=True)
+    project_img = models.ImageField(upload_to='path/to/upload/', null=True, blank=True)
+    client = models.ForeignKey('customersTable', on_delete=models.CASCADE)
+    project_name = models.CharField(max_length=255)  # Added max_length for project name
+    project_description = models.TextField(null=True, blank=True)  # Fixed typo from project_discription to project_description
     start_date = models.DateField(null=True, blank=True)
     end_of_date = models.DateField(null=True, blank=True)
     status = models.CharField(choices=STATUS_CHOICES, default=WAITING_TO_START, max_length=16, null=True, blank=True)
     priority = models.CharField(choices=PRIORITY_CHOICES, max_length=10, null=True, blank=True)
-    Team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name='Project_categories', null=True)
-
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='custoner_created', null=True)
+    team = models.ForeignKey('Team', on_delete=models.SET_NULL, related_name='projects', null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='projects_created', null=True)
     created_date = models.DateField(auto_now_add=True)
-    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='customer_updated_by', null=True)
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='projects_updated', null=True)
     updated_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.project_name
-
 
 class status(models.Model):
     NONE = 'None'
@@ -172,7 +176,7 @@ class status(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     color = models.CharField(choices=COLOR, max_length=16, null=True, blank=True)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='status_project')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='status_project')
 
     def __str__(self):
         return self.name
