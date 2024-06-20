@@ -17,51 +17,74 @@
         <form action="" method="post">
           {% csrf_token %}
           <div class="row">
-            <div class="col-12">
-              <div class="mb-3">
-                <label for="projectname" class="form-label">Project Name</label>
-                <input type="text" class="form-control" id="projectname" name="projectname">
+              <div class="col-12">
+                  <div class="mb-3">
+                      <label for="Clientdetails" class="form-label">Client Details</label>
+                      <select class="form-control" id="Clientdetails" name="Clientdetails" onchange="loadProjects()">
+                          <option selected value="">---------------</option>
+                          {% for customer in all_customers %}
+                          <option value="{{ customer.pk }}">{{ customer }}</option>
+                          {% endfor %}
+                      </select>
+                  </div>
               </div>
-            </div>
           </div>
           <div class="row">
-            <div class="col-12">
-              <div class="mb-3">
-                <label for="Clientdetails" class="form-label">Client Details</label>
-                <select class="form-control" id="Clientdetails" name="Clientdetails">
-                  <option selected value="">---------------</option>
-                  {% for priority in prioritis %}
-                  <option value="{{priority}}" {% if project.priority == priority %} selected {% endif %} >{{priority}}</option>
-                  {% endfor %}
-              </select>
+              <div class="col-12">
+                  <div class="mb-3">
+                      <label for="projectname" class="form-label">Project Name</label>
+                      <select class="form-control" id="projectname" name="projectname">
+                          <option>Select client</option>
+                      </select>
+                  </div>
               </div>
-            </div>
           </div>
           <div class="row">
-            <div class="col-12">
-              <div class="mb-3">
-                <label for="discription" class="form-label">Short Discription</label>
-                <textarea class="form-control" id="discription" name="discription" rows="5"></textarea>
+              <div class="col-12">
+                  <div class="mb-3">
+                      <label for="selectteam" class="form-label">Select Team</label>
+                      <select class="form-control" id="selectteam" name="selectteam">
+                          <option>-----------</option>
+                          {% for team in all_teams %}
+                          <option value="{{ team.id }}">{{ team.name }}</option>
+                          {% endfor %}
+                      </select>
+                  </div>
               </div>
-            </div>
           </div>
           <div class="row">
-            <div class="col-12">
-              <div class="mb-3">
-                <label for="selectteam" class="form-label">Select Team</label>
-                <select class="form-control" id="selectteam" name="selectteam">
-                  <option>-----------</option>
-                  {% for team in all_teams %}
-                  <option value="{{ team.id }}">{{ team.name }}</option>
-                  {% endfor %}
-                </select>
+              <div class="col-12">
+                  <div class="mb-3">
+                      <label for="discription" class="form-label">Short Description</label>
+                      <textarea class="form-control" id="discription" name="discription" rows="5"></textarea>
+                  </div>
               </div>
-            </div>
           </div>
           <div class="d-flex justify-content-end">
-            <input type="submit" class="btn btn-primary" value="Save">
+              <input type="submit" class="btn btn-primary" value="Save">
           </div>
-        </form>
+      </form>
+      
+      <script>
+      function loadProjects() {
+          var clientId = document.getElementById("Clientdetails").value;
+          var projectDropdown = document.getElementById("projectname");
+          projectDropdown.innerHTML = '<option> Select product </option>';
+      
+          if (clientId) {
+              fetch(`/get_projects/${clientId}/`)
+                  .then(response => response.json())
+                  .then(data => {
+                      for (var i = 0; i < data.projects.length; i++) {
+                          var option = document.createElement('option');
+                          option.value = data.projects[i].id;
+                          option.text = data.projects[i].name;
+                          projectDropdown.appendChild(option);
+                      }
+                  });
+          }
+      }
+      </script>      
       </div>
     </div>
   </div>

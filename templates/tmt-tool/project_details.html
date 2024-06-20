@@ -2,7 +2,7 @@
 {% block title %}{{get_project.project_name}} | Revaa {% endblock %}
 {% load static %}
 {% block style %}
-<link rel="stylesheet" href="{% static 'css/singile_project.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'css/single_project.css' %}"> -->
 {% endblock %}
 {% block container %}
 <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
@@ -15,23 +15,30 @@
                 {% include 'includes/message.html' %}
             </div>
             <div class="container d-flex align-items-center justify-content-between">
-                <p class="fs-5 fw-bold m-0 p-0">{{get_project.project_name}}</p>
+                <div class="d-flex align-items-center">
+                    <p class="fs-5 fw-bold m-0 p-0 me-2">{{get_project.project_name}}</p>
+                    <p class="m-0 p-0 me-md-3 
+                        {% if get_project.status == 'Waiting to Start' %}
+                        cs-alert-orange
+                        {% elif get_project.status == 'Hold' %}
+                        cs-alert-danger
+                        {% elif get_project.status == 'Close' %}
+                        cs-alert-danger
+                        {% elif get_project.status == 'Completed' %}
+                        cs-alert-green
+                        {% elif get_project.status == 'On Process' %}
+                        cs-alert-primary
+                        {% endif %}
+                        mt-1">{{get_project.status}}</p>
+                </div>
+                
                 <div class="d-flex align-items-center justify-content-between">
-                    <p class="m-0 p-0 me-md-3
-                    {% if get_project.status == 'Waiting to Start' %}
-                    cs-alert-orange
-                    {% elif get_project.status == 'Hold' %}
-                    cs-alert-danger
-                    {% elif get_project.status == 'Closed' %}
-                    cs-alert-danger
-                    {% elif get_project.status == 'Completed' %}
-                    cs-alert-green
-                    {% elif get_project.status == 'On Process' %}
-                    cs-alert-primary
-                    {% endif %}
-                    mt-1">{{get_project.status}}</p>
-                    {% include 'alert_popup/addnewstatus.html' %}
                     {% if statuss %}
+                    {% include 'alert_popup/addtask.html' %}
+                    <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center"
+                        data-bs-toggle="modal" data-bs-target="#addnewtask">New Task
+                    </button>
+                    {% include 'alert_popup/addnewstatus.html' %}
                     
                     {% include 'alert_popup/addnewtype.html' %}
                     <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center"
@@ -71,11 +78,16 @@
                                     {% endif %}"></i>
                                     <p class="m-0 fw-semibold">{{status.name}}</p>
                                 </div>
+                                {% include 'alert_popup/updatestatus.html' %}
                                 <div class="btn-group">
                                     <i class='bx bx-dots-horizontal-rounded fs-4' data-bs-toggle="dropdown" aria-expanded="false"></i>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
-                                            <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#{{status.name}}{{status.pk}}">New Task</button>
+                                            <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#statusModal{{status.pk}}">Edit</button>
+                                                <form id="deleteForm" method="post" action="{% url 'deletestatus' tpk=get_team.pk ppk=get_project.pk spk=status.pk  %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#">Delete</button>
+                                                </form>
                                         </li>
                                     </ul>
                                 </div>
@@ -126,17 +138,16 @@
                             {% endif %}
                             {% endfor %}
                         </div>
-                        
                     </div>
                 </div>
                 <!-- New Task Modal -->
-                {% include 'alert_popup/addtask.html' %}
                 {% endfor %}
                 <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addnewstatus" style="border-radius: 5px !important;"> New
                 </button>
                 {% else %}
                 <div class="d-flex flex-column align-items-center justify-content-center w-100 h-100">
                     <img src="{% static 'images/task.jpg' %}" alt="" class="w-50">
+                    {% include 'alert_popup/addnewstatus.html' %}
                     <button type="button" class="btn btn-primary px-3 me-2 d-flex align-items-center justify-content-center"
                     data-bs-toggle="modal" data-bs-target="#addnewstatus">Create a New Status
                 </button>
