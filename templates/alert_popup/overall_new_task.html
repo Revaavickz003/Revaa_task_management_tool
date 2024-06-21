@@ -1,0 +1,141 @@
+<!-- New Task Modal -->
+<div class="modal fade" id="addnewtask" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <p class="modal-title fw-semibold" id="staticBackdropLabel">New Task</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="taskForm" action="{% url 'addtask_teampage' pk=get_team.pk %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="offcanvas-body" style="overflow-x: hidden;">
+                        <div class="inputcontainer mb-3">
+                            <label for="taskname">Task Title</label>
+                            <input type="text" class="form-control mt-1" id="taskname" name="taskname" required>
+                        </div>
+                        <div class="border rounded-1 mb-4 editor-container">
+                            <div class="d-flex align-items-center border-bottom p-2">
+                                <i class='bx bx-pulse text-danger me-2 fs-4'></i>
+                                <span class="text-danger fw-semibold">Task Status</span>
+                            </div>
+                            <div class="row p-2">
+                                <div class="col-5">
+                                    <i class='bx bxs-calendar me-1'></i>
+                                    <span>Assigned to</span>
+                                </div>
+                                <div class="col-5">
+                                    <select class="form-control" name="assignee" required>
+                                        <option value="">--------------</option>
+                                        {% for member in team_members %}
+                                            <option value="{{ member.pk }}">{{ member.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row p-2">
+                                <div class="col-5">
+                                    <i class='bx bx-network-chart'></i>
+                                    <span>Project</span>
+                                </div>
+                                <div class="col-5">
+                                    <select class="form-control" id="projectDropdown" name="project" required onchange="loadProjectDetails()">
+                                        <option value="">--------------</option>
+                                        {% for project in get_project %}
+                                            <option value="{{ project.pk }}">{{ project.project_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row p-2">
+                                <div class="col-5">
+                                    <i class='bx bxs-calendar me-1'></i>
+                                    <span>Status</span>
+                                </div>
+                                <div class="col-5">
+                                    <select class="form-control" id="projectStatus" name="status" required>
+                                        <option value="">--------------</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row p-2">
+                                <div class="col-5">
+                                    <i class='bx bx-network-chart'></i>
+                                    <span>Task Type</span>
+                                </div>
+                                <div class="col-5">
+                                    <select class="form-control" id="taskTypes" name="tasktype" required>
+                                        <option value="">--------------</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row p-2">
+                                <div class="col-5">
+                                    <i class='bx bx-network-chart'></i>
+                                    <span>Priority</span>
+                                </div>
+                                <div class="col-5">
+                                    <select class="form-control" name="priority" required>
+                                        <option value="">--------------</option>
+                                        {% for value, label in Priority %}
+                                            <option value="{{ value }}">{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-container mt-3">
+                            <label for="taskDescription" class="fw-semibold">Description</label>
+                            <textarea name="taskdescription" class="form-control mt-1" id="taskdescription" rows="6" required></textarea>
+                        </div>
+                        <div class="d-flex flex-column w-100 border mt-3 rounded p-1">
+                            <img src="" id="output-image" class="mb-3 d-none" style="height: 200px; width: fit-content;" />
+                            <label for="file-upload" class="d-flex align-items-center"><i class='bx bx-image fw-semibold fs-4'></i> <span>Attachment</span></label>
+                            <input id="file-upload" type="file" name="attachment" class="form-control" accept="image/*" onchange="loadFile(event)" hidden/>
+                        </div>
+                        <div class="form-container mt-3">
+                            <input type="submit" value="Assign" class="btn btn-primary">
+                        </div>
+                    </div>
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadProjectDetails() {
+        var projectId = document.getElementById("projectDropdown").value;
+        var projectStatus = document.getElementById("projectStatus");
+        var taskTypes = document.getElementById("taskTypes");
+
+        projectStatus.innerHTML = '<option value="">--------------</option>';
+        taskTypes.innerHTML = '<option value="">--------------</option>';
+
+        if (projectId) {
+            fetch(`/get_project_details/${projectId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    // Populate status dropdown
+                    data.statuses.forEach(status => {
+                        var option = document.createElement('option');
+                        option.value = status.id;
+                        option.text = status.name;
+                        projectStatus.appendChild(option);
+                    });
+
+                    // Populate types dropdown
+                    data.types.forEach(type => {
+                        var option = document.createElement('option');
+                        option.value = type.id;
+                        option.text = type.name;
+                        taskTypes.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching project details:', error);
+                });
+        }
+    }
+</script>
+

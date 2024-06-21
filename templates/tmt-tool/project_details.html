@@ -84,10 +84,18 @@
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
                                             <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#statusModal{{status.pk}}">Edit</button>
-                                                <form id="deleteForm" method="post" action="{% url 'deletestatus' tpk=get_team.pk ppk=get_project.pk spk=status.pk  %}">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#">Delete</button>
-                                                </form>
+                                            <form id="deleteForm{{status.pk}}" method="post" action="{% url 'deletestatus' tpk=get_team.pk ppk=get_project.pk spk=status.pk %}">
+                                                {% csrf_token %}
+                                                <button type="button" id="deleteButton{{status.pk}}" class="dropdown-item">Delete</button>
+                                            </form>
+                                            <script>
+                                                document.getElementById('deleteButton{{status.pk}}').addEventListener('click', function(event) {
+                                                    var result = confirm("Are you sure you want to delete this Status?");
+                                                    if (result) {
+                                                        document.getElementById('deleteForm{{status.pk}}').submit();
+                                                    }
+                                                });
+                                            </script>
                                         </li>
                                     </ul>
                                 </div>

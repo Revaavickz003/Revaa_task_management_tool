@@ -38,7 +38,7 @@ urlpatterns = [
     path('project/closed/', project_closed_page.close_projects_page, name='close_projects_page'),
     path('project/closed/<str:team>/', project_closed_page.closeprojectteam, name='closeprojectteam'),
     path('project/reopen/<int:pk>/', project_closed_page.Reopen, name='reopen'),
-    path('createprojectstatus/<int:team_pk>/<int:project_pk>/', project_details.new_status, name='createprojectstatus'),
+    
     path('createprojecttype/<int:team_pk>/<int:project_pk>/', project_details.new_type, name='createprojecttype'),
 
     # Add employee
@@ -48,14 +48,17 @@ urlpatterns = [
     path('newteam/',new_team_create.create_team, name='create_team'),
     path('team/<int:pk>/',team_details.teams_details, name='teams_details'),
     path('team/<int:team_pk>/<int:project_pk>/', project_details.projects_details, name='project_details'),
+    path('get_project_details/<int:project_id>/', project_details.get_project_details, name='get_project_details'),
 
     # Status
+    path('createprojectstatus/<int:team_pk>/<int:project_pk>/', statusdetails.new_status, name='createprojectstatus'),
     path('team/<int:tpk>project/<int:ppk>/deletestatus/<int:spk>/', statusdetails.delete_status, name='deletestatus'),
     path('team/<int:tpk>project/<int:ppk>/update_status/<int:spk>/', statusdetails.update_status, name='update_status'),
     
 
     # Task
     path('newtask/<int:team_pk>/<int:project_pk>/', new_task.new_task, name='newtask'),
+    path('addtask_teampage/<int:pk>/', team_details.addtask_teampage, name='addtask_teampage'),
     path('team/<int:team_pk>/<int:project_pk>/task/<int:task_pk>/', project_details.taskopen, name='taskopen'),
     
 ]

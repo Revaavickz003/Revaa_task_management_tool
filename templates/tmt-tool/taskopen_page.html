@@ -31,7 +31,7 @@
                                 <p class="fs-6 m-0 p-0">Client :</p>
                             </div>
                             <div class="col-6">
-                                <p class="fs-6 m-0 p-0">{{task.project}} </p>
+                                <p class="fs-6 m-0 p-0 text-truncate">{{task.project}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -39,7 +39,7 @@
                                 <p class="fs-6 m-0 p-0">Project :</p>
                             </div>
                             <div class="col-6">
-                                <p class="fs-6 m-0 p-0">{{task.project}} </p>
+                                <p class="fs-6 m-0 p-0 text-truncate">{{task.project}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -47,7 +47,7 @@
                                 <p class="fs-6 m-0 p-0">Assignees :</p>
                             </div>
                             <div class="col-6">
-                                <p class="fs-6 m-0 p-0">{{task.assigned_to}} </p>
+                                <p class="fs-6 m-0 p-0 text-truncate">{{task.assigned_to}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -55,7 +55,7 @@
                                 <p class="fs-6 m-0 p-0">Task type :</p>
                             </div>
                             <div class="col-6">
-                                <p class="m-0 p-0 cs-alert-{{task.task_type.color | lower}}">{{task.task_type}} </p>
+                                <p class="m-0 p-0 cs-alert-{{task.task_type.color | lower}} text-truncate">{{task.task_type}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -67,7 +67,7 @@
                                 {% if task.priority == 'High' %}
                                 cs-alert-danger
                                 {% endif %}
-                                ">{{task.priority}} </p>
+                                text-truncate">{{task.priority}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -75,7 +75,7 @@
                                 <p class="fs-6 m-0 p-0">Status :</p>
                             </div>
                             <div class="col-6">
-                                <p class="m-0 p-0 cs-alert-{{task.status.color | lower}}">{{task.status}} </p>
+                                <p class="m-0 p-0 cs-alert-{{task.status.color | lower}} text-truncate">{{task.status}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -83,7 +83,7 @@
                                 <p class="fs-6 m-0 p-0">ETA :</p>
                             </div>
                             <div class="col-6">
-                                <p class="fs-6 m-0 p-0">{{task.ETA}}</p>
+                                <p class="fs-6 m-0 p-0 text-truncate">{{task.ETA}}</p>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -91,7 +91,7 @@
                                 <p class="fs-6 m-0 p-0">Start date time :</p>
                             </div>
                             <div class="col-6">
-                                <p class="fs-6 m-0 p-0">{{task.start_date_time}} </p>
+                                <p class="fs-6 m-0 p-0 text-truncate">{{task.start_date_time}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -99,15 +99,15 @@
                                 <p class="fs-6 m-0 p-0">End date time :</p>
                             </div>
                             <div class="col-6">
-                                <p class="fs-6 m-0 p-0">{{task.start_date_time}} </p>
+                                <p class="fs-6 m-0 p-0 text-truncate">{{task.start_date_time}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-6">
-                                <p class="fs-6 m-0 p-0">Assigned from :</p>
+                                <p class="fs-6 m-0 p-0 ">Assigned from :</p>
                             </div>
                             <div class="col-6">
-                                <p class="fs-6 m-0 p-0">{{task.assigned_from}} </p>
+                                <p class="fs-6 m-0 p-0 text-truncate">{{task.assigned_from}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -116,7 +116,7 @@
                             </div>
                             <div class="col-6">
                                 {% if task.attachment %}
-                                <a href="{{task.attachment.url}}">Attachment</a>
+                                <a href="{{task.attachment.url}} text-truncate">Attachment</a>
                                 {% else %}
                                 <p class="fs-6 m-0 p-0">No attachment</p>
                                 {% endif %}
