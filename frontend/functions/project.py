@@ -104,7 +104,7 @@ def update_project_details(request, pk):
         project_description = request.POST.get('project_discription')
 
         project.project_name = project_name
-        project.project_discription = project_description
+        project.project_description = project_description
         project.updated_by = request.user
         project.updated_date = dt.datetime.today()
         project.save()

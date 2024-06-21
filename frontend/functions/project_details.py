@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
 from frontend.models import *
+
+
 def projects_details(request, team_pk, project_pk):
     try:
         get_team = Team.objects.get(pk=team_pk)
@@ -29,30 +31,20 @@ def projects_details(request, team_pk, project_pk):
     }
     return render(request, 'tmt-tool/project_details.html', context)
 
-def new_status(request, team_pk, project_pk):
-    if request.method == 'POST':
-        statusname = request.POST.get('statusname')
-        description = request.POST.get('description')
-        color = request.POST.get('color')
-        
-        try:
-            project = Project.objects.get(pk=project_pk)
-            new_status = status.objects.create(
-                name=statusname,
-                description=description,
-                color=color,
-                project=project
-            )
-            new_status.save()
-            messages.success(request, 'New status added successfully')
-            return redirect(reverse('project_details', kwargs={'team_pk': team_pk, 'project_pk': project_pk}))
-        except Project.DoesNotExist:
-            messages.error(request, 'Project not found')
-            return redirect(reverse('project_details', kwargs={'team_pk': team_pk, 'project_pk': project_pk}))
-        except Exception as e:
-            messages.error(request, f'Error adding new status: {str(e)}')
-            return redirect(reverse('project_details', kwargs={'team_pk': team_pk, 'project_pk': project_pk}))
-        
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+
+def get_project_details(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    statuses = status.objects.filter(project=project)
+    types = Type.objects.filter(project=project)
+    data = {
+        'statuses': list(statuses.values('id', 'name')),
+        'types': list(types.values('id', 'name')),
+    }
+
+    return JsonResponse(data)
+
 
 def new_type(request, team_pk, project_pk):
     if request.method == 'POST':
