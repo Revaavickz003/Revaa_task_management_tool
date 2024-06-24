@@ -134,7 +134,7 @@ class Project(models.Model):
     ]
 
     project_img = models.ImageField(upload_to='path/to/upload/', null=True, blank=True)
-    client = models.ForeignKey('customersTable', on_delete=models.CASCADE)
+    client = models.ForeignKey(customersTable, on_delete=models.CASCADE)
     project_name = models.CharField(max_length=255)  # Added max_length for project name
     project_description = models.TextField(null=True, blank=True)  # Fixed typo from project_discription to project_description
     start_date = models.DateField(null=True, blank=True)
@@ -176,7 +176,7 @@ class status(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     color = models.CharField(choices=COLOR, max_length=16, null=True, blank=True)
-    project = models.ForeignKey('Project', on_delete=models.CASCADE, related_name='status_project')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='status_project')
 
     def __str__(self):
         return self.name
@@ -226,7 +226,7 @@ class TaskSheet(models.Model):
         (MEDIUM, 'Medium'),
         (LOW, 'Low'),
     ]
-
+    client = models.ForeignKey(customersTable, on_delete=models.SET_NULL, null=True, blank=True)
     title = models.CharField(max_length=250)
     description = models.TextField(max_length=1000)
     task_type = models.ForeignKey(Type, on_delete=models.CASCADE)

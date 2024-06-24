@@ -64,7 +64,7 @@
                     <div class="container px-0 rounded border" style="height: 100%; overflow-x: auto;">
                         <div class="py-2 px-3 bg-gray rounded-top ">
                             <div class="d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
+                                <div class="d-flex align-items-center" style="width: 90%;">
                                     <i class="bx bx-radio-circle fs-3 fw-bold
                                     {% if status.color == 'None' %} text-dark
                                     {% elif status.color == 'Gray' %} text-gray
@@ -76,7 +76,7 @@
                                     {% elif status.color == 'Pink' %} text-pink
                                     {% elif status.color == 'Purple' %} text-purple
                                     {% endif %}"></i>
-                                    <p class="m-0 fw-semibold">{{status.name}}</p>
+                                    <p class="m-0 fw-semibold text-truncate">{{status.name}}</p>
                                 </div>
                                 {% include 'alert_popup/updatestatus.html' %}
                                 <div class="btn-group">
@@ -100,7 +100,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <p class="p-0 m-0 small text-muted">{{status.description}}</p>
+                            <p class="p-0 m-0 small text-muted text-truncate">{{status.description}}</p>
                         </div>
                         <!-- Task Body -->
                         <div class="pb-1">
@@ -109,7 +109,7 @@
                             <div class="task-body border mt-2 p-1 px-2 mx-1 bg-gray rounded">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                     <p class="m-0 p-0 text-truncate me-2"><a href="{% url 'taskopen' team_pk=get_team.pk project_pk=get_project.pk task_pk=task.pk %}" class="text-decoration-none text-primary">{{task.title}}</a></p>
-                                    <div class="d-flex align-items-center justify-content-center" style="width: 35px; height: 28px; border-radius: 50%; overflow: hidden;">
+                                    <div class="d-flex align-items-center justify-content-center" style="width: 28  px; height: 28px; border-radius: 50%; overflow: hidden;">
                                         {% if task.assigned_to.employee_photo %}
                                         <img src="{{task.assigned_to.employee_photo.url}}" alt="" class="w-100 h-100">
                                         {% else %}
@@ -117,7 +117,7 @@
                                         {% endif %}
                                     </div>
                                 </div>
-                                <p class="m-0 p-0 small text-muted text-truncate">{{task.title}}</p>
+                                <p class="m-0 p-0 small text-muted text-truncate">{{task.description}}</p>
                                 <div class="d-flex align-items-center justify-content-between mt-2">
                                     <p class="m-0 p-0 small 
                                     {% if task.priority == 'Low' %}
@@ -130,18 +130,7 @@
                                     cs-alert-yellow
                                     {% endif %}">Priority : {{task.priority}}</p>
                                     <p class="p-0 m-0 text-muted small border px-2 rounded">Task ID : #{{task.pk}}</p>
-                                    <i class='bx bx-dots-horizontal-rounded fs-4' data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight"></i>
                                 </div>
-                                
-                                <div class="offcanvas offcanvas-end" tabindex="-1" id="taskid{{task.pk}}" aria-labelledby="offcanvasRightLabel">
-                                    <div class="offcanvas-header">
-                                      <h5 id="offcanvasRightLabel">Offcanvas right</h5>
-                                      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                                    </div>
-                                    <div class="offcanvas-body">
-                                      ...
-                                    </div>
-                                  </div>
                             </div>
                             {% endif %}
                             {% endfor %}
