@@ -71,8 +71,17 @@ def new_type(request, team_pk, project_pk):
 
 def taskopen(request, team_pk, project_pk, task_pk):
     task = TaskSheet.objects.get(pk=task_pk)
+    get_team = Team.objects.get(pk=team_pk)
+    team_members = get_team.members.all()
+    Priority = TaskSheet.PRIORITY_CHOICES
+    statuss = status.objects.filter(project=project_pk)
     context = {
         'teams_page': 'active',
-        'task':task,
+        'task': task,
+        'team': get_team,
+        'team_members': team_members,
+        'Priority':Priority,
+        'statuss':statuss,
     }
+    
     return render(request, 'tmt-tool/taskopen_page.html', context)

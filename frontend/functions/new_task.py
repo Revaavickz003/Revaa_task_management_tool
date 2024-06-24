@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib import messages
-from frontend.models import TaskSheet, EmployeeDetail, Project, Type, status
+from frontend.models import *
 from django.contrib.auth.decorators import login_required
 
 def new_task(request, team_pk, project_pk):
@@ -14,14 +14,15 @@ def new_task(request, team_pk, project_pk):
         attachment = request.FILES.get('attachment')
         project_id = request.POST.get('projectpk')
         status_id = request.POST.get('statuspk')
-
         if all([title, assignee_id, task_type_id, priority, description, project_id, status_id]):
             try:
                 assignee = EmployeeDetail.objects.get(pk=assignee_id)
                 project = Project.objects.get(pk=project_id)
+                client = customersTable.objects.get(pk=project.client.pk)
                 task_type = Type.objects.get(pk=task_type_id)
                 task_status = status.objects.get(pk=status_id)
                 task = TaskSheet.objects.create(
+                    client=client,
                     title=title,
                     description=description,
                     attachment=attachment,
@@ -30,7 +31,7 @@ def new_task(request, team_pk, project_pk):
                     assigned_to=assignee,
                     task_type=task_type,
                     priority=priority,
-                    assigned_from=EmployeeDetail.objects.get(pk=request.user.pk),
+                    assigned_from=EmployeeDetail.objects.get(user=request.user.pk),
                 )
                 task.save()
                 messages.success(request, f'Task #{task.pk} {task.title} created successfully')
