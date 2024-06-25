@@ -141,7 +141,7 @@ class Project(models.Model):
     end_of_date = models.DateField(null=True, blank=True)
     status = models.CharField(choices=STATUS_CHOICES, default=WAITING_TO_START, max_length=16, null=True, blank=True)
     priority = models.CharField(choices=PRIORITY_CHOICES, max_length=10, null=True, blank=True)
-    team = models.ForeignKey('Team', on_delete=models.SET_NULL, related_name='projects', null=True)
+    team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name='projects', null=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='projects_created', null=True)
     created_date = models.DateField(auto_now_add=True)
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='projects_updated', null=True)
@@ -242,3 +242,33 @@ class TaskSheet(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+
+from django.db import models
+from django.utils.text import slugify
+
+def comments_image_upload_to(instance, filename):
+    return f'comments/{slugify(instance.task.project.team.name)}/{slugify(instance.task.project.project_name)}/{slugify(instance.task.title)}/{filename}'
+
+class comments(models.Model):
+    task = models.ForeignKey(TaskSheet, on_delete=models.CASCADE)
+    user = models.ForeignKey(EmployeeDetail, on_delete=models.CASCADE)
+    comments = models.TextField()
+    comments_img = models.ImageField(upload_to=comments_image_upload_to, blank=True, null=True)
+    corrent_date_time = models.DateTimeField(auto_now_add=True)
+
+    # Before action
+    BeforeAssignees = models.ForeignKey(EmployeeDetail, on_delete=models.CASCADE, blank=True, null=True, related_name='before_assignees')
+    BeforePriority = models.CharField(max_length=50, blank=True, null=True)
+    BeforeStatus = models.ForeignKey(status, on_delete=models.SET_NULL, blank=True, null=True, related_name='before_status')
+    BeforeDescription = models.TextField(blank=True, null=True)
+    BeforeAttachment = models.ImageField(upload_to=comments_image_upload_to, blank=True, null=True)
+
+    # After action
+    AfterAssignees = models.ForeignKey(EmployeeDetail, on_delete=models.CASCADE, blank=True, null=True, related_name='after_assignees')
+    AfterPriority = models.CharField(max_length=50, blank=True, null=True)
+    AfterStatus = models.ForeignKey(status, on_delete=models.SET_NULL, blank=True, null=True, related_name='after_status')
+    AfterDescription = models.TextField(blank=True, null=True)
+    AfterAttachment = models.ImageField(upload_to=comments_image_upload_to, blank=True, null=True)
+
+    def __str__(self):
+        return f"Comment by {self.user.name} on {self.task.title}"
