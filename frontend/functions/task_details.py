@@ -175,7 +175,7 @@ def updatetask(request, teampk, ppk, tpk):
                 task.save()
                 comments.objects.create(
                     task=task,
-                    comments=f"Status changed from {before_status} to {new_status}",
+                    comments=f"Status changed from",
                     BeforeStatus=before_status,
                     AfterStatus=new_status,
                     user=EmployeeDetail.objects.get(user=request.user),
@@ -198,7 +198,7 @@ def updatetask(request, teampk, ppk, tpk):
             task.description = description
             comments.objects.create(
                 task=task,
-                comments=f"Description changed {before_description} to {description}",
+                comments="Change description for ",
                 BeforeDescription=before_description,
                 AfterDescription=description,
                 user=EmployeeDetail.objects.get(user=request.user),

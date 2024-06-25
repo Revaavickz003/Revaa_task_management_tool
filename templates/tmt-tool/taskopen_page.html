@@ -201,12 +201,80 @@
                                 <del><span class="
                                 {% if comments.BeforePriority == 'High' %}
                                 cs-alert-danger
+                                {% elif comments.BeforePriority == 'Medium' %}
+                                cs-alert-orange
+                                {% elif comments.BeforePriority == 'Low' %}
+                                cs-alert-primary
                                 {% endif %} 
                                 ">{{comments.BeforePriority}}</span></del> to
-                                <span>{{comments.AfterPriority}}</span>
+                                <span class="
+                                {% if comments.AfterPriority == 'High' %}
+                                cs-alert-danger
+                                {% elif comments.AfterPriority == 'Medium' %}
+                                cs-alert-orange
+                                {% elif comments.AfterPriority == 'Low' %}
+                                cs-alert-primary
+                                {% endif %} 
+                                ">{{comments.AfterPriority}}</span>
                                 {% endif %}
 
-                                <time class="text-muted"> on {{comments.corrent_date_time}}</time></span>
+                                {% if comments.BeforeDescription %}
+                                <del>{{comments.BeforeDescription}}</del> to 
+                                <span>{{comments.AfterDescription}}</span>
+                                {% endif %}
+
+                                {% if comments.BeforeAttachment %}
+                                <a href="{{comments.BeforeAttachment.url}}" class="text-danger">Before attachment</a> to 
+                                <a href="{{comments.AfterAttachment.url}}" class="text-primary">After attachment</a>
+                                {% endif %}
+
+                                {% if comments.BeforeStatus %}
+                                <span class="
+                                {% if comments.BeforeStatus.color == 'None' %}
+                                border
+                                {% elif comments.BeforeStatus.color == 'Gray' %}
+                                cs-alert-gray
+                                {% elif comments.BeforeStatus.color == 'Blue' %}
+                                cs-alert-primary
+                                {% elif comments.BeforeStatus.color == 'Green' %}
+                                cs-alert-green
+                                {% elif comments.BeforeStatus.color == 'Yellow' %}
+                                cs-alert-yellow
+                                {% elif comments.BeforeStatus.color == 'Orange' %}
+                                cs-alert-orange
+                                {% elif comments.BeforeStatus.color == 'Red' %}
+                                cs-alert-danger
+                                {% elif comments.BeforeStatus.color == 'Pink' %}
+                                cs-alert-pink
+                                {% elif comments.BeforeStatus.color == 'Purple' %}
+                                cs-alert-purple
+                                {% endif %}
+                                "><del>{{comments.BeforeStatus}}</del></span> to 
+                                <span class="
+                                {% if comments.AfterStatus.color == 'None' %}
+                                border
+                                {% elif comments.AfterStatus.color == 'Gray' %}
+                                cs-alert-gray
+                                {% elif comments.AfterStatus.color == 'Blue' %}
+                                cs-alert-primary
+                                {% elif comments.AfterStatus.color == 'Green' %}
+                                cs-alert-green
+                                {% elif comments.AfterStatus.color == 'Yellow' %}
+                                cs-alert-yellow
+                                {% elif comments.AfterStatus.color == 'Orange' %}
+                                cs-alert-orange
+                                {% elif comments.AfterStatus.color == 'Red' %}
+                                cs-alert-danger
+                                {% elif comments.AfterStatus.color == 'Pink' %}
+                                cs-alert-pink
+                                {% elif comments.AfterStatus.color == 'Purple' %}
+                                cs-alert-purple
+                                {% endif %}
+                                ">{{comments.AfterStatus}}</span>
+                                {% endif %}
+                                
+                            
+                                <time class="text-muted small"> on {{comments.corrent_date_time}}</time></span>
                                 {% if comments.comments_img %}
                                 <br><a href="{{comments.comments_img.url}}"><img class="mt-3 border rounded" src="{{comments.comments_img.url}}" alt=""></a>
                                 {% endif %}
