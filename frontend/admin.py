@@ -9,6 +9,7 @@ from .models import (
     status,
     Type,
     customersTable,
+    comments,
 )
 
 admin.site.register(ProductTable)
@@ -19,3 +20,4 @@ admin.site.register(TaskSheet)
 admin.site.register(status)
 admin.site.register(Type)
 admin.site.register(customersTable)
+admin.site.register(comments)

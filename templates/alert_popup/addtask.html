@@ -7,12 +7,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="taskForm-{{status.pk}}" class="taskForm" action="{# url 'newtask' team_pk=get_project.Team.pk project_pk=get_project.pk #}" method="post" enctype="multipart/form-data">
+                <form id="taskForm-{{status.pk}}" class="taskForm" action="{% url 'newtask' team_pk=get_team.pk project_pk=get_project.pk %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="offcanvas-body" style="overflow-x: hidden;">
                         <div class="inputcontainer mb-3">
                             <label for="taskname">Title</label>
-                            <input type="text" class="form-control mt-1" id="taskname" name="taskname" value="{{get_project.pk}}">
+                            <input type="text" class="form-control mt-1" id="taskname" name="taskname" value="">
                         </div>
                         <div class="border rounded-1 mb-4 editor-container">
                             <div class="d-flex align-items-center border-bottom p-2">
@@ -39,7 +39,7 @@
                                     <span>Status</span>
                                 </div>
                                 <div class="col-5">
-                                    <select class="form-control" name="assigne">
+                                    <select class="form-control" name="status">
                                         <option value="">--------------</option>
                                         {% for status in statuss %}
                                         <option value="{{status.pk}}">{{status.name}}</option>

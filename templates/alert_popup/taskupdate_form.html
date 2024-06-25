@@ -5,15 +5,119 @@
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <form action="">
+        
             <div class="col-12">
                 <div class="container border rounded p-3">
+                    {% if not task.start_date_time or not task.end_date_time %}
+                    <div class="row mt-3">
+                        <div class="col-5">
+                            <p class="fs-6 m-0 p-0">Start and End </p>
+                        </div>
+                        <div class="col">
+                            {% if not task.start_date_time %}
+                            <a href="{% url 'starttimefortask' teampk=team.pk ppk=get_project.pk tpk=task.pk %}" class="btn btn-primary btn-sm start-task-btn" style="border-radius: 5px !important;">Start Task</a>
+                            {% endif %}
+                            {% if not task.end_date_time %}
+                            <a href="{% url 'endtimefortask' teampk=team.pk ppk=get_project.pk tpk=task.pk %}" class="btn btn-primary btn-sm end-task-btn" style="border-radius: 5px !important;">End Task</a>
+                            {% endif %}
+                        </div>
+                        
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                        <script>
+                            $(document).ready(function(){
+                                $('.start-task-btn').click(function(e){
+                                    e.preventDefault();
+                                    var url = $(this).attr('href');
+                                    var button = $(this);
+                                    $.ajax({
+                                        url: url,
+                                        type: 'POST',
+                                        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                                        success: function(response){
+                                            if(response.status == 'success'){
+                                                button.closest('.col').html('<p class="fs-6 m-0 p-0">Start date time</p><p>' + response.start_time + '</p>');
+                                            } else {
+                                                alert(response.message);
+                                            }
+                                        },
+                                        error: function(xhr, status, error){
+                                            alert('An error occurred');
+                                        }
+                                    });
+                                });
+                        
+                                $('.end-task-btn').click(function(e){
+                                    e.preventDefault();
+                                    var url = $(this).attr('href');
+                                    var button = $(this);
+                                    $.ajax({
+                                        url: url,
+                                        type: 'POST',
+                                        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                                        success: function(response){
+                                            if(response.status == 'success'){
+                                                button.closest('.col').html('<p class="fs-6 m-0 p-0">End date time</p><p>' + response.end_time + '</p>');
+                                            } else {
+                                                alert(response.message);
+                                            }
+                                        },
+                                        error: function(xhr, status, error){
+                                            alert('An error occurred');
+                                        }
+                                    });
+                                });
+                            });
+                        </script>                                               
+                    </div>
+                    {% endif %}
+                    {% if task.start_date_time %}
+                    <div class="row mt-3">
+                        <div class="col-5">
+                            <p class="fs-6 m-0 p-0">Start date time </p>
+                        </div>
+                        <div class="col">
+                            {{task.start_date_time}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if task.end_date_time %}
+                    <div class="row mt-3">
+                        <div class="col-5">
+                            <p class="fs-6 m-0 p-0">End date time </p>
+                        </div>
+                        <div class="col">
+                            {{task.end_date_time}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if task.ETA %}
+                    <div class="row mt-3">
+                        <div class="col-5">
+                            <p class="fs-6 m-0 p-0">ETA <span class="small text-muted">(Minutes)</span></p>
+                        </div>
+                        <div class="col">
+                            {{task.ETA}}
+                        </div>
+                    </div>
+                    {% endif %}
+                <form action="{% url 'updatetask'  teampk=team.pk ppk=get_project.pk tpk=task.pk %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if not task.ETA %}
+                    <div class="row mt-3">
+                        <div class="col-5">
+                            <p class="fs-6 m-0 p-0">ETA <span class="small text-muted">(Minutes)</span></p>
+                        </div>
+                        <div class="col">
+                            <input type="number" class="form-control" name="ETA" id="ETA">
+                        </div>
+                    </div>
+                    {% endif %}
                     <div class="row mt-3">
                         <div class="col-5">
                             <p class="fs-6 m-0 p-0">Assignees </p>
                         </div>
                         <div class="col">
-                            <select name="" id="" class="form-control">
+                            <select name="Assignees" id="Assignees" class="form-control">
                                 {% for user in team_members %}
                                 <option value="{{user.pk}}" class="form-control" {% if task.assigned_to == user %} selected {% endif %}>{{user}}</option>
                                 {% endfor %}
@@ -25,9 +129,9 @@
                             <p class="fs-6 m-0 p-0">Priority </p>
                         </div>
                         <div class="col">
-                            <select name="" id="" class="form-control">
+                            <select name="Priority" id="Priority" class="form-control">
                                 {% for value, label in Priority %}
-                                    <option value="{{ value }}">{{ label }}</option>
+                                    <option value="{{ value }}" {% if value == task.priority %} selected {% endif %}>{{ label }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -37,35 +141,11 @@
                             <p class="fs-6 m-0 p-0">Status</p>
                         </div>
                         <div class="col">
-                            <select name="" id="" class="form-control">
+                            <select name="Status" id="Status" class="form-control">
                                 {% for status in statuss %}
-                                <option value="{{status.pk}}" class="form-control"  {% if task.status == statuss %} selected {% endif %}>{{status}}</option>
+                                <option value="{{status.pk}}" class="form-control"  {% if task.status == status %} selected {% endif %}>{{status}}</option>
                                 {% endfor %}
                             </select>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-5">
-                            <p class="fs-6 m-0 p-0">ETA <span class="small text-muted">(Minutes)</span></p>
-                        </div>
-                        <div class="col">
-                            <input type="number" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-5">
-                            <p class="fs-6 m-0 p-0">Start date</p>
-                        </div>
-                        <div class="col">
-                            <input type="time" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-5">
-                            <p class="fs-6 m-0 p-0">Start time </p>
-                        </div>
-                        <div class="col">
-                            <input type="date" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -74,7 +154,16 @@
                 <label for="description">Description</label>
                 <textarea name="description" id="description" class="form-control mt-2" rows="5">{{task.description}}</textarea>
             </div>
+            <div class="timeline-item-description rounded mt-3">
+                <label for="Attachment">Attachment</label>
+                {% if task.attachment %}
+                <img class="border rounded mt-2" src="{{task.attachment.url}}" alt="">
+                {% endif %}
+                <input type="file" class="form-control mt-2" id="Attachment" name="Attachment">
+            </div>
+            
             <div class="d-flex align-items-center justify-content-end mt-3">
+                <a href="{% url 'deletetask' teampk=team.pk ppk=get_project.pk tpk=task.pk %}"  class="btn btn-danger me-2" style="background-color: rgb(255, 111, 111) !important;">Delete Task</a>
                 <input type="submit" class="btn btn-primary" value="Save Changes">
             </div>
         </form>
