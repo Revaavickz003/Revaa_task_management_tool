@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib import messages
 from frontend.models import *
 from django.contrib.auth.decorators import login_required
+import datetime as dt
 
 def new_task(request, team_pk, project_pk):
     if request.method == 'POST':
@@ -96,7 +97,6 @@ def taskopen(request, team_pk, project_pk, task_pk):
     return render(request, 'tmt-tool/taskopen_page.html', context)
 
 from django.http import JsonResponse
-import datetime as dt
 
 def starttimefortask(request, teampk, ppk, tpk):
     if request.method == 'POST':
@@ -178,6 +178,7 @@ def updatetask(request, teampk, ppk, tpk):
                     comments=f"Status changed from",
                     BeforeStatus=before_status,
                     AfterStatus=new_status,
+                    corrent_date_time = dt.datetime.now(),
                     user=EmployeeDetail.objects.get(user=request.user),
                 )
         except status.DoesNotExist:
