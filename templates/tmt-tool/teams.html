@@ -16,7 +16,7 @@
                     <div style="height: 80vh; overflow-y: scroll;">
                         {% if all_employees %}
                         {% for employee in all_employees %}
-                        <a href="" class="text-decoration-none">
+                        <a href="{% url 'showemployee' epk=employee.pk %}" class="text-decoration-none">
                             <div class="profile-container message-active py-2 px-3 d-flex align-items-center mb-1">
                                 <div class="bg-dark rounded-circle me-2" style="overflow: hidden;">
                                     {% if employee.employee_photo %}

@@ -99,7 +99,7 @@
             </div>
             <hr>
             <section class="task-section" style="overflow-y: auto;">
-                <p class="fs-5 fw-semibold mb-2 p-0">Project Task</p>
+                <p class="fs-5 fw-semibold mb-2 p-0">Project Task Details</p>
                 <div style="width: 77vw; overflow-x: auto;">
                     <table class="table align-middle mb-0 mt-3" style="width: 110vw;">
                         <thead class="bg-primary">
@@ -123,8 +123,38 @@
                                 <td>{{forloop.counter}}</td>
                                 <td>{{task.title}}</td>
                                 <td> <p class="fw-normal mb-1">{{task.task_type}}</p></td>
-                                <td> <span class="badge cs-alert-green rounded-pill d-inline">{{task.priority}}</span></td>
-                                <td> <span class="badge cs-alert-green rounded-pill d-inline">{{task.status}}</span></td>
+                                <td> <span class="badge 
+                                {% if task.priority == 'Low' %}
+                                cs-alert-primary
+                                {% elif task.priority == 'Medium' %}
+                                cs-alert-orange
+                                {% elif task.priority == 'High' %}
+                                cs-alert-danger
+                                {% else %}
+                                cs-alert-yellow
+                                {% endif %}
+                                rounded-pill d-inline">{{task.priority}}</span></td>
+                                <td> <span class="badge rounded-pill d-inline
+                                    {% if task.status.color == 'None' %}
+                                    border
+                                    {% elif task.status.color == 'Gray' %}
+                                    cs-alert-gray text-dark
+                                    {% elif task.status.color == 'Blue' %}
+                                    cs-alert-primary
+                                    {% elif task.status.color == 'Green' %}
+                                    cs-alert-green
+                                    {% elif task.status.color == 'Yellow' %}
+                                    cs-alert-yellow
+                                    {% elif task.status.color == 'Orange' %}
+                                    cs-alert-orange
+                                    {% elif task.status.color == 'Red' %}
+                                    cs-alert-danger
+                                    {% elif task.status.color == 'Pink' %}
+                                    cs-alert-pink
+                                    {% elif task.status.color == 'Purple' %}
+                                    cs-alert-purple
+                                    {% endif %}
+                                ">{{task.status}}</span></td>
                                 <td>{{task.ETA}}</td>
                                 <td>{{task.start_date_time}}</td>
                                 <td>{{task.end_date_time}}</td>

@@ -162,6 +162,7 @@ def updatetask(request, teampk, ppk, tpk):
                     comments="Changed task from",
                     BeforeAssignees=before_assignees,
                     AfterAssignees=new_assignees,
+                    corrent_date_time = dt.datetime.now(),
                     user=EmployeeDetail.objects.get(user=request.user),
                 )
         except EmployeeDetail.DoesNotExist:
@@ -192,6 +193,7 @@ def updatetask(request, teampk, ppk, tpk):
                 comments="Changed priority for",
                 BeforePriority=before_priority,
                 AfterPriority=priority,
+                corrent_date_time = dt.datetime.now(),
                 user=EmployeeDetail.objects.get(user=request.user),
             )
 
@@ -202,6 +204,7 @@ def updatetask(request, teampk, ppk, tpk):
                 comments="Change description for ",
                 BeforeDescription=before_description,
                 AfterDescription=description,
+                corrent_date_time = dt.datetime.now(),
                 user=EmployeeDetail.objects.get(user=request.user),
             )
 
@@ -213,6 +216,7 @@ def updatetask(request, teampk, ppk, tpk):
                     comments=f"Attachment changed",
                     BeforeAttachment=before_attachment,
                     AfterAttachment=attachment,
+                    corrent_date_time = dt.datetime.now(),
                     user=EmployeeDetail.objects.get(user=request.user),
                 )
 
