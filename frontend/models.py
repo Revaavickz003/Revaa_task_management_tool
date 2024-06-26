@@ -254,7 +254,7 @@ class comments(models.Model):
     user = models.ForeignKey(EmployeeDetail, on_delete=models.CASCADE)
     comments = models.TextField()
     comments_img = models.ImageField(upload_to=comments_image_upload_to, blank=True, null=True)
-    corrent_date_time = models.DateTimeField(auto_now_add=True)
+    corrent_date_time = models.DateTimeField()
 
     # Before action
     BeforeAssignees = models.ForeignKey(EmployeeDetail, on_delete=models.CASCADE, blank=True, null=True, related_name='before_assignees')
