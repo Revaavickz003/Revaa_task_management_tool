@@ -6,13 +6,13 @@ from frontend.functions import (
     login_page,
     project,
     messages,
+    task_details,
     teams,
     add_employee,
     project_closed_page,
     new_team_create,
     team_details,
     project_details,
-    new_task,
     statusdetails,
 )
 
@@ -39,7 +39,7 @@ urlpatterns = [
     path('project/closed/<str:team>/', project_closed_page.closeprojectteam, name='closeprojectteam'),
     path('project/reopen/<int:pk>/', project_closed_page.Reopen, name='reopen'),
     
-    path('createprojecttype/<int:team_pk>/<int:project_pk>/', project_details.new_type, name='createprojecttype'),
+    path('createprojecttype/<int:team_pk>/<int:project_pk>/', task_details.new_type, name='createprojecttype'),
 
     # Add employee
     path('addemployee/', add_employee.addemployee, name='addemployee'),
@@ -57,9 +57,14 @@ urlpatterns = [
     
 
     # Task
-    path('newtask/<int:team_pk>/<int:project_pk>/', new_task.new_task, name='newtask'),
+    path('newtask/<int:team_pk>/<int:project_pk>/', task_details.new_task, name='newtask'),
     path('addtask_teampage/<int:pk>/', team_details.addtask_teampage, name='addtask_teampage'),
-    path('team/<int:team_pk>/<int:project_pk>/task/<int:task_pk>/', project_details.taskopen, name='taskopen'),
+    path('team/<int:team_pk>/<int:project_pk>/task/<int:task_pk>/', task_details.taskopen, name='taskopen'),
+    path('starttimefortask/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.starttimefortask, name='starttimefortask'),
+    path('endtimefortask/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.endtimefortask, name='endtimefortask'),
+    path('deletetask/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.deletetask, name='deletetask'),
+    path('updatetask/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.updatetask, name='updatetask'),
+    path('addcomments/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.task_comments, name='addcomments'),
     
 ]
 
