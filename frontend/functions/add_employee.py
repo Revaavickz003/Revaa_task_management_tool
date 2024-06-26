@@ -90,8 +90,12 @@ def addemployee(request):
             created_at = dt.datetime.now()
         )
         
-        # Save the EmployeeDetail object to the database
         employee_detail.save()
-        return redirect('teams')
+    return redirect('teams')
 
-    return render(request, 'add_employee.html')  # Ensure you have a template named 'add_employee.html'
+def showemployee(request, epk):
+    context={
+        'teams_page': 'active',
+        'employee':EmployeeDetail.objects.get(pk=epk)
+    }
+    return render(request, 'tmt-tool/employee_details.html',context)
