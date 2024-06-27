@@ -1,8 +1,17 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from frontend.models import EmployeeDetail
+from frontend.models import *
 import datetime as dt
+
+from django.utils.timezone import make_aware
+from datetime import datetime, timedelta
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.utils.timezone import now, timedelta
+from frontend.models import EmployeeDetail, TaskSheet
+from frontend.serializers import TaskSheetSerializer
+from rest_framework.decorators import api_view
 
 def addemployee(request):
     if request.method == 'POST':
@@ -99,3 +108,40 @@ def showemployee(request, epk):
         'employee':EmployeeDetail.objects.get(pk=epk)
     }
     return render(request, 'tmt-tool/employee_details.html',context)
+
+@api_view(['GET'])
+def employee_task_data(request, epk):
+    employee = get_object_or_404(EmployeeDetail, pk=epk)
+    
+    # Calculate date ranges with timezone-aware datetimes
+    today = now().date()
+    start_of_week = make_aware(datetime.combine(today - timedelta(days=today.weekday()), datetime.min.time()))
+    end_of_week = make_aware(datetime.combine(today + timedelta(days=(6-today.weekday())), datetime.max.time()))
+    last_week_start = make_aware(datetime.combine(today - timedelta(days=today.weekday()+7), datetime.min.time()))
+    last_week_end = make_aware(datetime.combine(today - timedelta(days=today.weekday()+1), datetime.max.time()))
+    start_of_month = make_aware(datetime.combine(today.replace(day=1), datetime.min.time()))
+
+    # Fetch tasks
+    current_week_tasks = TaskSheet.objects.filter(
+        assigned_to=employee,
+        start_date_time__range=[start_of_week, end_of_week]
+    )
+    last_week_tasks = TaskSheet.objects.filter(
+        assigned_to=employee,
+        start_date_time__range=[last_week_start, last_week_end]
+    )
+    current_month_tasks = TaskSheet.objects.filter(
+        assigned_to=employee,
+        start_date_time__gte=start_of_month
+    )
+
+    # Serialize data
+    current_week_data = TaskSheetSerializer(current_week_tasks, many=True).data
+    last_week_data = TaskSheetSerializer(last_week_tasks, many=True).data
+    current_month_data = TaskSheetSerializer(current_month_tasks, many=True).data
+
+    return JsonResponse({
+        'current_week': current_week_data,
+        'last_week': last_week_data,
+        'current_month': current_month_data
+    })
