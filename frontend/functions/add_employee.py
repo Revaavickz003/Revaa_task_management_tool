@@ -92,6 +92,6 @@ def addemployee(request):
         
         # Save the EmployeeDetail object to the database
         employee_detail.save()
-    return redirect('teams')
+        return redirect('teams')
 
     return render(request, 'add_employee.html')  # Ensure you have a template named 'add_employee.html'
