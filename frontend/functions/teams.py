@@ -3,9 +3,13 @@ from frontend.models import EmployeeDetail, Team, Project
 
 def teams(request):
     # Get all teams
-    all_teams = Team.objects.all()
-    team_leader = EmployeeDetail.objects.filter(is_team_leader=True)
-    
+    try:
+        all_teams = Team.objects.all()
+        team_leader = EmployeeDetail.objects.filter(is_team_leader=True)
+    except:
+        all_teams = None
+        team_leader = None
+        
     # Add project count to each team
     teams_with_project_count = []
     for team in all_teams:
