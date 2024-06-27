@@ -9,7 +9,6 @@ def messages(request):
     context = {
         'messages': 'active',
         "userr" : users,
-        'primary_key' : primary_key,
     }
     
     if request.method == 'POST':
