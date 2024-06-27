@@ -44,6 +44,7 @@ urlpatterns = [
 
     # Add employee
     path('addemployee/', add_employee.addemployee, name='addemployee'),
+    path('team/employee/<int:epk>/',add_employee.showemployee, name='showemployee'),
 
     # Teams
     path('newteam/',new_team_create.create_team, name='create_team'),

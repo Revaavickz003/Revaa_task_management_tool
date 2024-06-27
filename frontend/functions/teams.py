@@ -17,7 +17,7 @@ def teams(request):
     context = {
         'teams_page': 'active',
         'team_leaders' : team_leader,
-        'all_employees': EmployeeDetail.objects.all(),
+        'all_employees' : EmployeeDetail.objects.filter(user__is_superuser=False),
         'teams_with_project_count': teams_with_project_count,
     }
     
