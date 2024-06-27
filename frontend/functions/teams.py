@@ -13,7 +13,7 @@ def teams(request):
         teams_with_project_count.append({
             'team': team,
             'project_count': project_count
-        })
+        }) 
     context = {
         'teams_page': 'active',
         'team_leaders' : team_leader,
