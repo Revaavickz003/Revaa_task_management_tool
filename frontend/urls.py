@@ -45,6 +45,9 @@ urlpatterns = [
     path('addemployee/', add_employee.addemployee, name='addemployee'),
     path('team/employee/<int:epk>/',add_employee.showemployee, name='showemployee'),
 
+    # Messages 
+    path('messages/<int:pk>', messages.openmessagesection, name='openmessagesection'),
+
     # Teams
     path('newteam/',new_team_create.create_team, name='create_team'),
     path('team/<int:pk>/',team_details.teams_details, name='teams_details'),

@@ -26,3 +26,6 @@ def messages(request):
         return render(request, 'tmt-tool/messages.html', context)
 
     return render(request, 'tmt-tool/messages.html', context)
+
+def openmessagesection(request, pk):
+    pass
