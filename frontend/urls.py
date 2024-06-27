@@ -25,6 +25,7 @@ urlpatterns = [
     path('project/', project.projects_page, name='project'),
     path('get_projects/<int:client_id>/', project.get_projects, name='get_projects'),
     path('messages/', messages.messages, name='messages'),
+    path('messages/<int:pk>/', messages.messages, name='messages'),
     path('teams/', teams.teams, name='teams'),
     
     # Open project page
