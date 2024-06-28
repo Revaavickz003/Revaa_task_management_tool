@@ -170,7 +170,7 @@
                             </div>
                             <div class="col-sm-3 d-flex align-items-center" style="gap: 10px;">
                                 To 
-                                <input type="date" class="form-control date" name="todate" placeholder="End Date">
+                                <input type="date" class="form-control date" name="todate" value="enddate">
                             </div>
                             <div class="col-sm-3">
                                 <input type="submit" class="btn btn-primary" value="Load data" name="_load">
@@ -178,17 +178,86 @@
                         </div>
                     </form>
                     <div class="row">
-                        <!-- Weekly work hours report -->
                       <div class="col-6">
-                        <canvas id="salesChart"></canvas>
+                        <img src="{{ pie_chart }}" alt="Task Type Distribution Pie Chart" style="width: 100%;">
                       </div>
-              
-                      <!-- task count in task type -->
                       <div class="col-6">
-                        <canvas id="paymentSuccessChart"></canvas>
+                        <pre>{{ chat_report }}</pre>
                       </div>
                     </div>
                 </div>
+                <section class="task-section" style="overflow-y: auto;">
+                    <div style="width: 76vw; overflow-x: auto;">
+                        <table class="table align-middle mb-0 mt-3" style="width: 110vw;">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <td class="text-white">#</td>
+                                    <td class="text-white">Project Name</td>
+                                    <td class="text-white">Task Title</td>
+                                    <td class="text-white">Task type</td>
+                                    <td class="text-white">Priority</td>
+                                    <td class="text-white">Status</td>
+                                    <td class="text-white">ETA</td>
+                                    <td class="text-white">Start date time</td>
+                                    <td class="text-white">End date time</td>
+                                    <td class="text-white">Assigned from</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if tasks %}
+                                {% for task in tasks %}
+                                <tr  class="{% if forloop.counter|divisibleby:2 == True %}bg-gray{% endif %}">
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{task.project}}</td>
+                                    <td>{{task.title}}</td>
+                                    <td> <p class="fw-normal mb-1">{{task.task_type}}</p></td>
+                                    <td> <span class="badge 
+                                    {% if task.priority == 'Low' %}
+                                    cs-alert-primary
+                                    {% elif task.priority == 'Medium' %}
+                                    cs-alert-orange
+                                    {% elif task.priority == 'High' %}
+                                    cs-alert-danger
+                                    {% else %}
+                                    cs-alert-yellow
+                                    {% endif %}
+                                    rounded-pill d-inline">{{task.priority}}</span></td>
+                                    <td> <span class="badge rounded-pill d-inline
+                                        {% if task.status.color == 'None' %}
+                                        border
+                                        {% elif task.status.color == 'Gray' %}
+                                        cs-alert-gray text-dark
+                                        {% elif task.status.color == 'Blue' %}
+                                        cs-alert-primary
+                                        {% elif task.status.color == 'Green' %}
+                                        cs-alert-green
+                                        {% elif task.status.color == 'Yellow' %}
+                                        cs-alert-yellow
+                                        {% elif task.status.color == 'Orange' %}
+                                        cs-alert-orange
+                                        {% elif task.status.color == 'Red' %}
+                                        cs-alert-danger
+                                        {% elif task.status.color == 'Pink' %}
+                                        cs-alert-pink
+                                        {% elif task.status.color == 'Purple' %}
+                                        cs-alert-purple
+                                        {% endif %}
+                                    ">{{task.status}}</span></td>
+                                    <td>{{task.ETA}}</td>
+                                    <td>{{task.start_date_time}}</td>
+                                    <td>{{task.end_date_time}}</td>
+                                    <td>{{task.assigned_from}}</td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr class="">
+                                    <td colspan="7" class="text-center">No tasks available</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
         </div>
     </div>
