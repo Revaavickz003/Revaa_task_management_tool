@@ -16,8 +16,10 @@
                                     <div class="">
                                         <img src="{% static 'images/Revaa-new-logo-01.png' %}" alt="" width="120">
                                     </div>
-                                    <div class="id-image-container rounded-circle border bg-white mt-5 d-flex align-items-center justify-content-center" style="width: 180px; height: 178px;">
-                                        <img src="{% static 'images/Vignesh M-03.png' %}" alt="Admin" class="id-card-image">
+                                    <div class="id-image-container rounded-circle border bg-white mt-5 d-flex align-items-center justify-content-center"
+                                        style="width: 180px; height: 178px;">
+                                        <img src="{% static 'images/Vignesh M-03.png' %}" alt="Admin"
+                                            class="id-card-image">
                                         <div class="yellow-ball"></div>
                                     </div>
                                     <div class="mt-3">
@@ -40,7 +42,7 @@
                                         <p class="mb-0 fw-semibold">Name</p>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        Kenneth Valdez
+                                        {{employee.name}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
@@ -56,7 +58,7 @@
                                         <p class="mb-0 fw-semibold">Phone Number</p>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        (239) 816-9029
+                                        {{employee.mobile_number}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
@@ -64,7 +66,7 @@
                                         <p class="mb-0 fw-semibold">Emergency Number</p>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        (320) 380-4539
+                                        {{employee.second_mobile_number}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
@@ -72,7 +74,7 @@
                                         <p class="mb-0 fw-semibold">Date of Birth</p>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        (320) 380-4539
+                                        {{employee.date_of_birth}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
@@ -80,7 +82,7 @@
                                         <p class="mb-0 fw-semibold">Blood Group</p>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        (320) 380-4539
+                                        {{employee.blood_group}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
@@ -88,52 +90,103 @@
                                         <p class="mb-0 fw-semibold">Address</p>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        Bay Area, San Francisco, CA
+                                        {{employee.address}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
                                     <div class="col-sm-3">
-                                        <p class="mb-0 fw-semibold">Address</p>
+                                        <p class="mb-0 fw-semibold">Aadhar Card</p>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        Bay Area, San Francisco, CA
+                                        {% if employee.aadhar_card_copy %}
+                                        <a href="{{employee.aadhar_card_copy.url}}" target="_blank">View</a>
+                                        {% else %}
+                                        <span class="text-danger">Not Uploaded</span>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
                                     <div class="col-sm-3">
-                                        <p class="mb-0 fw-semibold">Address</p>
+                                        <p class="mb-0 fw-semibold">Pan Card</p>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        Bay Area, San Francisco, CA
+                                        {% if employee.pan_card_copy %}
+                                        <a href="{{employee.pan_card_copy.url}}" target="_blank">View</a>
+                                        {% else %}
+                                        <span class="text-danger">Not Uploaded</span>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
                                     <div class="col-sm-3">
-                                        <p class="mb-0 fw-semibold">Address</p>
+                                        <p class="mb-0 fw-semibold">College Mark Sheet</p>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        Bay Area, San Francisco, CA
+                                        {% if employee.twelfth_mark_sheet %}
+                                        <a href="{{employee.twelfth_mark_sheet.url}}" target="_blank">View</a>
+                                        {% else %}
+                                        <span class="text-danger">Not Uploaded</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="row mb-md-2">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0 fw-semibold">12th Mark Sheet</p>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {% if employee.twelfth_mark_sheet %}
+                                        <a href="{{employee.twelfth_mark_sheet.url}}" target="_blank">View</a>
+                                        {% else %}
+                                        <span class="text-danger">Not Uploaded</span>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
                                     <div class="col-sm-3">
-                                        <p class="mb-0 fw-semibold">Address</p>
+                                        <p class="mb-0 fw-semibold">10th Mark sheet</p>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        Bay Area, San Francisco, CA
+                                        {% if employee.tenth_mark_sheet %}
+                                        <a href="{{employee.tenth_mark_sheet.url}}" target="_blank">View</a>
+                                        {% else %}
+                                        <span class="text-danger">Not Uploaded</span>
+                                        {% endif %}
                                     </div>
                                 </div>
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-3">
-                                        <p class="mb-0 fw-semibold">Address</p>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        Bay Area, San Francisco, CA
-                                    </div>
-                                </div>
+
                                 <button class="btn btn-primary mt-2">Basic information Edit</button>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <h5>Report Dashboard</h5>
+                <div class="container123 mt-3">
+                    <form id="filterForm">
+                        <div class="row mb-2">
+                            <div class="col-sm-3 d-flex align-items-center" style="gap: 10px;">
+                                From
+                                <input type="date" class="form-control date" name="fromdate" placeholder="From Date">
+                            </div>
+                            <div class="col-sm-3 d-flex align-items-center" style="gap: 10px;">
+                                To 
+                                <input type="date" class="form-control date" name="todate" placeholder="End Date">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="submit" class="btn btn-primary" value="Load data" name="_load">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <!-- Weekly work hours report -->
+                      <div class="col-6">
+                        <canvas id="salesChart"></canvas>
+                      </div>
+              
+                      <!-- task count in task type -->
+                      <div class="col-6">
+                        <canvas id="paymentSuccessChart"></canvas>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -149,6 +202,7 @@
         border-top: 7px solid #DCE5F6 !important;
         transform: rotate(44.5deg);
     }
+
     .yellow-ball {
         background: rgb(246, 74, 0);
         background: linear-gradient(103deg, rgba(246, 74, 0, 1) 0%, rgba(249, 226, 72, 1) 100%);
@@ -159,6 +213,7 @@
         top: 35%;
         right: -18.5px;
     }
+
     .id-card-body::after {
         content: '';
         position: absolute;
@@ -169,6 +224,7 @@
         background-color: #092C74;
         z-index: -1;
     }
+
     .id-card-image {
         width: 200px;
         position: absolute;
@@ -177,12 +233,15 @@
         transform: rotate(-44.5deg);
         border-radius: 0 0 50% 50%
     }
+
     .main-body {
         padding: 15px;
     }
+
     .card {
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
     }
+
     .card {
         position: relative;
         display: flex;
@@ -194,28 +253,37 @@
         border: 0 solid rgba(0, 0, 0, .125);
         border-radius: .25rem;
     }
+
     .card-body {
         flex: 1 1 auto;
         min-height: 1px;
         padding: 1rem;
     }
+
     .gutters-sm {
         margin-right: -8px;
         margin-left: -8px;
     }
-    .gutters-sm>.col, .gutters-sm>[class*=col-] {
+
+    .gutters-sm>.col,
+    .gutters-sm>[class*=col-] {
         padding-right: 8px;
         padding-left: 8px;
     }
-    .mb-3, .my-3 {
+
+    .mb-3,
+    .my-3 {
         margin-bottom: 1rem !important;
     }
+
     .bg-gray-300 {
         background-color: #e2e8f0;
     }
+
     .h-100 {
         height: 100% !important;
     }
+
     .shadow-none {
         box-shadow: none !important;
     }

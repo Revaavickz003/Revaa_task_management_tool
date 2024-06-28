@@ -103,45 +103,21 @@ def addemployee(request):
     return redirect('teams')
 
 def showemployee(request, epk):
+    employee = EmployeeDetail.objects.get(pk=epk)
+    enddate = dt.datetime.now().date
+    startdate = enddate - dt.timedelta(days=7)
+    employee_tasks = TaskSheet.objects.filter(assigned_to=employee, start_date_time__range=[startdate, enddate])
+    for employee_task in employee_tasks:
+        print(employee_task.title)
     context={
         'teams_page': 'active',
-        'employee':EmployeeDetail.objects.get(pk=epk)
+        'employee':employee,
+        'employee_tasks':employee_tasks,
     }
     return render(request, 'tmt-tool/employee_details.html',context)
 
-@api_view(['GET'])
-def employee_task_data(request, epk):
+
+def employee_task_data(request, epk, start_date, end_date):
     employee = get_object_or_404(EmployeeDetail, pk=epk)
-    
-    # Calculate date ranges with timezone-aware datetimes
-    today = now().date()
-    start_of_week = make_aware(datetime.combine(today - timedelta(days=today.weekday()), datetime.min.time()))
-    end_of_week = make_aware(datetime.combine(today + timedelta(days=(6-today.weekday())), datetime.max.time()))
-    last_week_start = make_aware(datetime.combine(today - timedelta(days=today.weekday()+7), datetime.min.time()))
-    last_week_end = make_aware(datetime.combine(today - timedelta(days=today.weekday()+1), datetime.max.time()))
-    start_of_month = make_aware(datetime.combine(today.replace(day=1), datetime.min.time()))
-
-    # Fetch tasks
-    current_week_tasks = TaskSheet.objects.filter(
-        assigned_to=employee,
-        start_date_time__range=[start_of_week, end_of_week]
-    )
-    last_week_tasks = TaskSheet.objects.filter(
-        assigned_to=employee,
-        start_date_time__range=[last_week_start, last_week_end]
-    )
-    current_month_tasks = TaskSheet.objects.filter(
-        assigned_to=employee,
-        start_date_time__gte=start_of_month
-    )
-
-    # Serialize data
-    current_week_data = TaskSheetSerializer(current_week_tasks, many=True).data
-    last_week_data = TaskSheetSerializer(last_week_tasks, many=True).data
-    current_month_data = TaskSheetSerializer(current_month_tasks, many=True).data
-
-    return JsonResponse({
-        'current_week': current_week_data,
-        'last_week': last_week_data,
-        'current_month': current_month_data
-    })
+    employee_tasks = TaskSheet.objects.filter(assigned_to=employee, start_date_time__range=[start_date, end_date])
+    pass
