@@ -1,11 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.files.storage import FileSystemStorage
+from frontend.models import EmployeeDetail
+from django.urls import reverse
 
 def messages(request):
+    userr = EmployeeDetail.objects.all()
     context = {
-        'messages': 'active'
-    }
-    
+        'messages': 'active',
+        'userr' : userr,
+          }
     if request.method == 'POST':
         message = request.POST.get('message', '')
         file = request.FILES.get('file')
@@ -28,4 +31,12 @@ def messages(request):
     return render(request, 'tmt-tool/messages.html', context)
 
 def openmessagesection(request, pk):
-    pass
+    messagee = get_object_or_404(EmployeeDetail,pk=pk)
+    userr = EmployeeDetail.objects.all()
+    print(request.path)
+    context = {
+        'messagee': messagee,
+        'userr' : userr,
+             }
+    return render(request, 'tmt-tool/messages.html', context)
+
