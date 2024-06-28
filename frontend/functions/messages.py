@@ -35,6 +35,7 @@ def openmessagesection(request, pk):
     userr = EmployeeDetail.objects.all()
     print(request.path)
     context = {
+        'messages': 'active',
         'messagee': messagee,
         'userr' : userr,
              }
