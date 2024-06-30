@@ -13,12 +13,9 @@
             <div class="card">
                 <div class="card-header p-3 border d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center justify-content-start">
-                        <a href="" class="d-flex text-decoration-none me-3"><i class='bx bx-data fs-4 m-0 me-1 page_active'></i>
-                            <p class="m-0 p-0 page_active">Open</p>
-                        </a>
-                        <a href="" class="d-flex text-decoration-none"><i class='bx bx-box fs-4 m-0 me-1 page_active'></i>
-                            <p class="m-0 p-0 page_active">Close</p>
-                        </a>
+                        <div class="d-flex text-decoration-none me-3"><i class='bx bx-data fs-4 m-0 me-1'></i>
+                            <p class="m-0 p-0">Open {{all_projects | length}}</p>
+                        </div>
                     </div>
                     <div>
                         <div class="btn-group">
@@ -29,22 +26,11 @@
                         </div>
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sort
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end p-3">
-                                <li><button class="dropdown-item" type="button">Action</button></li>
-                                <li><button class="dropdown-item" type="button">Another action</button></li>
-                                <li><button class="dropdown-item" type="button">Something else here</button></li>
-                            </ul>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 Setting
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-end p-3">
-                                <li><button class="dropdown-item rounded-2" type="button"><i class='bx bx-group fs-5 pe-2'></i> Add Members</button></li>
-                                <li><button class="dropdown-item rounded-2" type="button"><i class='bx bxs-bar-chart-alt-2 fs-5 pe-2'></i>Members Activity</button></li>
-                                <li><button class="dropdown-item rounded-2" type="button"><i class='bx bxs-pencil fs-5 pe-2' ></i>Update</button></li>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><button class="dropdown-item rounded-2" type="button">Add Members</button></li>
+                                <li><button class="dropdown-item rounded-2" type="button">Update</button></li>
                             </ul>
                         </div>
                     </div>
@@ -95,21 +81,7 @@
                             {% else %}
                             <p class="m-0 p-0 text-muted">End Date</p>
                             {% endif %}
-                            <div class="btn-group">
-                                <i class='bx bx-dots-horizontal-rounded fs-4' data-bs-toggle="dropdown" aria-expanded="false"></i>
-                                <ul class="dropdown-menu dropdown-menu-end 
-                                {% if not closed_project_page %}
-                                border-danger 
-                                {% else %}
-                                border-primary
-                                {% endif %} py-0">
-                                    {% if not closed_project_page %}
-                                    <li><a class="dropdown-item text-danger my-0 rounded-2" href=""><i class='bx bx-box text-danger'></i> Close Project</a></li>
-                                    {% else %}
-                                    <li><a class="dropdown-item text-primary my-0 rounded-2" href=""><i class='bx bx-data text-primary fs-6'></i> Reopen</a></li>
-                                    {% endif %}
-                                </ul>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>

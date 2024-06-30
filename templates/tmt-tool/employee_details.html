@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-center" style="gap: 8px;">
-                            <a href="" class="btn btn-primary mt-2">Message</a>
+                            <a href="{% url 'openmessagesection' pk=employee.pk  %}" class="btn btn-primary mt-2">Message</a>
                             <a href="" class="btn btn-primary mt-2">E-mail</a>
                         </div>
                     </div>
@@ -38,66 +38,66 @@
                         <div class="border mb-3">
                             <div class="card-body">
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">Name</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {{employee.name}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">Email</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {{employee.user.email}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">Phone Number</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {{employee.mobile_number}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">Emergency Number</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {{employee.second_mobile_number}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">Date of Birth</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {{employee.date_of_birth}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">Blood Group</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {{employee.blood_group}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">Address</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {{employee.address}}
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">Aadhar Card</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {% if employee.aadhar_card_copy %}
                                         <a href="{{employee.aadhar_card_copy.url}}" target="_blank">View</a>
                                         {% else %}
@@ -106,10 +106,10 @@
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">Pan Card</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {% if employee.pan_card_copy %}
                                         <a href="{{employee.pan_card_copy.url}}" target="_blank">View</a>
                                         {% else %}
@@ -118,10 +118,10 @@
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">College Mark Sheet</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {% if employee.twelfth_mark_sheet %}
                                         <a href="{{employee.twelfth_mark_sheet.url}}" target="_blank">View</a>
                                         {% else %}
@@ -131,10 +131,10 @@
                                 </div>
 
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">12th Mark Sheet</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {% if employee.twelfth_mark_sheet %}
                                         <a href="{{employee.twelfth_mark_sheet.url}}" target="_blank">View</a>
                                         {% else %}
@@ -143,10 +143,10 @@
                                     </div>
                                 </div>
                                 <div class="row mb-md-2">
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <p class="mb-0 fw-semibold">10th Mark sheet</p>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
+                                    <div class="col-sm-8 text-secondary">
                                         {% if employee.tenth_mark_sheet %}
                                         <a href="{{employee.tenth_mark_sheet.url}}" target="_blank">View</a>
                                         {% else %}
@@ -160,34 +160,49 @@
                         </div>
                     </div>
                 </div>
+                {% if tasks %}
                 <h5>Report Dashboard</h5>
-                <div class="container123 mt-3">
+                <div class="container123 mt-4">
                     <form id="filterForm">
-                        <div class="row mb-2">
-                            <div class="col-sm-3 d-flex align-items-center" style="gap: 10px;">
-                                From
+                        <div class="row mb-2 d-flex align-items-end">
+                            <div class="col-sm-3" style="gap: 10px;">
+                                <label for="" class="mb-1">From date</label>
                                 <input type="date" class="form-control date" name="fromdate" placeholder="From Date">
                             </div>
-                            <div class="col-sm-3 d-flex align-items-center" style="gap: 10px;">
-                                To 
+                            <div class="col-sm-3" style="gap: 10px;">
+                                <label for="" class="mb-1">To date</label>
                                 <input type="date" class="form-control date" name="todate" value="enddate">
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3" style="gap: 10px;">
+                                <label for="" class="mb-1">Select Project <span class="text-muted"> (Optional)</span></label>
+                                <select class="form-control" aria-label="Default select example">
+                                    <option selected>Open this select menu</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                  </select>
+                            </div>
+                            <div class="col-sm-3 d-flex align-items-end" style="gap: 8px;">
                                 <input type="submit" class="btn btn-primary" value="Load data" name="_load">
+                                <a href="" class="btn btn-primary">Print report</a>
                             </div>
                         </div>
                     </form>
                     <div class="row">
-                      <div class="col-6">
-                        <img src="{{ pie_chart }}" alt="Task Type Distribution Pie Chart" style="width: 100%;">
+                      <div class="col-6 ">
+                        <div class="border">
+                            <img src="{{ pie_chart }}" alt="Task Type Distribution Pie Chart" style="width: 100%;">
+                        </div>
                       </div>
                       <div class="col-6">
-                        <pre>{{ chat_report }}</pre>
+                        <div class="border">
+                        <img src="{{ pie_chart }}" alt="Task Type Distribution Bar Chart" style="width: 100%">
+                        </div>                        
                       </div>
                     </div>
                 </div>
                 <section class="task-section" style="overflow-y: auto;">
-                    <div style="width: 76vw; overflow-x: auto;">
+                    <div style="width: 76.65vw; overflow-x: auto;">
                         <table class="table align-middle mb-0 mt-3" style="width: 110vw;">
                             <thead class="bg-primary">
                                 <tr>
@@ -204,7 +219,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% if tasks %}
+                                
                                 {% for task in tasks %}
                                 <tr  class="{% if forloop.counter|divisibleby:2 == True %}bg-gray{% endif %}">
                                     <td>{{forloop.counter}}</td>
