@@ -160,47 +160,34 @@
                         </div>
                     </div>
                 </div>
+
+
+                
+
+
+
                 {% if tasks %}
                 <h5>Report Dashboard</h5>
                 <div class="container123 mt-4">
                     <form id="filterForm">
                         <div class="row mb-2 d-flex align-items-end">
                             <div class="col-sm-3" style="gap: 10px;">
-                                <label for="" class="mb-1">From date</label>
-                                <input type="date" class="form-control date" name="fromdate" placeholder="From Date">
+                                <label for="fromdate" class="mb-1">From date</label>
+                                <input type="date" class="form-control date" name="startdate" id="fromdate" placeholder="From Date">
                             </div>
                             <div class="col-sm-3" style="gap: 10px;">
-                                <label for="" class="mb-1">To date</label>
-                                <input type="date" class="form-control date" name="todate" value="enddate">
-                            </div>
-                            <div class="col-sm-3" style="gap: 10px;">
-                                <label for="" class="mb-1">Select Project <span class="text-muted"> (Optional)</span></label>
-                                <select class="form-control" aria-label="Default select example">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                  </select>
+                                <label for="todate" class="mb-1">To date</label>
+                                <input type="date" class="form-control date" name="enddate" id="todate">
                             </div>
                             <div class="col-sm-3 d-flex align-items-end" style="gap: 8px;">
-                                <input type="submit" class="btn btn-primary" value="Load data" name="_load">
+                                <button type="submit" class="btn btn-primary" id="loadData">Load data</button>
                                 <a href="" class="btn btn-primary">Print report</a>
                             </div>
                         </div>
-                    </form>
-                    <div class="row">
-                      <div class="col-6 ">
-                        <div class="border">
-                            <img src="{{ pie_chart }}" alt="Task Type Distribution Pie Chart" style="width: 100%;">
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <div class="border">
-                        <img src="{{ pie_chart }}" alt="Task Type Distribution Bar Chart" style="width: 100%">
-                        </div>                        
-                      </div>
-                    </div>
+                    </form>        
                 </div>
+                <hr>
+                
                 <section class="task-section" style="overflow-y: auto;">
                     <div style="width: 76.65vw; overflow-x: auto;">
                         <table class="table align-middle mb-0 mt-3" style="width: 110vw;">
@@ -374,4 +361,6 @@
 </style>
 {% endblock %}
 {% block script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}

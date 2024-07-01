@@ -105,71 +105,55 @@ def addemployee(request):
 
 from django.shortcuts import render, get_object_or_404
 import datetime as dt
-import matplotlib.pyplot as plt
-import io
-import urllib, base64
+from collections import defaultdict
 
 def showemployee(request, epk):
     employee = get_object_or_404(EmployeeDetail, pk=epk)
     enddate = dt.datetime.now().date() + dt.timedelta(days=1)
     startdate = enddate - dt.timedelta(days=7)
     employee_tasks = TaskSheet.objects.filter(assigned_to=employee, start_date_time__range=[startdate, enddate])
-    
-    # Build the chat report
-    chat_report = []
-    task_type_counts = {}
+
+    # Aggregate tasks by team, project, and task type
+    tasks_by_team_and_project = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
     for task in employee_tasks:
-        task_details = (
-            f"Project Name: {task.project}\n"
-            f"Task Title: {task.title}\n"
-            f"Task Type: {task.task_type}\n"
-            f"Priority: {task.priority}\n"
-            f"Status: {task.status}\n"
-            f"ETA: {task.ETA}\n"
-            f"Start Date Time: {task.start_date_time}\n"
-            f"End Date Time: {task.end_date_time}\n"
-            f"Assigned From: {task.assigned_from}\n"
-            "----------------------------------------\n"
-        )
-        chat_report.append(task_details)
-        # Count task types
-        if task.task_type in task_type_counts:
-            task_type_counts[task.task_type] += 1
-        else:
-            task_type_counts[task.task_type] = 1
-    
-    # Join all the task details into a single string
-    chat_report_str = "\n".join(chat_report)
-    
-    # Generate pie chart with percentage and count
-    labels = [f'{label} ({count})' for label, count in task_type_counts.items()]
-    sizes = task_type_counts.values()
-    fig, ax = plt.subplots()
-    ax.pie(sizes, labels=labels, autopct=lambda p: f'{p:.1f}% ({int(p * sum(sizes) / 100)})', startangle=90)
-    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        team_name = task.project.team.name
+        project_name = task.project.project_name
+        task_type = task.task_type.name  # Assuming TaskSheet has a ForeignKey to TaskType
 
-    # Save it to a temporary buffer
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-    string = base64.b64encode(buf.read())
-    uri = 'data:image/png;base64,' + urllib.parse.quote(string)
-    buf.close()
+        tasks_by_team_and_project[team_name][project_name][task_type] += 1
 
+    # Print aggregated tasks for debugging
+    for team_name, projects in tasks_by_team_and_project.items():
+        
+        print(f" - Team: {team_name}")
+        for project_name, task_types in projects.items():
+            print("      ------------------------")
+            print(f"   - Project: {project_name}")
+            print("      ------------------------")
+            for task_type, count in task_types.items():
+                print(f"     - Task Type: {task_type}, Count: {count}")
+                
+
+    # Prepare context for rendering
     context = {
-        'teams_page': 'active',
         'employee': employee,
         'startdate': startdate,
         'enddate': enddate,
-        'tasks': employee_tasks,
-        'chat_report': chat_report_str,
-        'pie_chart': uri,
+        'tasks':employee_tasks,
+        'tasks_by_team_and_project': tasks_by_team_and_project.items(),
     }
     return render(request, 'tmt-tool/employee_details.html', context)
 
 
 
+
+
+
+
+
+
+
 def employee_task_data(request, epk, start_date, end_date):
     employee = get_object_or_404(EmployeeDetail, pk=epk)
-    employee_tasks = TaskSheet.objects.filter(assigned_to=employee, start_date_time__range=[start_date, end_date])
+    tasks = TaskSheet.objects.filter(assigned_to=employee, start_date_time__range=[start_date, end_date])
     pass
