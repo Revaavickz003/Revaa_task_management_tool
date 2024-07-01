@@ -1,6 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from frontend import views
 from frontend.functions import (
     home,
     login_page,
@@ -70,6 +71,13 @@ urlpatterns = [
     path('deletetask/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.deletetask, name='deletetask'),
     path('updatetask/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.updatetask, name='updatetask'),
     path('addcomments/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.task_comments, name='addcomments'),
+
+    path('statistics/', views.statistics_view, name='statistics'),
+    path('chart/filter-options/', views.get_filter_options, name='filter_options'),
+    # path('chart/task-distribution/<int:year>/', views.get_task_distribution_chart, name='task_distribution_chart'),
+    # path('chart/task-type/<int:year>/', views.get_task_type_chart, name='task_type_chart'),
+    # path('chart/task-status/<int:year>/', views.get_task_status_chart, name='task_status_chart'),
+    
     
 ]
 
