@@ -45,7 +45,7 @@
                                 <p class="fs-6 m-0 p-0">Assignees :</p>
                             </div>
                             <div class="col-6">
-                                <a href="" class="text-primary d-flex align-items-center cs-alert-gray text-decoration-none" style="width: fit-content; border-radius: 5px !important;">
+                                <a href="{% url 'showemployee' epk=task.assigned_to.pk %}" class="text-primary d-flex align-items-center cs-alert-gray text-decoration-none" style="width: fit-content; border-radius: 5px !important;">
                                     {% if task.assigned_to.employee_photo %}
                                     <img src="{{task.assigned_to.employee_photo.url}}" class="rounded-5 me-2" alt="casdasd" style="width: 25px; height: 25px;">
                                     {% else %}
@@ -60,7 +60,27 @@
                                 <p class="fs-6 m-0 p-0">Task type :</p>
                             </div>
                             <div class="col-6">
-                                <p class="m-0 p-0 cs-alert-{{task.task_type.color | lower}} text-truncate">{{task.task_type}} </p>
+                                <p class="m-0 p-0 
+                                {% if task.task_type.color == 'None' %}
+                                border-gray
+                                {% elif task.task_type.color == 'Gray' %}
+                                cs-alert-gray
+                                {% elif task.task_type.color == 'Blue' %}
+                                cs-alert-primary
+                                {% elif task.task_type.color == 'Green' %}
+                                cs-alert-green
+                                {% elif task.task_type.color == 'Yellow' %}
+                                cs-alert-yellow
+                                {% elif task.task_type.color == 'Orange' %}
+                                cs-alert-orange
+                                {% elif task.task_type.color == 'Red' %}
+                                cs-alert-danger
+                                {% elif task.task_type.color == 'Pink' %}
+                                cs-alert-pink
+                                {% elif task.task_type.color == 'Purple' %}
+                                cs-alert-purple
+                                {% endif %}
+                                text-truncate" data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight">{{task.task_type}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -76,7 +96,7 @@
                                 {% elif task.priority == 'Low' %}
                                 cs-alert-primary
                                 {% endif %}
-                                text-truncate">{{task.priority}} </p>
+                                text-truncate" data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight">{{task.priority}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">  
@@ -104,7 +124,7 @@
                                 {% elif task.status.color == 'Purple' %}
                                 cs-alert-purple
                                 {% endif %}
-                                text-truncate">{{task.status}} </p>
+                                text-truncate" data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight">{{task.status}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -136,7 +156,7 @@
                                 <p class="fs-6 m-0 p-0 ">Assigned from :</p>
                             </div>
                             <div class="col-6">
-                                <a href="" class="text-primary d-flex align-items-center cs-alert-gray text-decoration-none" style="width: fit-content; border-radius: 5px !important;">
+                                <a href="{% url 'showemployee' epk=task.assigned_from.pk %}" class="text-primary d-flex align-items-center cs-alert-gray text-decoration-none" style="width: fit-content; border-radius: 5px !important;">
                                     {% if task.assigned_from.employee_photo %}
                                     <img src="{{task.assigned_from.employee_photo.url}}" class="rounded-5 me-2" alt="" style="width: 25px; height: 25px;">
                                     {% else %}
@@ -152,7 +172,7 @@
                             </div>
                             <div class="col-6">
                                 {% if task.attachment %}
-                                <a href="{{task.attachment.url}}">Attachment</a>
+                                <a href="{{task.attachment.url}}" target="_blank">Attachment</a>
                                 {% else %}
                                 <p class="fs-6 m-0 p-0">No attachment</p>
                                 {% endif %}
@@ -193,8 +213,8 @@
                                 {{comments.comments}}
 
                                 {% if comments.BeforeAssignees %}
-                                <a href="#" class="fw-semibold text-decoration-none text-primary cs-alert-gray" style="border-radius: 3px !important;">{{comments.BeforeAssignees}}</a> to 
-                                <a href="#" class="fw-semibold text-decoration-none text-primary cs-alert-gray" style="border-radius: 3px !important;">{{comments.AfterAssignees}}</a>
+                                <a href="{% url 'showemployee' epk=comments.BeforeAssignees.pk %}" class="fw-semibold text-decoration-none text-primary cs-alert-gray" style="border-radius: 3px !important;">{{comments.BeforeAssignees}}</a> to 
+                                <a href="{% url 'showemployee' epk=comments.AfterAssignees.pk %}" class="fw-semibold text-decoration-none text-primary cs-alert-gray" style="border-radius: 3px !important;">{{comments.AfterAssignees}}</a>
                                 {% endif %}
 
                                 {% if comments.BeforePriority %}
@@ -215,7 +235,7 @@
                                 {% elif comments.AfterPriority == 'Low' %}
                                 cs-alert-primary
                                 {% endif %} 
-                                ">{{comments.AfterPriority}}</span>
+                                " data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight">{{comments.AfterPriority}}</span>
                                 {% endif %}
 
                                 {% if comments.BeforeDescription %}
@@ -249,7 +269,7 @@
                                 {% elif comments.BeforeStatus.color == 'Purple' %}
                                 cs-alert-purple
                                 {% endif %}
-                                "><del>{{comments.BeforeStatus}}</del></span> to 
+                                " data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight"><del>{{comments.BeforeStatus}}</del></span> to 
                                 <span class="
                                 {% if comments.AfterStatus.color == 'None' %}
                                 border
@@ -270,13 +290,13 @@
                                 {% elif comments.AfterStatus.color == 'Purple' %}
                                 cs-alert-purple
                                 {% endif %}
-                                ">{{comments.AfterStatus}}</span>
+                                " data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight">{{comments.AfterStatus}}</span>
                                 {% endif %}
                                 
                             
                                 <time class="text-muted small"> on {{comments.corrent_date_time}}</time></span>
                                 {% if comments.comments_img %}
-                                <br><a href="{{comments.comments_img.url}}"><img class="mt-3 border rounded" src="{{comments.comments_img.url}}" alt=""></a>
+                                <br><a href="{{comments.comments_img.url}}" target="_blank"><img class="mt-3 border rounded" src="{{comments.comments_img.url}}" alt=""></a>
                                 {% endif %}
                             </div>
                         </li>
