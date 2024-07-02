@@ -160,12 +160,6 @@
                         </div>
                     </div>
                 </div>
-
-
-                
-
-
-
                 {% if tasks %}
                 <h5>Report Dashboard</h5>
                 <div class="container123 mt-4">
@@ -187,6 +181,43 @@
                     </form>        
                 </div>
                 <hr>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+                        <div id="chartContainer" style="height: 350px; width: 100%;" class="border"></div>
+                        <script>
+                            window.onload = function() {
+                                // Retrieve the data from the script tag
+                                var chartData = JSON.parse(document.getElementById('pieChartData').textContent);
+                                
+                                // Initialize the chart
+                                var chart = new CanvasJS.Chart("chartContainer", {
+                                    theme: "light2",
+                                    exportEnabled: true,
+                                    animationEnabled: true,
+                                    title: {
+                                        text: "Task Distribution by Team, Project, and Task Type"
+                                    },
+                                    data: [{
+                                        type: "pie",
+                                        startAngle: 25,
+                                        toolTipContent: "<b>{label}</b>: {y}",
+                                        showInLegend: "true",
+                                        legendText: "{label}",
+                                        indexLabelFontSize: 16,
+                                        indexLabel: "{label} - {y}",
+                                        dataPoints: chartData
+                                    }]
+                                });
+                                
+                                // Render the chart
+                                chart.render();
+                            }
+                        </script>
+                    </div>
+                </div>
+                <!-- Pass the pie chart data to JavaScript -->
+                <script type="application/json" id="pieChartData">{{ pie_chart_data|safe }}</script>
                 
                 <section class="task-section" style="overflow-y: auto;">
                     <div style="width: 76.65vw; overflow-x: auto;">

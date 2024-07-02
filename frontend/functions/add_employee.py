@@ -106,6 +106,7 @@ def addemployee(request):
 from django.shortcuts import render, get_object_or_404
 import datetime as dt
 from collections import defaultdict
+import json
 
 def showemployee(request, epk):
     employee = get_object_or_404(EmployeeDetail, pk=epk)
@@ -118,31 +119,31 @@ def showemployee(request, epk):
     for task in employee_tasks:
         team_name = task.project.team.name
         project_name = task.project.project_name
-        task_type = task.task_type.name  # Assuming TaskSheet has a ForeignKey to TaskType
+        task_type = task.task_type.name
 
         tasks_by_team_and_project[team_name][project_name][task_type] += 1
 
-    # Print aggregated tasks for debugging
+    # Prepare data for the pie chart
+    pie_chart_data = []
     for team_name, projects in tasks_by_team_and_project.items():
-        
-        print(f" - Team: {team_name}")
         for project_name, task_types in projects.items():
-            print("      ------------------------")
-            print(f"   - Project: {project_name}")
-            print("      ------------------------")
             for task_type, count in task_types.items():
-                print(f"     - Task Type: {task_type}, Count: {count}")
-                
+                pie_chart_data.append({
+                    'y': count,
+                    'label': f"{team_name} - {project_name} - {task_type}"
+                })
 
-    # Prepare context for rendering
     context = {
         'employee': employee,
         'startdate': startdate,
         'enddate': enddate,
-        'tasks':employee_tasks,
+        'tasks': employee_tasks,
         'tasks_by_team_and_project': tasks_by_team_and_project.items(),
+        'pie_chart_data': json.dumps(pie_chart_data),  # Serialize to JSON
     }
     return render(request, 'tmt-tool/employee_details.html', context)
+
+
 
 
 
