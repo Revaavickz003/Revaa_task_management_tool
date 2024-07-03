@@ -44,7 +44,7 @@
                             <div class="col-6">
                                 <p class="fs-6 m-0 p-0">Assignees :</p>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 text-truncate">
                                 <a href="{% url 'showemployee' epk=task.assigned_to.pk %}" class="text-primary d-flex align-items-center cs-alert-gray text-decoration-none" style="width: fit-content; border-radius: 5px !important;">
                                     {% if task.assigned_to.employee_photo %}
                                     <img src="{{task.assigned_to.employee_photo.url}}" class="rounded-5 me-2" alt="casdasd" style="width: 25px; height: 25px;">
@@ -59,7 +59,7 @@
                             <div class="col-6">
                                 <p class="fs-6 m-0 p-0">Task type :</p>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 text-truncate">
                                 <p class="m-0 p-0 
                                 {% if task.task_type.color == 'None' %}
                                 border-gray
@@ -80,7 +80,7 @@
                                 {% elif task.task_type.color == 'Purple' %}
                                 cs-alert-purple
                                 {% endif %}
-                                text-truncate" data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight">{{task.task_type}} </p>
+                                text-truncate" data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight" >{{task.task_type}} </p>
                             </div>
                         </div>
                         <div class="row mt-3">

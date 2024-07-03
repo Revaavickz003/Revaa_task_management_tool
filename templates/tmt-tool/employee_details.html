@@ -181,44 +181,54 @@
                     </form>        
                 </div>
                 <hr>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
-                        <div id="chartContainer" style="height: 350px; width: 100%;" class="border"></div>
-                        <script>
-                            window.onload = function() {
-                                // Retrieve the data from the script tag
-                                var chartData = JSON.parse(document.getElementById('pieChartData').textContent);
-                                
-                                // Initialize the chart
-                                var chart = new CanvasJS.Chart("chartContainer", {
-                                    theme: "light2",
-                                    exportEnabled: true,
-                                    animationEnabled: true,
-                                    title: {
-                                        text: "Task Distribution by Team, Project, and Task Type"
-                                    },
-                                    data: [{
-                                        type: "pie",
-                                        startAngle: 25,
-                                        toolTipContent: "<b>{label}</b>: {y}",
-                                        showInLegend: "true",
-                                        legendText: "{label}",
-                                        indexLabelFontSize: 16,
-                                        indexLabel: "{label} - {y}",
-                                        dataPoints: chartData
-                                    }]
-                                });
-                                
-                                // Render the chart
-                                chart.render();
+                <style>
+                    .report-table {
+                        width: 70%;
+                        border: 1px solid rgb(197, 197, 197);
+                    }
+                    .report-table th, .report-table td {
+                        text-align: start;
+                        border: 1px solid rgb(197, 197, 197);
+                        padding: 0.1rem;
+                    }
+                </style>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <td class="text-white bg-primary p-1">Team</td>
+                            <td class="text-white bg-primary p-1">Project</td>
+                            <td class="text-white bg-primary p-1">Task Type</td>
+                            <td class="text-white bg-primary p-1">Count</td>
+                            <td class="text-white bg-primary p-1">Minutes</td>
+                            <td class="text-white bg-primary p-1">Hours</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tasksTableBody">
+                        <!-- Table rows will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+                <script>
+                    var tasksData = JSON.parse('{{ tasks_json|escapejs }}');
+            
+                    function generateTableRows(data) {
+                        var html = '';
+                        for (var team in data) {
+                            html += '<tr class="team-header"><td class="bg-secondary text-dark p-1">' + team + '</td><td colspan="3"></td></tr>';
+                            for (var project in data[team]) {
+                                html += '<tr class="project-header bg-gray"><td></td><td>' + project + '</td><td colspan="2"></td></tr>';
+                                for (var taskType in data[team][project]) {
+                                    html += '<tr><td></td><td></td><td>' + taskType + '</td><td>' + data[team][project][taskType] + '</td></tr>';
+                                }
                             }
-                        </script>
-                    </div>
-                </div>
-                <!-- Pass the pie chart data to JavaScript -->
-                <script type="application/json" id="pieChartData">{{ pie_chart_data|safe }}</script>
-                
+                        }
+                        return html;
+                    }
+            
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var tasksTableBody = document.getElementById('tasksTableBody');
+                        tasksTableBody.innerHTML = generateTableRows(tasksData);
+                    });
+                </script>
                 <section class="task-section" style="overflow-y: auto;">
                     <div style="width: 76.65vw; overflow-x: auto;">
                         <table class="table align-middle mb-0 mt-3" style="width: 110vw;">
@@ -392,6 +402,4 @@
 </style>
 {% endblock %}
 {% block script %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}
