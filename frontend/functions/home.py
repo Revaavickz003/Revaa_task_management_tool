@@ -14,3 +14,5 @@ def date_view(request, date=None):
     if date is None:
         date = timezone.now().date()
     return render(request, 'tmt-tool/home.html', {'date': date})
+
+
