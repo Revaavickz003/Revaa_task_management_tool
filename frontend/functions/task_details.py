@@ -4,7 +4,9 @@ from django.contrib import messages
 from frontend.models import *
 from django.contrib.auth.decorators import login_required
 import datetime as dt
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def new_task(request, team_pk, project_pk):
     if request.method == 'POST':
         title = request.POST.get('taskname')
@@ -51,7 +53,7 @@ def new_task(request, team_pk, project_pk):
 
     return redirect(reverse('project_details', kwargs={'team_pk': team_pk, 'project_pk': project_pk}))
 
-
+@login_required(login_url='login')
 def new_type(request, team_pk, project_pk):
     if request.method == 'POST':
         typename = request.POST.get('typename')
@@ -74,7 +76,7 @@ def new_type(request, team_pk, project_pk):
             messages.error(request, f'Error adding new type: {str(e)}')
             return redirect(reverse('project_details', kwargs={'team_pk': team_pk, 'project_pk': project_pk}))
 
-
+@login_required(login_url='login')
 def taskopen(request, team_pk, project_pk, task_pk):
     task = TaskSheet.objects.get(pk=task_pk)
     get_team = Team.objects.get(pk=team_pk)
@@ -98,6 +100,7 @@ def taskopen(request, team_pk, project_pk, task_pk):
 
 from django.http import JsonResponse
 
+@login_required(login_url='login')
 def starttimefortask(request, teampk, ppk, tpk):
     if request.method == 'POST':
         try:
@@ -109,6 +112,7 @@ def starttimefortask(request, teampk, ppk, tpk):
             return JsonResponse({'status': 'error', 'message': 'Task not found'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
+@login_required(login_url='login')
 def endtimefortask(request, teampk, ppk, tpk):
     if request.method == 'POST':
         try:
@@ -120,6 +124,7 @@ def endtimefortask(request, teampk, ppk, tpk):
             return JsonResponse({'status': 'error', 'message': 'Task not found'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
+@login_required(login_url='login')
 def deletetask(request, teampk, ppk, tpk):
     try:
         task = TaskSheet.objects.get(id=tpk)
@@ -130,6 +135,7 @@ def deletetask(request, teampk, ppk, tpk):
         messages.error(request, 'Task not found')
         return redirect(reverse('project_details', kwargs={'team_pk': teampk, 'project_pk': ppk}))
     
+@login_required(login_url='login')   
 def updatetask(request, teampk, ppk, tpk):
     if request.method == 'POST':
         eta = request.POST.get('ETA')
@@ -223,7 +229,8 @@ def updatetask(request, teampk, ppk, tpk):
         task.save()
 
         return redirect(reverse('taskopen', kwargs={'team_pk': teampk, 'project_pk': ppk, 'task_pk': tpk}))
-    
+
+@login_required(login_url='login')
 def task_comments(request, teampk, ppk, tpk):
     if request.method == 'POST':
         comment = request.POST.get('comment')

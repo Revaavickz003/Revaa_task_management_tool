@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from frontend.models import *
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def teams_details(request, pk):
     try:
         get_team = Team.objects.get(pk=pk)
@@ -29,7 +31,7 @@ def teams_details(request, pk):
     
     return render(request, 'tmt-tool/team_details.html', context)
 
-
+@login_required(login_url='login')
 def addtask_teampage(request, pk):
     if request.method == 'POST':
         task_title = request.POST.get('taskname')
