@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.files.storage import FileSystemStorage
 from frontend.models import EmployeeDetail
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def messages(request):
     userr = EmployeeDetail.objects.all()
     context = {
@@ -30,6 +32,7 @@ def messages(request):
 
     return render(request, 'tmt-tool/messages.html', context)
 
+@login_required(login_url='login')
 def openmessagesection(request, pk):
     messagee = get_object_or_404(EmployeeDetail,pk=pk)
     userr = EmployeeDetail.objects.all()

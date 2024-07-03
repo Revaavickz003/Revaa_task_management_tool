@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
 from frontend.models import *
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='login')
 def projects_details(request, team_pk, project_pk):
     try:
         get_team = Team.objects.get(pk=team_pk)
@@ -34,6 +35,7 @@ def projects_details(request, team_pk, project_pk):
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 
+@login_required(login_url='login')
 def get_project_details(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
     statuses = status.objects.filter(project=project)

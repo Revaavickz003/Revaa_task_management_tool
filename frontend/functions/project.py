@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def projects_page(request):
     if request.method == 'POST':
         project_name = request.POST.get('projectname')
@@ -57,12 +58,14 @@ def projects_page(request):
 
     return render(request, 'tmt-tool/project.html', context)
 
+@login_required(login_url='login')
 def get_projects(request, client_id):
     client = get_object_or_404(customersTable, pk=client_id)
     products = client.products.all()
     project_list = [{'id': product.id, 'name': product.Product_Name} for product in products]
     return JsonResponse({'projects': project_list})
 
+@login_required(login_url='login')
 def closeproject(request, pk):
     project = Project.objects.get(pk=pk)
     project.status = 'Closed'
@@ -70,6 +73,7 @@ def closeproject(request, pk):
     messages.success(request, 'Project Closed Successfully')
     return redirect('project')
 
+@login_required(login_url='login')
 def openprojectteam(request, team):
     team = Team.objects.get(name=team)
     context = {'Project': 'active',
@@ -81,6 +85,7 @@ def openprojectteam(request, team):
     
     return render(request, 'tmt-tool/project.html', context)
 
+@login_required(login_url='login')
 def singleprojectopen(request, pk):
     project = Project.objects.get(pk=pk)
     tasks = TaskSheet.objects.filter(project =project)[::-1]
@@ -97,6 +102,7 @@ def singleprojectopen(request, pk):
     }
     return render(request, 'tmt-tool/singleprojectopen.html', context)  
 
+@login_required(login_url='login')
 def update_project_details(request, pk):
     project = Project.objects.get(pk=pk)
     if request.method == 'POST':
@@ -113,7 +119,8 @@ def update_project_details(request, pk):
         return redirect(reverse('singleprojectopen', kwargs={'pk': pk}))
     else:
         return redirect(reverse('singleprojectopen', kwargs={'pk': pk}))
-    
+
+@login_required(login_url='login')    
 def update_status_details(request, pk):
     project = Project.objects.get(pk=pk)
     if request.method == 'POST':
