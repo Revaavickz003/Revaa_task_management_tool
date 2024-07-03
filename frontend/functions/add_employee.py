@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from frontend.models import *
 import datetime as dt
+from django.contrib.auth.decorators import login_required
 
 from django.utils.timezone import make_aware
 from datetime import datetime, timedelta
@@ -13,6 +14,7 @@ from frontend.models import EmployeeDetail, TaskSheet
 from frontend.serializers import TaskSheetSerializer
 from rest_framework.decorators import api_view
 
+@login_required(login_url='login')
 def addemployee(request):
     if request.method == 'POST':
         # Get all values from the form
@@ -108,6 +110,7 @@ import datetime as dt
 from collections import defaultdict
 import json
 
+@login_required(login_url='login')
 def showemployee(request, epk):
     employee = get_object_or_404(EmployeeDetail, pk=epk)
     enddate = dt.datetime.now().date() + dt.timedelta(days=1)
@@ -146,8 +149,7 @@ def showemployee(request, epk):
 
 
 
-
-
+@login_required(login_url='login')
 def employee_task_data(request, epk, start_date, end_date):
     employee = get_object_or_404(EmployeeDetail, pk=epk)
     tasks = TaskSheet.objects.filter(assigned_to=employee, start_date_time__range=[start_date, end_date])

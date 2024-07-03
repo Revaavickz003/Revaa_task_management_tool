@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from frontend.models import Team, Project
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def close_projects_page(request):
     if request.method == 'POST':
         project_name = request.POST.get('projectname')
@@ -34,7 +36,7 @@ def close_projects_page(request):
     
     return render(request, 'tmt-tool/project.html', context)
 
-
+@login_required(login_url='login')
 def Reopen(request, pk):
     project = Project.objects.get(pk=pk)
     project.status = 'On Process'
@@ -42,6 +44,7 @@ def Reopen(request, pk):
     messages.success(request, 'Project Reopen Successfully')
     return redirect('close_projects_page')
 
+@login_required(login_url='login')
 def closeprojectteam(request, team):
     team = Team.objects.get(name=team)
     context = {'Project': 'active',

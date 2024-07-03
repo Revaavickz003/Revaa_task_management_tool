@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from frontend.models import EmployeeDetail, Team, Project
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def teams(request):
     # Get all teams
     all_teams = Team.objects.all()

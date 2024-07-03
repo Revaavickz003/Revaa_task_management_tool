@@ -1,7 +1,9 @@
 from django.shortcuts import redirect, render
 from frontend.models import Team, EmployeeDetail
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def create_team(request):
     if request.method == 'POST':
         team_logo = request.FILES.get('team_logo')
