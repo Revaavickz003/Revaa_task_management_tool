@@ -41,3 +41,5 @@ def openmessagesection(request, pk):
              }
     return render(request, 'tmt-tool/messages.html', context)
 
+
+# Nothing to message.py
