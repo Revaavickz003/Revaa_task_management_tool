@@ -71,6 +71,9 @@ urlpatterns = [
     path('deletetask/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.deletetask, name='deletetask'),
     path('updatetask/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.updatetask, name='updatetask'),
     path('addcomments/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.task_comments, name='addcomments'),
+    path('holdtask/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.holdtask, name='holdtask'),
+    path('cancelholdtask/<int:teampk>/<int:ppk>/<int:tpk>/', task_details.cancelholdtask, name='cancelholdtask'),
+
 
     path('statistics/', views.statistics_view, name='statistics'),
     path('chart/filter-options/', views.get_filter_options, name='filter_options'),

@@ -23,9 +23,15 @@
                             <div class="d-flex justify-content-end" style="width: 30%; gap: 5px;">
                                 {% if task.start_date_time %}
                                 {% if task.hold %}
-                                <a href="" class="btn btn-sm btn-primary" style="border-radius: 5px !important;">Start</a>
+                                <form action="{% url 'cancelholdtask' teampk=team.pk ppk=get_project.pk tpk=task.pk %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-primary" style="border-radius: 5px !important;">Start</button>
+                                </form>
                                 {% else %}
-                                <a href="" class="btn btn-sm btn-primary" style="border-radius: 5px !important;">Hold</a>
+                                <form action="{% url 'holdtask' teampk=team.pk ppk=get_project.pk tpk=task.pk %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-primary" style="border-radius: 5px !important;">Hold</button>
+                                </form>
                                 {% endif %}
                                 {% endif %}
                                 <button class="btn btn-primary btn-sm" style="border-radius: 5px !important;" data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight">Edit {% if not task.start_date_time  %} Task {% endif %}</button>
