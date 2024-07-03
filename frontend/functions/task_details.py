@@ -3,7 +3,8 @@ from django.urls import reverse
 from django.contrib import messages
 from frontend.models import *
 from django.contrib.auth.decorators import login_required
-import datetime as dt
+import datetime as dt 
+from datetime import datetime as fromdt
 
 def new_task(request, team_pk, project_pk):
     if request.method == 'POST':
@@ -114,6 +115,13 @@ def endtimefortask(request, teampk, ppk, tpk):
         try:
             task = TaskSheet.objects.get(id=tpk)
             task.end_date_time = dt.datetime.now()
+            task.save()
+
+            time_difference = task.end_date_time - task.start_date_time 
+            total_minutes = time_difference.total_seconds() / 60
+            total_hours = time_difference.total_seconds() / 3600
+            task.working_minutes = total_minutes
+            task.working_hours = total_hours
             task.save()
             return JsonResponse({'status': 'success', 'end_time': task.end_date_time})
         except TaskSheet.DoesNotExist:

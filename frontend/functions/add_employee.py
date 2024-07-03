@@ -123,23 +123,17 @@ def showemployee(request, epk):
 
         tasks_by_team_and_project[team_name][project_name][task_type] += 1
 
-    # Prepare data for the pie chart
-    pie_chart_data = []
-    for team_name, projects in tasks_by_team_and_project.items():
-        for project_name, task_types in projects.items():
-            for task_type, count in task_types.items():
-                pie_chart_data.append({
-                    'y': count,
-                    'label': f"{team_name} - {project_name} - {task_type}"
-                })
+    # Convert the aggregated tasks to JSON format
+    tasks_json_compatible = {team: {project: dict(task_types) for project, task_types in projects.items()} for team, projects in tasks_by_team_and_project.items()}
+    tasks_json = json.dumps(tasks_json_compatible)
 
     context = {
         'employee': employee,
         'startdate': startdate,
         'enddate': enddate,
         'tasks': employee_tasks,
+        'tasks_json':tasks_json,
         'tasks_by_team_and_project': tasks_by_team_and_project.items(),
-        'pie_chart_data': json.dumps(pie_chart_data),  # Serialize to JSON
     }
     return render(request, 'tmt-tool/employee_details.html', context)
 
