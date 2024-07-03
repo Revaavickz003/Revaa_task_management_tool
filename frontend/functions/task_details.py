@@ -120,6 +120,11 @@ def endtimefortask(request, teampk, ppk, tpk):
             task = TaskSheet.objects.get(id=tpk)
             task.end_date_time = dt.datetime.now()
             task.save()
+            tasktimeing.objects.create(
+                task=task,
+                start_time=task.note_start_time,
+                end_time=task.end_date_time,
+            )
             return JsonResponse({'status': 'success', 'end_time': task.end_date_time})
         except TaskSheet.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Task not found'})
@@ -248,4 +253,37 @@ def task_comments(request, teampk, ppk, tpk):
             corrent_date_time = dt.datetime.now()
         )
 
+    return redirect(reverse('taskopen', kwargs={'team_pk':teampk, 'project_pk':ppk, 'task_pk':tpk}))
+
+@login_required(login_url='/login')
+def holdtask(request, teampk, ppk, tpk):
+    if request.method == 'POST':
+        get_task = get_object_or_404(TaskSheet, pk=tpk)
+        get_task.hold = True
+        get_task.note_end_time = dt.datetime.now()
+        get_task.save()
+        time_difference = get_task.note_start_time - get_task.note_end_time
+        tasktimeing.objects.create(
+            task = get_task,
+            working_minutes = time_difference.total_seconds() / 60,
+            working_hours = time_difference.total_seconds() / 3600,
+            working_days = time_difference.days,
+
+        )
+        messages.success(request, f'{get_task.title} task is holding success fully ...')
+    else:
+        messages.error(request, 'Sorry... !')
+    return redirect(reverse('taskopen', kwargs={'team_pk':teampk, 'project_pk':ppk, 'task_pk':tpk}))
+
+@login_required(login_url='/login')
+def cancelholdtask(request, teampk, ppk, tpk):
+    if request.method == 'POST':
+        get_task = get_object_or_404(TaskSheet, pk=tpk)
+        get_task.hold = False
+        get_task.note_start_time = dt.datetime.now()
+        get_task.note_end_time = None
+        get_task.save()
+        messages.success(request, f'{get_task.title} task is working start ...')
+    else:
+        messages.error(request, 'Sorry... !')
     return redirect(reverse('taskopen', kwargs={'team_pk':teampk, 'project_pk':ppk, 'task_pk':tpk}))
