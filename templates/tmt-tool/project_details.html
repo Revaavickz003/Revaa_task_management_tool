@@ -106,7 +106,7 @@
                         <div class="pb-1">
                             {% for task in tasks %}
                             {% if task.status.id == status.id %}
-                            <div class="task-body border mt-2 p-1 px-2 mx-1 bg-gray rounded">
+                            <div class="task-body {% if task.hold == True %} border {% endif %} border-danger mt-2 p-1 px-2 mx-1 bg-gray rounded">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                     <p class="m-0 p-0 text-truncate me-2"><a href="{% url 'taskopen' team_pk=get_team.pk project_pk=get_project.pk task_pk=task.pk %}" class="text-decoration-none text-primary">{{task.title}}</a></p>
                                     <div class="d-flex align-items-center justify-content-center" style="width: 28  px; height: 28px; border-radius: 50%; overflow: hidden;">

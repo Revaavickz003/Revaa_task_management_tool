@@ -106,6 +106,7 @@ def starttimefortask(request, teampk, ppk, tpk):
         try:
             task = TaskSheet.objects.get(id=tpk)
             task.start_date_time = dt.datetime.now()
+            task.note_start_time = task.start_date_time
             task.save()
             return JsonResponse({'status': 'success', 'start_time': task.start_date_time})
         except TaskSheet.DoesNotExist:
@@ -118,13 +119,6 @@ def endtimefortask(request, teampk, ppk, tpk):
         try:
             task = TaskSheet.objects.get(id=tpk)
             task.end_date_time = dt.datetime.now()
-            task.save()
-
-            time_difference = task.end_date_time - task.start_date_time 
-            total_minutes = time_difference.total_seconds() / 60
-            total_hours = time_difference.total_seconds() / 3600
-            task.working_minutes = total_minutes
-            task.working_hours = total_hours
             task.save()
             return JsonResponse({'status': 'success', 'end_time': task.end_date_time})
         except TaskSheet.DoesNotExist:

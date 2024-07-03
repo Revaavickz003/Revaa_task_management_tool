@@ -19,8 +19,19 @@
                 <div class="col-4">
                     <div class="container border rounded p-3">
                         <div class="d-flex align-items-center justify-content-between">
-                            <p class="fs-5 fw-bold m-0 p-0">#{{task.pk}} Task Details </p>
-                            <button class="btn btn-primary btn-sm" style="border-radius: 5px !important;" data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight">Edit Task</button>
+                            <p class="text-truncate fs-5 fw-bold m-0 p-0" style="width: 60;">#{{task.pk}} Task Details </p>
+                            <div class="d-flex justify-content-end" style="width: 30%; gap: 5px;">
+                                {% if task.start_date_time %}
+                                {% if task.hold %}
+                                <a href="" class="btn btn-sm btn-primary" style="border-radius: 5px !important;">Start</a>
+                                {% else %}
+                                <a href="" class="btn btn-sm btn-primary" style="border-radius: 5px !important;">Hold</a>
+                                {% endif %}
+                                {% endif %}
+                                <button class="btn btn-primary btn-sm" style="border-radius: 5px !important;" data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight">Edit {% if not task.start_date_time  %} Task {% endif %}</button>
+                            </div>
+                            
+                            
                         </div>
                         {% include 'alert_popup/taskupdate_form.html' %}
                         <hr>

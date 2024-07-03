@@ -48,7 +48,7 @@ urlpatterns = [
     path('api/employee/<int:epk>/tasks/', add_employee.employee_task_data, name='employee_task_data'),
 
     # Messages 
-    path('messages/<int:pk>', messages.openmessagesection, name='openmessagesection'),
+    path('messages/<int:pk>/', messages.openmessagesection, name='openmessagesection'),
 
     # Teams
     path('newteam/',new_team_create.create_team, name='create_team'),
