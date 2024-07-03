@@ -10,6 +10,8 @@ from .models import (
     Type,
     customersTable,
     comments,
+    ChatRoom,
+    Message,
 )
 
 admin.site.register(ProductTable)
@@ -21,3 +23,5 @@ admin.site.register(status)
 admin.site.register(Type)
 admin.site.register(customersTable)
 admin.site.register(comments)
+admin.site.register(ChatRoom)
+admin.site.register(Message)

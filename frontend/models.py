@@ -271,3 +271,4 @@ class comments(models.Model):
 
     def __str__(self):
         return f"Comment by {self.user.name} on {self.task.title}"
+

@@ -64,14 +64,17 @@
                             <div class="chat-history" id="chat-history" style="position: relative;">
                                 <ul class="m-b-0">
                                     <!-- Example messages -->
-                                    <li class="clearfix">
-                                        <div class="message my-message">
-                                            <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis facere mollitia perspiciatis magni, libero laudantium, dignissimos veritatis fugiat aliquid aperiam voluptatum. Hic, magnam sed in omnis a ab molestiae ea.</small>
+                                    {% for msg in messages_list %}
+                                    <li class="clearfix {% if msg.sender == request.user %}my-message{% else %}other-message-container{% endif %}"">
+                                        <div class="message {% if msg.sender == request.user %}my-message{% else %}other-message{% endif %}">
+                                            <small>{{ msg.content }}</small>
                                             <div class="text-end border-top text-muted">
-                                                <small style="font-size: 12px; font-style: italic;">10.10 PM</small>
+                                                <small style="font-size: 12px; font-style: italic;">{{ msg.created_at|date:"h:i A" }}</small>
                                             </div>
                                         </div>
                                     </li>
+                                    {% endfor %}
+                                    <!--
                                     <li class="clearfix other-message-container">
                                         <div class="message other-message">
                                             <small>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis facere mollitia perspiciatis magni, libero laudantium, dignissimos veritatis fugiat aliquid aperiam voluptatum. Hic, magnam sed in omnis a ab molestiae ea.</small>
@@ -84,8 +87,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
-                                </ul>
+                                    </li> -->
+                                </ul> 
                                 <div class="preview-container" id="preview-container" style="display: none;">
                                     <div class="preview h-100" id="preview">
                                         <div class="file-info" id="file-info"></div>
