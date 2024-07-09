@@ -71,6 +71,3 @@ plt.tight_layout()
 plt.savefig('/mnt/data/task_report.png')
 plt.show()
 
-
-
-# Nothing 09-07-24
