@@ -160,33 +160,41 @@
                         </div>
                     </div>
                 </div>
-                {% if tasks %}
+                
                 <h4 class="text-truncate fs-5 fw-bold m-0 p-0 my-3">Report Dashboard</h4>
                 <div class="report-container d-flex align-items-center justify-content-between">
-                    <form action="" class="" style="width: 85% !important;">
+                    <form id="dateFilterForm" class="" style="width: 85% !important;">
                         <div class="my-3">
                             <div class="row">
                                 <div class="col-4">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">From Date</span>
-                                        <input type="date" class="form-control" name="from-date">
+                                        <input type="date" class="form-control" name="from-date" id="from-date">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">To Date</span>
-                                        <input type="date" class="form-control" name="todate">
+                                        <input type="date" class="form-control" name="todate" id="to-date">
                                     </div>
                                 </div>
                                 <div class="col-1">
-                                    <input type="submit" class="btn btn-primary" value="Get Report">
+                                    <button type="submit" class="btn btn-primary">Get Report</button>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    <a href=""class="btn btn-primary">Export Report</a>
+                    <div>
+                        <p class="m-0 p-0 d-flex align-items-center justify-content-center btn cs-alert-primary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><span>More</span> <i class='bx bx-chevron-down fs-4'></i></p>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Download this task</a></li>
+                            <li><a class="dropdown-item" href="#">Download last 30 days task</a></li>
+                            <li><a class="dropdown-item" href="#">Download all task</a></li>
+                          </ul>
+                    </div>
                 </div>
                 <hr>
+                {% if tasks %}
                 <style>
                     .report-table th, .report-table td {
                         text-align: center;
@@ -210,7 +218,7 @@
                         <!-- Table rows will be inserted here by JavaScript -->
                     </tbody>
                     <tr>
-                        <td colspan="3" style="border: none !important;"></td>
+                        <td colspan="3"></td>
                         <td class="bg-secondary text-center">Total</td>
                         <td class="bg-secondary">{{total_min}} Minutes</td>
                         <td class="bg-secondary">{{total_hrs}} Hours</td>
@@ -230,7 +238,7 @@
                                 var tasks = data[team][project].tasks;
                                 for (var taskType in tasks) {
                                     var taskTypePk = tasks[taskType].pk;
-                                    html += '<tr><td colspan="2"></td><td>' + taskType + '</td><td>' + tasks[taskType].count + '</td><td>' + tasks[taskType].minutes + ' Minutes'+ '</td><td>' + tasks[taskType].hours + ' Hours' + '</td></tr>';
+                                    html += '<tr><td></td><td></td><td>' + taskType + '</td><td>' + tasks[taskType].count + '</td><td>' + tasks[taskType].minutes + ' Minutes'+ '</td><td>' + tasks[taskType].hours + ' Hours' + '</td></tr>';
                                 }
                             }
                         }
@@ -414,6 +422,72 @@
         box-shadow: none !important;
     }
 </style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('dateFilterForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const fromDate = document.getElementById('from-date').value;
+            const toDate = document.getElementById('to-date').value;
+
+            if (!fromDate || !toDate) {
+                alert('Please select both from and to dates');
+                return;
+            }
+
+            const url = `{% url 'filter_tasks' employee.pk %}?from_date=${fromDate}&to_date=${toDate}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        updateTable(data.tasks);
+                        updateTotal(data.total_min, data.total_hrs);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        function updateTable(tasks) {
+            const tasksTableBody = document.getElementById('tasksTableBody');
+            tasksTableBody.innerHTML = generateTableRows(tasks);
+        }
+
+        function updateTotal(totalMin, totalHrs) {
+            document.querySelector('.total-minutes').innerText = `${totalMin} Minutes`;
+            document.querySelector('.total-hours').innerText = `${totalHrs} Hours`;
+        }
+    });
+</script>
+
+<script>
+    var tasksData = JSON.parse('{{ tasks_json|escapejs }}');
+
+    function generateTableRows(data) {
+        var html = '';
+        for (var team in data) {
+            html += '<tr class="team-header"><td class="bg-secondary text-dark p-1">' + team + '</td><td colspan="5"></td></tr>';
+            for (var project in data[team]) {
+                var projectPk = data[team][project].pk;
+                html += '<tr class="project-header bg-gray"><td></td><td>' + project + ' ' + projectPk + '</td><td colspan="4"></td></tr>';
+                var tasks = data[team][project].tasks;
+                for (var taskType in tasks) {
+                    var taskTypePk = tasks[taskType].pk;
+                    html += '<tr><td></td><td></td><td>' + taskType + '</td><td>' + tasks[taskType].count + '</td><td>' + tasks[taskType].minutes + ' Minutes' + '</td><td>' + tasks[taskType].hours + ' Hours' + '</td></tr>';
+                }
+            }
+        }
+        return html;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var tasksTableBody = document.getElementById('tasksTableBody');
+        tasksTableBody.innerHTML = generateTableRows(tasksData);
+    });
+</script>
 {% endblock %}
 {% block script %}
 {% endblock %}

@@ -3,73 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temporary ID Card</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .card-body {
-            position: relative;
-            overflow: hidden;
-            height: 100%;
-            padding: 20px;
-        }
-        .card-body::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background-color: #2c3e50; /* Change this color to whatever you need */
-            z-index: -1;
-        }
-        .bg-gray {
-            background-color: #f8f9fa; /* Adjust as necessary */
-            padding: 10px;
-            border-radius: 50%;
-        }
-        .id-image-container {
-            position: relative;
-        }
-        .id-card-image {
-            position: relative;
-            z-index: 1;
-        }
-        .yellow-ball {
-            position: absolute;
-            bottom: -10px;
-            right: -10px;
-            width: 20px;
-            height: 20px;
-            background-color: yellow;
-            border-radius: 50%;
-        }
-        .id-card-body-content {
-            position: relative;
-            z-index: 1;
-        }
-    </style>
+    <title>Dynamic Task Time Allocation Pie Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="card-body">
-            <div class="d-flex flex-column align-items-center text-center">
-                <div class="bg-gray">
-                    <img src="{% static 'images/revaa_logo.png' %}" alt="" width="120">
-                </div>
-                <div class="id-image-container rounded-circle border bg-white mt-5" style="width: 150px; height: 148px;">
-                    <img src="{% static 'images/Employee_avathar.png' %}" alt="Admin" class="id-card-image" width="100">
-                    <div class="yellow-ball"></div>
-                </div>
-                <div class="mt-3 id-card-body-content">
-                    <h4>John Doe</h4>
-                    <p class="text-secondary mb-1">EMP ID : RDS023</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <h1>Task Time Allocation Pie Chart</h1>
+    <canvas id="myPieChart" width="400" height="400"></canvas>
+    <script>
+        // Function to convert hours to minutes and sum up the total time for each task
+        function calculateTotalMinutes(taskData) {
+            const totalMinutes = taskData.minutes + (taskData.hours * 60);
+            return totalMinutes;
+        }
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        // Dynamic data processing function
+        function processData(data) {
+            const labels = [];
+            const values = [];
+
+            const projects = data["Software Devlopment"];
+            for (const project in projects) {
+                const tasks = projects[project]["tasks"];
+                for (const task in tasks) {
+                    labels.push(`${project} - ${task}`);
+                    const totalMinutes = calculateTotalMinutes(tasks[task]);
+                    values.push(totalMinutes);
+                }
+            }
+
+            return { labels, values };
+        }
+
+        // Task data
+        const tasksData = {
+            "Software Devlopment": {
+                "Office Table LMS": {
+                    "pk": 4,
+                    "tasks": {
+                        "Frontend New Developing": {
+                            "count": 2,
+                            "minutes": 240,
+                            "hours": 1.5,
+                            "pk": null
+                        },
+                        "Backend New Developing": {
+                            "count": 1,
+                            "minutes": 132,
+                            "hours": 2.0,
+                            "pk": null
+                        }
+                    }
+                },
+                "Inlingua CRM": {
+                    "pk": 5,
+                    "tasks": {
+                        "Fron end": {
+                            "count": 2,
+                            "minutes": 300,
+                            "hours": 5.0,
+                            "pk": null
+                        },
+                        "Backend": {
+                            "count": 1,
+                            "minutes": 60,
+                            "hours": 1.0,
+                            "pk": null
+                        }
+                    }
+                }
+            }
+        };
+
+        // Process the data
+        const { labels, values } = processData(tasksData);
+
+        // Pie chart configuration
+        const ctx = document.getElementById('myPieChart').getContext('2d');
+        const myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Task Time Allocation Pie Chart'
+                    }
+                }
+            },
+        });
+    </script>
+    <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
 </body>
 </html>
