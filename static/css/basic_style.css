@@ -273,7 +273,7 @@ i, #currentMonthYear{
     color: #212529;
     background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid #002549 !important;
+    border: 1px solid #d3d3d3 !important;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -495,7 +495,6 @@ i, #currentMonthYear{
 
 .cs-alert-green{
     background-color : rgb(204, 255, 204)!important;
-    width: fit-content;
     color: var(--bs-green);
     font-weight: 600;
     font-size: small;
@@ -579,4 +578,9 @@ i, #currentMonthYear{
     color: var(--bs-btn-active-color);
     background-color: var(--bs-btn-active-bg);
     border-color: var(--bs-btn-active-border-color)
+}
+
+.custom-form-select:focus{
+    border-color: var(--bs-primary) !important;
+    box-shadow: none !important;
 }

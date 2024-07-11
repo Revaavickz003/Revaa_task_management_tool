@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}{{get_team}} Report | Revaa {% endblock %}
+{% load static %}
+{% block container %}
+<div class="d-flex">
+    {% include 'includes/sidebar.html' %}
+    <div class="content w-100">
+        <div class="mt-3">
+            {% include 'includes/message.html' %}
+        </div>
+        <h4 class="text-truncate fs-5 fw-bold m-0 p-0 mb-4">{{get_team}} Task Report</h4>
+
+        <div class="report-container">
+            <form action="">
+                <div class="my-3 d-flex gap-2">
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">Select Project</span>
+                        <select name="projectname" id="" class="form-select custom-form-select"
+                            style="border-radius: 0 6px 6px 0;">
+                            <option value="">Over all report</option>
+                            {% for project in projects %}
+                            <option value="{{project.id}}">{{project.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="my-3">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1">From Date</span>
+                                <input type="date" class="form-control" name="from-date">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1">To Date</span>
+                                <input type="date" class="form-control" name="todate">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <input type="submit" class="btn btn-primary" value="Get Report">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

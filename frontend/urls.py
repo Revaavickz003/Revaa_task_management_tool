@@ -53,6 +53,7 @@ urlpatterns = [
     # Teams
     path('newteam/',new_team_create.create_team, name='create_team'),
     path('team/<int:pk>/',team_details.teams_details, name='teams_details'),
+    path('team/<int:teampk>/reports/',team_details.reports, name='reports'),
     path('team/<int:team_pk>/<int:project_pk>/', project_details.projects_details, name='project_details'),
     path('get_project_details/<int:project_id>/', project_details.get_project_details, name='get_project_details'),
 

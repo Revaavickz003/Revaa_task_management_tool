@@ -29,8 +29,9 @@
                                 Setting
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><button class="dropdown-item rounded-2" type="button">Add Members</button></li>
-                                <li><button class="dropdown-item rounded-2" type="button">Update</button></li>
+                                <li><button class="dropdown-item" type="button">Add Members</button></li>
+                                <li><button class="dropdown-item" type="button">Update</button></li>
+                                <a href="{% url 'reports' teampk=get_team.pk %}" class="text-decoration-none text-dark"><li><button class="dropdown-item" type="button">Reports</button></li></a>
                             </ul>
                         </div>
                     </div>

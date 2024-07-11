@@ -161,77 +161,91 @@
                     </div>
                 </div>
                 {% if tasks %}
-                <h5>Report Dashboard</h5>
-                <div class="container123 mt-4">
-                    <form id="filterForm">
-                        <div class="row mb-2 d-flex align-items-end">
-                            <div class="col-sm-3" style="gap: 10px;">
-                                <label for="fromdate" class="mb-1">From date</label>
-                                <input type="date" class="form-control date" name="startdate" id="fromdate" placeholder="From Date">
-                            </div>
-                            <div class="col-sm-3" style="gap: 10px;">
-                                <label for="todate" class="mb-1">To date</label>
-                                <input type="date" class="form-control date" name="enddate" id="todate">
-                            </div>
-                            <div class="col-sm-3 d-flex align-items-end" style="gap: 8px;">
-                                <button type="submit" class="btn btn-primary" id="loadData">Load data</button>
-                                <a href="" class="btn btn-primary">Print report</a>
+                <h4 class="text-truncate fs-5 fw-bold m-0 p-0 my-3">Report Dashboard</h4>
+                <div class="report-container d-flex align-items-center justify-content-between">
+                    <form action="" class="" style="width: 85% !important;">
+                        <div class="my-3">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1">From Date</span>
+                                        <input type="date" class="form-control" name="from-date">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1">To Date</span>
+                                        <input type="date" class="form-control" name="todate">
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <input type="submit" class="btn btn-primary" value="Get Report">
+                                </div>
                             </div>
                         </div>
-                    </form>        
+                    </form>
+                    <a href=""class="btn btn-primary">Export Report</a>
                 </div>
                 <hr>
                 <style>
-                    .report-table {
-                        width: 70%;
-                        border: 1px solid rgb(197, 197, 197);
-                    }
                     .report-table th, .report-table td {
-                        text-align: start;
+                        text-align: center;
                         border: 1px solid rgb(197, 197, 197);
                         padding: 0.1rem;
                     }
                 </style>
-                <table class="report-table">
+                <h4 class="text-truncate fs-5 fw-bold m-0 p-0 my-3">Review Report</h4>
+                <table class="report-table w-100">
                     <thead>
                         <tr>
                             <td class="text-white bg-primary p-1">Team</td>
                             <td class="text-white bg-primary p-1">Project</td>
                             <td class="text-white bg-primary p-1">Task Type</td>
-                            <td class="text-white bg-primary p-1">Count</td>
-                            <td class="text-white bg-primary p-1">Minutes</td>
-                            <td class="text-white bg-primary p-1">Hours</td>
+                            <td class="text-white bg-primary p-1">Task Count</td>
+                            <td class="text-white bg-primary p-1">Task Minutes</td>
+                            <td class="text-white bg-primary p-1">Task Hours</td>
                         </tr>
                     </thead>
                     <tbody id="tasksTableBody">
                         <!-- Table rows will be inserted here by JavaScript -->
                     </tbody>
+                    <tr>
+                        <td colspan="3" style="border: none !important;"></td>
+                        <td class="bg-secondary text-center">Total</td>
+                        <td class="bg-secondary">{{total_min}} Minutes</td>
+                        <td class="bg-secondary">{{total_hrs}} Hours</td>
+                    </tr>
                 </table>
+                
                 <script>
                     var tasksData = JSON.parse('{{ tasks_json|escapejs }}');
-            
+                
                     function generateTableRows(data) {
                         var html = '';
                         for (var team in data) {
-                            html += '<tr class="team-header"><td class="bg-secondary text-dark p-1">' + team + '</td><td colspan="3"></td></tr>';
+                            html += '<tr class="team-header"><td class="bg-secondary text-dark p-1">' + team + '</td><td colspan="5"></td></tr>';
                             for (var project in data[team]) {
-                                html += '<tr class="project-header bg-gray"><td></td><td>' + project + '</td><td colspan="2"></td></tr>';
-                                for (var taskType in data[team][project]) {
-                                    html += '<tr><td></td><td></td><td>' + taskType + '</td><td>' + data[team][project][taskType] + '</td></tr>';
+                                var projectPk = data[team][project].pk;
+                                html += '<tr class="project-header bg-gray"><td></td><td>' + project + ' ' + projectPk + '</td><td colspan="4"></td></tr>';
+                                var tasks = data[team][project].tasks;
+                                for (var taskType in tasks) {
+                                    var taskTypePk = tasks[taskType].pk;
+                                    html += '<tr><td colspan="2"></td><td>' + taskType + '</td><td>' + tasks[taskType].count + '</td><td>' + tasks[taskType].minutes + ' Minutes'+ '</td><td>' + tasks[taskType].hours + ' Hours' + '</td></tr>';
                                 }
                             }
                         }
                         return html;
                     }
-            
+                
                     document.addEventListener('DOMContentLoaded', function() {
                         var tasksTableBody = document.getElementById('tasksTableBody');
                         tasksTableBody.innerHTML = generateTableRows(tasksData);
                     });
                 </script>
+                <h4 class="text-truncate fs-5 fw-bold m-0 p-0 my-3">Task Report</h4>           
                 <section class="task-section" style="overflow-y: auto;">
                     <div style="width: 76.65vw; overflow-x: auto;">
-                        <table class="table align-middle mb-0 mt-3" style="width: 110vw;">
+                        <table class="table align-middle mb-0" style="width: 110vw;">
                             <thead class="bg-primary">
                                 <tr>
                                     <td class="text-white">#</td>
