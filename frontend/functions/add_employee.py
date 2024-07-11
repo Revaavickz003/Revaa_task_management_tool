@@ -105,10 +105,11 @@ def addemployee(request):
     return redirect('teams')
 
 
-from django.shortcuts import render, get_object_or_404
-import datetime as dt
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 from collections import defaultdict
 import json
+import datetime as dt
 
 @login_required(login_url='login')
 def showemployee(request, epk):
@@ -116,18 +117,32 @@ def showemployee(request, epk):
     enddate = dt.datetime.now().date() + dt.timedelta(days=1)
     startdate = enddate - dt.timedelta(days=7)
     employee_tasks = TaskSheet.objects.filter(assigned_to=employee, start_date_time__range=[startdate, enddate])
+    
+    total_min = 0
+    total_hrs = 0
 
-    # Aggregate tasks by team, project, and task type
-    tasks_by_team_and_project = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+    # Aggregate tasks by team, project, and task type, including minutes and hours
+    tasks_by_team_and_project = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: {"count": 0, "minutes": 0, "hours": 0, "pk": None})))
     for task in employee_tasks:
         team_name = task.project.team.name
         project_name = task.project.project_name
-        task_type = task.task_type.name
+        task_type_name = task.task_type.name
+        project_pk = task.project.pk
 
-        tasks_by_team_and_project[team_name][project_name][task_type] += 1
+        task_timing = tasktimeing.objects.filter(task=task)
+        total_minutes = sum(t.working_minutes or 0 for t in task_timing)
+        total_hours = sum(t.working_hours or 0 for t in task_timing)
+
+        total_min += total_minutes
+        total_hrs += total_hours
+
+        tasks_by_team_and_project[team_name][project_name]["pk"] = project_pk
+        tasks_by_team_and_project[team_name][project_name][task_type_name]["count"] += 1
+        tasks_by_team_and_project[team_name][project_name][task_type_name]["minutes"] += total_minutes
+        tasks_by_team_and_project[team_name][project_name][task_type_name]["hours"] += total_hours
 
     # Convert the aggregated tasks to JSON format
-    tasks_json_compatible = {team: {project: dict(task_types) for project, task_types in projects.items()} for team, projects in tasks_by_team_and_project.items()}
+    tasks_json_compatible = {team: {project: {"pk": projects["pk"], "tasks": {task_type: {"count": task_details["count"], "minutes": task_details["minutes"], "hours": task_details["hours"], "pk": task_details["pk"]} for task_type, task_details in projects.items() if task_type != "pk"}} for project, projects in projects.items()} for team, projects in tasks_by_team_and_project.items()}
     tasks_json = json.dumps(tasks_json_compatible)
 
     context = {
@@ -135,17 +150,12 @@ def showemployee(request, epk):
         'startdate': startdate,
         'enddate': enddate,
         'tasks': employee_tasks,
-        'tasks_json':tasks_json,
+        'tasks_json': tasks_json,
         'tasks_by_team_and_project': tasks_by_team_and_project.items(),
+        'total_min': total_min,
+        'total_hrs': total_hrs,
     }
     return render(request, 'tmt-tool/employee_details.html', context)
-
-
-
-
-
-
-
 
 
 

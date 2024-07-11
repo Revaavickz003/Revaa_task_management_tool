@@ -31,6 +31,18 @@ def teams_details(request, pk):
     
     return render(request, 'tmt-tool/team_details.html', context)
 
+def reports(request, teampk):
+    try:
+        get_team = Team.objects.get(pk=teampk)
+    except:
+        messages.error(request, 'Team is not found')
+        return redirect('teams')
+    context={
+        'get_team':get_team,
+        'teams_page': 'active',
+    }
+    return render(request, 'tmt-tool/team_report.html', context)
+
 @login_required(login_url='login')
 def addtask_teampage(request, pk):
     if request.method == 'POST':

@@ -28,10 +28,12 @@
                                     <button type="submit" class="btn btn-sm btn-primary" style="border-radius: 5px !important;">Start</button>
                                 </form>
                                 {% else %}
+                                {% if not task.end_date_time %}
                                 <form action="{% url 'holdtask' teampk=team.pk ppk=get_project.pk tpk=task.pk %}" method="post" style="display: inline;">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-sm btn-primary" style="border-radius: 5px !important;">Hold</button>
                                 </form>
+                                {% endif %}
                                 {% endif %}
                                 {% endif %}
                                 <button class="btn btn-primary btn-sm" style="border-radius: 5px !important;" data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}" aria-controls="offcanvasRight">Edit {% if not task.start_date_time  %} Task {% endif %}</button>
