@@ -29,7 +29,9 @@
                                 Setting
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><button class="dropdown-item" type="button">Add Members</button></li>
+                                <li><button class="dropdown-item" type="button"
+                                    data-bs-toggle="modal" data-bs-target="#addnewtask">Add Member
+                                </button></li>
                                 <li><button class="dropdown-item" type="button">Update</button></li>
                                 <a href="{% url 'reports' teampk=get_team.pk %}" class="text-decoration-none text-dark"><li><button class="dropdown-item" type="button">Reports</button></li></a>
                             </ul>
