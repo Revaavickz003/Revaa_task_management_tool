@@ -1,18 +1,12 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from frontend.models import *
 import datetime as dt
-from django.contrib.auth.decorators import login_required
-
-from django.utils.timezone import make_aware
-from datetime import datetime, timedelta
-from django.shortcuts import render, get_object_or_404
+from datetime import datetime
 from django.http import JsonResponse
-from django.utils.timezone import now, timedelta
-from frontend.models import EmployeeDetail, TaskSheet
-from frontend.serializers import TaskSheetSerializer
-from rest_framework.decorators import api_view
+from django.contrib.auth.decorators import login_required
+import json
+from collections import defaultdict
 
 @login_required(login_url='login')
 def addemployee(request):
@@ -104,25 +98,28 @@ def addemployee(request):
         employee_detail.save()
     return redirect('teams')
 
-
-from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
-from collections import defaultdict
-import json
-import datetime as dt
-
 @login_required(login_url='login')
 def showemployee(request, epk):
     employee = get_object_or_404(EmployeeDetail, pk=epk)
-    enddate = dt.datetime.now().date() + dt.timedelta(days=1)
-    startdate = enddate - dt.timedelta(days=7)
+    enddate = dt.datetime.now().date()
+    startdate = enddate - dt.timedelta(days=6)
+    monthly_report_startdate = enddate - dt.timedelta(days=28)
     employee_tasks = TaskSheet.objects.filter(assigned_to=employee, start_date_time__range=[startdate, enddate])
-    
+    monthly_tasks = TaskSheet.objects.filter(assigned_to=employee, start_date_time__range=[monthly_report_startdate, enddate])
+
+    if request.method == 'POST':
+        enddate_str = request.POST.get('enddate')
+        startdate_str = request.POST.get('startdate')
+        startdate = datetime.strptime(startdate_str, '%Y-%m-%d').date()
+        enddate = datetime.strptime(enddate_str, '%Y-%m-%d').date()
+        employee_tasks = TaskSheet.objects.filter(assigned_to=employee, start_date_time__range=[startdate, enddate])
+
     total_min = 0
     total_hrs = 0
 
-    # Aggregate tasks by team, project, and task type, including minutes and hours
     tasks_by_team_and_project = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: {"count": 0, "minutes": 0, "hours": 0, "pk": None})))
+    weekly_data = defaultdict(lambda: defaultdict(int))
+
     for task in employee_tasks:
         team_name = task.project.team.name
         project_name = task.project.project_name
@@ -141,85 +138,44 @@ def showemployee(request, epk):
         tasks_by_team_and_project[team_name][project_name][task_type_name]["minutes"] += total_minutes
         tasks_by_team_and_project[team_name][project_name][task_type_name]["hours"] += total_hours
 
+    for monthly_task in monthly_tasks:
+        # Calculate weekly data
+        task_date = monthly_task.start_date_time.date()
+        week_number = (enddate - task_date).days // 7
+        if week_number < 4:
+            week_label = f"Week {4 - week_number}"
+            weekly_data[week_label][task_date] += 1
+
     # Convert the aggregated tasks to JSON format
     tasks_json_compatible = {team: {project: {"pk": projects["pk"], "tasks": {task_type: {"count": task_details["count"], "minutes": task_details["minutes"], "hours": task_details["hours"], "pk": task_details["pk"]} for task_type, task_details in projects.items() if task_type != "pk"}} for project, projects in projects.items()} for team, projects in tasks_by_team_and_project.items()}
     tasks_json = json.dumps(tasks_json_compatible)
 
+    # Prepare data for Chart.js
+    weeks = sorted(weekly_data.keys())
+    labels = sorted(set(date for week in weeks for date in weekly_data[week].keys()))
+    datasets = [
+        {
+            "label": week,
+            "data": [weekly_data[week].get(date, 0) for date in labels],
+            "borderColor": f"rgba({255 - 40*i}, 99, 132, 1)",
+            "borderWidth": 0.5,
+            "fill": True,
+            "lineTension": 0.4
+        } for i, week in enumerate(weeks)
+    ]
+
     context = {
         'teams_page': 'active',
+        'team_members' : Team.objects.get(members=employee).members.exclude(pk=employee.pk),
         'employee': employee,
-        'startdate': startdate,
+        'startdate': monthly_report_startdate,
         'enddate': enddate,
         'tasks': employee_tasks,
         'tasks_json': tasks_json,
-        'tasks_by_team_and_project': tasks_by_team_and_project.items(),
+        'datasets': json.dumps(datasets),
+        'labels': json.dumps([date.strftime("%d-%m-%Y") for date in labels]),
         'total_min': total_min,
         'total_hrs': total_hrs,
     }
     return render(request, 'tmt-tool/employee_details.html', context)
 
-from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
-from collections import defaultdict
-from django.http import JsonResponse
-from django.core.serializers.json import DjangoJSONEncoder
-import datetime as dt
-import logging
-
-logger = logging.getLogger(__name__)
-
-@login_required(login_url='login')
-def filter_tasks(request, epk):
-    try:
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            employee = get_object_or_404(EmployeeDetail, pk=epk)
-            from_date = request.GET.get('from_date')
-            to_date = request.GET.get('to_date')
-
-            if not from_date or not to_date:
-                return JsonResponse({'error': 'Invalid dates'}, status=400)
-
-            try:
-                from_date = dt.datetime.strptime(from_date, '%m/%d/%y').date()
-                to_date = dt.datetime.strptime(to_date, '%m/%d/%y').date() + dt.timedelta(days=1)
-            except ValueError as e:
-                logger.error(f"Date parsing error: {e}")
-                return JsonResponse({'error': 'Invalid date format'}, status=400)
-
-            employee_tasks = TaskSheet.objects.filter(assigned_to=employee, start_date_time__range=[from_date, to_date])
-
-            total_min = 0
-            total_hrs = 0
-
-            tasks_by_team_and_project = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: {"count": 0, "minutes": 0, "hours": 0, "pk": None})))
-            for task in employee_tasks:
-                team_name = task.project.team.name
-                project_name = task.project.project_name
-                task_type_name = task.task_type.name
-                project_pk = task.project.pk
-
-                task_timing = tasktimeing.objects.filter(task=task)
-                total_minutes = sum(t.working_minutes or 0 for t in task_timing)
-                total_hours = sum(t.working_hours or 0 for t in task_timing)
-
-                total_min += total_minutes
-                total_hrs += total_hours
-
-                tasks_by_team_and_project[team_name][project_name]["pk"] = project_pk
-                tasks_by_team_and_project[team_name][project_name][task_type_name]["count"] += 1
-                tasks_by_team_and_project[team_name][project_name][task_type_name]["minutes"] += total_minutes
-                tasks_by_team_and_project[team_name][project_name][task_type_name]["hours"] += total_hours
-
-            tasks_json_compatible = {team: {project: {"pk": projects["pk"], "tasks": {task_type: {"count": task_details["count"], "minutes": task_details["minutes"], "hours": task_details["hours"], "pk": task_details["pk"]} for task_type, task_details in projects.items() if task_type != "pk"}} for project, projects in projects.items()} for team, projects in tasks_by_team_and_project.items()}
-            tasks_json = json.dumps(tasks_json_compatible, cls=DjangoJSONEncoder)
-
-            return JsonResponse({
-                'tasks': tasks_json,
-                'total_min': total_min,
-                'total_hrs': total_hrs,
-            })
-        else:
-            return JsonResponse({'error': 'Not an AJAX request'}, status=400)
-    except Exception as e:
-        logger.error(f"Error in filter_tasks view: {e}")
-        return JsonResponse({'error': str(e)}, status=500)

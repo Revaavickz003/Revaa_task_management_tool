@@ -45,7 +45,6 @@ urlpatterns = [
     # Add employee
     path('addemployee/', add_employee.addemployee, name='addemployee'),
     path('team/employee/<int:epk>/',add_employee.showemployee, name='showemployee'),
-    path('employee/<int:epk>/filter-tasks/', add_employee.filter_tasks, name='filter_tasks'),
 
     # Messages 
     path('messages/<int:pk>/', messages.openmessagesection, name='openmessagesection'),

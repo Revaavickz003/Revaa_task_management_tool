@@ -7,9 +7,30 @@
     <div class="content w-100">
         <div class="container1">
             <div class="main-body">
-                <h5>Basic information</h5>
-                <div class="row gutters-sm">
-                    <div class="col-md-6 col-lg-4 col-x-lg-3 mb-3 border-bottom">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="text-truncate fs-5 fw-bold m-0 p-0 my-3">Report Dashboard</h4>
+                    <div class="d-flex align-items-center gap-1">
+                        <p class="m-0 p-0 d-flex align-items-center justify-content-center btn cs-alert-primary"
+                            type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>Change Profile</span> <i class='bx bx-chevron-down fs-4'></i></p>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            {% for team_member in team_members %}
+                            <li><a class="dropdown-item" href="{% url 'showemployee' epk=team_member.pk %}">{{team_member}}</a></li>
+                            {% endfor %}
+                        </ul>
+
+                        <p class="m-0 p-0 d-flex align-items-center justify-content-center btn cs-alert-primary"
+                            type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>Download</span> <i class='bx bx-chevron-down fs-4'></i></p>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Download this week task</a></li>
+                            <li><a class="dropdown-item" href="#">Download last 30 days task</a></li>
+                            <li><a class="dropdown-item" href="#">Download all task</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row gutters-sm align-items-end mb-4">
+                    <div class="col-md-6 col-lg-4 col-x-lg-3 mb-3">
                         <div class="border rounded id-card-body position-relative">
                             <div class="card-body">
                                 <div class="d-flex flex-column align-items-center text-center">
@@ -29,174 +50,64 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center justify-content-center" style="gap: 8px;">
-                            <a href="{% url 'openmessagesection' pk=employee.pk  %}" class="btn btn-primary mt-2">Message</a>
-                            <a href="" class="btn btn-primary mt-2">E-mail</a>
-                        </div>
                     </div>
                     <div class="col-md-8">
-                        <div class="border mb-3">
-                            <div class="card-body">
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">Name</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {{employee.name}}
-                                    </div>
-                                </div>
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">Email</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {{employee.user.email}}
-                                    </div>
-                                </div>
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">Phone Number</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {{employee.mobile_number}}
-                                    </div>
-                                </div>
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">Emergency Number</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {{employee.second_mobile_number}}
-                                    </div>
-                                </div>
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">Date of Birth</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {{employee.date_of_birth}}
-                                    </div>
-                                </div>
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">Blood Group</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {{employee.blood_group}}
-                                    </div>
-                                </div>
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">Address</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {{employee.address}}
-                                    </div>
-                                </div>
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">Aadhar Card</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {% if employee.aadhar_card_copy %}
-                                        <a href="{{employee.aadhar_card_copy.url}}" target="_blank">View</a>
-                                        {% else %}
-                                        <span class="text-danger">Not Uploaded</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">Pan Card</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {% if employee.pan_card_copy %}
-                                        <a href="{{employee.pan_card_copy.url}}" target="_blank">View</a>
-                                        {% else %}
-                                        <span class="text-danger">Not Uploaded</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">College Mark Sheet</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {% if employee.twelfth_mark_sheet %}
-                                        <a href="{{employee.twelfth_mark_sheet.url}}" target="_blank">View</a>
-                                        {% else %}
-                                        <span class="text-danger">Not Uploaded</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">12th Mark Sheet</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {% if employee.twelfth_mark_sheet %}
-                                        <a href="{{employee.twelfth_mark_sheet.url}}" target="_blank">View</a>
-                                        {% else %}
-                                        <span class="text-danger">Not Uploaded</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="row mb-md-2">
-                                    <div class="col-sm-4">
-                                        <p class="mb-0 fw-semibold">10th Mark sheet</p>
-                                    </div>
-                                    <div class="col-sm-8 text-secondary">
-                                        {% if employee.tenth_mark_sheet %}
-                                        <a href="{{employee.tenth_mark_sheet.url}}" target="_blank">View</a>
-                                        {% else %}
-                                        <span class="text-danger">Not Uploaded</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-
-                                <button class="btn btn-primary mt-2">Basic information Edit</button>
-                            </div>
+                        <h4 class="text-truncate fs-5 fw-bold m-0 p-0 my-3">Monthly Task Report Last 28 day</h4>
+                        <div>
+                            <canvas id="myChart"></canvas>
                         </div>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script>
+                            const ctx = document.getElementById('myChart').getContext('2d');
+                            const datasets = JSON.parse('{{ datasets|escapejs }}');
+                            const labels = JSON.parse('{{ labels|escapejs }}');
+                        
+                            new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: labels,
+                                    datasets: datasets
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        </script>                      
                     </div>
                 </div>
-                
-                <h4 class="text-truncate fs-5 fw-bold m-0 p-0 my-3">Report Dashboard</h4>
-                <div class="report-container d-flex align-items-center justify-content-between">
-                    <form id="dateFilterForm" class="" style="width: 85% !important;">
+
+                <div class="report-container d-flex align-items-center justify-content-between border-bottom">
+                    <form action="" style="width: 90% !important;" method="post">
+                        {% csrf_token %}
                         <div class="my-3">
                             <div class="row">
                                 <div class="col-4">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">From Date</span>
-                                        <input type="date" class="form-control" name="from-date" id="from-date">
+                                        <input type="date" class="form-control" name="startdate" id="from-date">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">To Date</span>
-                                        <input type="date" class="form-control" name="todate" id="to-date">
+                                        <input type="date" class="form-control" name="enddate" id="to-date">
                                     </div>
                                 </div>
-                                <div class="col-1">
+                                <div class="col-4">
                                     <button type="submit" class="btn btn-primary">Get Report</button>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    <div>
-                        <p class="m-0 p-0 d-flex align-items-center justify-content-center btn cs-alert-primary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"><span>More</span> <i class='bx bx-chevron-down fs-4'></i></p>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Download this task</a></li>
-                            <li><a class="dropdown-item" href="#">Download last 30 days task</a></li>
-                            <li><a class="dropdown-item" href="#">Download all task</a></li>
-                          </ul>
-                    </div>
                 </div>
-                <hr>
                 {% if tasks %}
                 <style>
-                    .report-table th, .report-table td {
+                    .report-table th,
+                    .report-table td {
                         text-align: center;
                         border: 1px solid rgb(197, 197, 197);
                         padding: 0.1rem;
@@ -224,10 +135,10 @@
                         <td class="bg-secondary">{{total_hrs}} Hours</td>
                     </tr>
                 </table>
-                
+
                 <script>
                     var tasksData = JSON.parse('{{ tasks_json|escapejs }}');
-                
+
                     function generateTableRows(data) {
                         var html = '';
                         for (var team in data) {
@@ -238,19 +149,19 @@
                                 var tasks = data[team][project].tasks;
                                 for (var taskType in tasks) {
                                     var taskTypePk = tasks[taskType].pk;
-                                    html += '<tr><td></td><td></td><td>' + taskType + '</td><td>' + tasks[taskType].count + '</td><td>' + tasks[taskType].minutes + ' Minutes'+ '</td><td>' + tasks[taskType].hours + ' Hours' + '</td></tr>';
+                                    html += '<tr><td></td><td></td><td>' + taskType + '</td><td>' + tasks[taskType].count + '</td><td>' + tasks[taskType].minutes + ' Minutes' + '</td><td>' + tasks[taskType].hours + ' Hours' + '</td></tr>';
                                 }
                             }
                         }
                         return html;
                     }
-                
-                    document.addEventListener('DOMContentLoaded', function() {
+
+                    document.addEventListener('DOMContentLoaded', function () {
                         var tasksTableBody = document.getElementById('tasksTableBody');
                         tasksTableBody.innerHTML = generateTableRows(tasksData);
                     });
                 </script>
-                <h4 class="text-truncate fs-5 fw-bold m-0 p-0 my-3">Task Report</h4>           
+                <h4 class="text-truncate fs-5 fw-bold m-0 p-0 my-3">Task Report</h4>
                 <section class="task-section" style="overflow-y: auto;">
                     <div style="width: 76.65vw; overflow-x: auto;">
                         <table class="table align-middle mb-0" style="width: 110vw;">
@@ -269,13 +180,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                                 {% for task in tasks %}
-                                <tr  class="{% if forloop.counter|divisibleby:2 == True %}bg-gray{% endif %}">
+                                <tr class="{% if forloop.counter|divisibleby:2 == True %}bg-gray{% endif %}">
                                     <td>{{forloop.counter}}</td>
                                     <td>{{task.project}}</td>
                                     <td>{{task.title}}</td>
-                                    <td> <p class="fw-normal mb-1">{{task.task_type}}</p></td>
+                                    <td>
+                                        <p class="fw-normal mb-1">{{task.task_type}}</p>
+                                    </td>
                                     <td> <span class="badge 
                                     {% if task.priority == 'Low' %}
                                     cs-alert-primary
@@ -422,72 +335,6 @@
         box-shadow: none !important;
     }
 </style>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('dateFilterForm');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const fromDate = document.getElementById('from-date').value;
-            const toDate = document.getElementById('to-date').value;
-
-            if (!fromDate || !toDate) {
-                alert('Please select both from and to dates');
-                return;
-            }
-
-            const url = `{% url 'filter_tasks' employee.pk %}?from_date=${fromDate}&to_date=${toDate}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                    } else {
-                        updateTable(data.tasks);
-                        updateTotal(data.total_min, data.total_hrs);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        });
-
-        function updateTable(tasks) {
-            const tasksTableBody = document.getElementById('tasksTableBody');
-            tasksTableBody.innerHTML = generateTableRows(tasks);
-        }
-
-        function updateTotal(totalMin, totalHrs) {
-            document.querySelector('.total-minutes').innerText = `${totalMin} Minutes`;
-            document.querySelector('.total-hours').innerText = `${totalHrs} Hours`;
-        }
-    });
-</script>
-
-<script>
-    var tasksData = JSON.parse('{{ tasks_json|escapejs }}');
-
-    function generateTableRows(data) {
-        var html = '';
-        for (var team in data) {
-            html += '<tr class="team-header"><td class="bg-secondary text-dark p-1">' + team + '</td><td colspan="5"></td></tr>';
-            for (var project in data[team]) {
-                var projectPk = data[team][project].pk;
-                html += '<tr class="project-header bg-gray"><td></td><td>' + project + ' ' + projectPk + '</td><td colspan="4"></td></tr>';
-                var tasks = data[team][project].tasks;
-                for (var taskType in tasks) {
-                    var taskTypePk = tasks[taskType].pk;
-                    html += '<tr><td></td><td></td><td>' + taskType + '</td><td>' + tasks[taskType].count + '</td><td>' + tasks[taskType].minutes + ' Minutes' + '</td><td>' + tasks[taskType].hours + ' Hours' + '</td></tr>';
-                }
-            }
-        }
-        return html;
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var tasksTableBody = document.getElementById('tasksTableBody');
-        tasksTableBody.innerHTML = generateTableRows(tasksData);
-    });
-</script>
 {% endblock %}
 {% block script %}
 {% endblock %}
