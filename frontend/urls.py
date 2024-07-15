@@ -22,6 +22,7 @@ urlpatterns = [
     # Side bar
     path('', home.home, name='home'),
     path('login/', login_page.login_view, name='login'),
+    path('logout/', login_page.logout_view, name='logout'),
     path('home/<str:date>/', home.date_view, name='datehome'),
     path('project/', project.projects_page, name='project'),
     path('get_projects/<int:client_id>/', project.get_projects, name='get_projects'),
