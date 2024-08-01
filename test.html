@@ -3,121 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Task Time Allocation Pie Chart</title>
+    <title>Chart Example</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Task Time Allocation Pie Chart</h1>
-    <canvas id="myPieChart" width="400" height="400"></canvas>
+    <div class="container-md">
+        <div class="row">
+            <div class="col-4">
+                <div class="border p-4 rounded-2">
+                    <h5>Status overview</h5>
+                    <p>Get a snapshot of the status of your items. <a href="#">View all items</a></p>
+                    <canvas id="myChart"></canvas>
+                    <ul class="list-unstyled">
+                        <li><span style="color: #d3d3d3;">■</span> To Do: 0</li>
+                        <li><span style="color: #36a2eb;">■</span> In Progress: 1</li>
+                        <li><span style="color: #4caf50;">■</span> Done: 1</li>
+                        <li>Total: 2</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Function to convert hours to minutes and sum up the total time for each task
-        function calculateTotalMinutes(taskData) {
-            const totalMinutes = taskData.minutes + (taskData.hours * 60);
-            return totalMinutes;
-        }
-
-        // Dynamic data processing function
-        function processData(data) {
-            const labels = [];
-            const values = [];
-
-            const projects = data["Software Devlopment"];
-            for (const project in projects) {
-                const tasks = projects[project]["tasks"];
-                for (const task in tasks) {
-                    labels.push(`${project} - ${task}`);
-                    const totalMinutes = calculateTotalMinutes(tasks[task]);
-                    values.push(totalMinutes);
-                }
-            }
-
-            return { labels, values };
-        }
-
-        // Task data
-        const tasksData = {
-            "Software Devlopment": {
-                "Office Table LMS": {
-                    "pk": 4,
-                    "tasks": {
-                        "Frontend New Developing": {
-                            "count": 2,
-                            "minutes": 240,
-                            "hours": 1.5,
-                            "pk": null
-                        },
-                        "Backend New Developing": {
-                            "count": 1,
-                            "minutes": 132,
-                            "hours": 2.0,
-                            "pk": null
-                        }
-                    }
-                },
-                "Inlingua CRM": {
-                    "pk": 5,
-                    "tasks": {
-                        "Fron end": {
-                            "count": 2,
-                            "minutes": 300,
-                            "hours": 5.0,
-                            "pk": null
-                        },
-                        "Backend": {
-                            "count": 1,
-                            "minutes": 60,
-                            "hours": 1.0,
-                            "pk": null
-                        }
-                    }
-                }
-            }
-        };
-
-        // Process the data
-        const { labels, values } = processData(tasksData);
-
-        // Pie chart configuration
-        const ctx = document.getElementById('myPieChart').getContext('2d');
-        const myPieChart = new Chart(ctx, {
-            type: 'pie',
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
             data: {
-                labels: labels,
+                labels: ['To Do', 'In Progress', 'Done'],
                 datasets: [{
-                    data: values,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
+                    data: [0, 1, 1],
+                    backgroundColor: ['#D3E2FF', '#36a2eb', '#4caf50'],
+                    hoverBackgroundColor: ['#D3E2FF', '#36a2eb', '#4caf50']
                 }]
             },
             options: {
-                responsive: true,
                 plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Task Time Allocation Pie Chart'
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const dataset = tooltipItem.dataset;
+                                const total = dataset.data.reduce((sum, value) => sum + value, 0);
+                                const currentValue = dataset.data[tooltipItem.dataIndex];
+                                const percentage = Math.floor(((currentValue / total) * 100) + 0.5);         
+                                return percentage + '%';
+                            }
+                        }
                     }
                 }
-            },
+            }
         });
     </script>
-    <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
 </body>
 </html>
