@@ -5,37 +5,23 @@
 <div class="mb-3">
     {% include 'includes/sidebar.html' %}
     <div class="content">
-        <div class="border-bottom mb-1">
+        <div class=" container">
             <div class="mt-4">
                 <h4 class="m-0 p-0 mb-1 fs-5 fw-bold">Good Morning, Suresh Krishnan</h4>
             </div>
-            <section class="my-3">
+            <section class="border-bottom">
                 <div class="d-flex align-items-center gap-1  py-2">
-                    <div class="dropdown ">
-                        <button class="dropdown-toggle d-flex align-items-center gap-1" type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false"
-                            style="background-color: transparent !important; outline: none; border: none;">
-                            <i class='bx bx-doughnut-chart fs-5 text-muted'></i> <span class="text-muted">Project
-                                Status</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </div>
-                    <a href=""
-                        class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 nave-active"><i
-                            class='bx bx-calendar fs-5 text-muted'></i> <span class="text-muted">Calendar</span></a>
-                    <a href="" class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2"> <i
-                            class='bx bx-package fs-5 text-muted'></i> <span class="text-muted">Board</span></a>
-                    <a href="" class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2"><i
-                            class='bx bx-timer fs-4 text-muted'></i> <span class="text-muted">Time Line</span></a>
-                    <a href="" class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2"><i
-                            class='bx bx-list-ol fs-4 text-muted'></i> <span class="text-muted">Task List</span></a>
+                    <a href="{% url 'home' %}"  class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link"><i class='bx bx-doughnut-chart fs-5 text-muted'></i> <span class="text-muted">Summary</span></a>
+                    <a href="{% url 'calendar' %}"  class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link"><i class='bx bx-calendar fs-5 text-muted'></i> <span class="text-muted">Calendar</span></a>
+                    <a href="" class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link"> <i class='bx bx-package fs-5 text-muted'></i> <span class="text-muted">Board</span></a>
+                    <a href="" class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link"><i class='bx bx-timer fs-4 text-muted'></i> <span class="text-muted">Time Line</span></a>
+                    <a href="" class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link"><i class='bx bx-list-ol fs-4 text-muted'></i> <span class="text-muted">Task List</span></a>
                 </div>
                 <style>
                     .nave-active {
+                        background-color: #eaeef1;
+                    }
+                    .custom-nav-link:hover{
                         background-color: #eaeef1;
                     }
                 </style>
@@ -144,7 +130,7 @@
                             </div>
                             <div class="col-8">
                                 <p class="m-0 p-0 fw-bold fs-5 text-warning">7 Not a Done</p>
-                                <p class="m-0 p-0 fw-semibold text-muted">In the last 7 days </p>
+                                <p class="m-0 p-0 fw-semibold text-muted-emphasis">In the last 7 days </p>
                             </div>
                         </div>
                     </div>
@@ -153,10 +139,10 @@
                     <div class="border rounded-2 mt-3 p-3">
                         <div class="row">
                             <div class="col-4">
-                                <i class='bx bx-check fs-3 m-0 alert alert-success rounded-pill'></i>
+                                <i class='bx bx-party fs-3 m-0 alert alert-success rounded-pill'></i>
                             </div>
                             <div class="col-8">
-                                <p class="m-0 p-0 fw-bold fs-5 text-success">7 Done</p>
+                                <p class="m-0 p-0 fw-bold fs-5 text-success-emphasis">7 Done</p>
                                 <p class="m-0 p-0 fw-semibold text-muted">In the last 7 days </p>
                             </div>
                         </div>
@@ -176,12 +162,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="my-3">
-                    <h4 class="m-0 p-0 mb-1 fs-5 fw-bold">Over all Projects</h4>
-                </div>
-                <div class="col-4">
-                    <div class="border p-4 rounded-2">
+            <div class="my-3">
+                <h4 class="m-0 p-0 mb-1 fs-5 fw-bold">Over all Projects</h4>
+            </div>
+            <div class="row" style="height: 550px; overflow: none;">
+                <div class="col-4 h-100">
+                    <div class="border h-100 p-4 rounded-2" style="overflow-y: auto;">
                         <h5>Status overview</h5>
                         <p>Get a snapshot of the status of your items. <a href="#">View all items</a></p>
                         <canvas id="myChart"></canvas>
@@ -221,121 +207,166 @@
                         });
                     </script>
                 </div>
-                <div class="col-8">
-                    <div class="border p-4 rounded-2" style="height: 78%;">
+                <div class="col-8 h-100">
+                    <div class="border h-100 p-4 rounded-2" style="overflow-y: auto;">
                         <div style="height: 12%;" class="border-bottom">
                             <h4 class="m-0 p-0 mb-1 fs-5 fw-bold ">Recent activity</h4>
                             <small>Stay up to date with what's happening across the project.</small>
                         </div>
-
-                        <div class="align-items-center justify-content-start mt-3"
-                            style="height: 82%; overflow-y: auto;">
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
-                                </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
-                                </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
-                                </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 mb-2">
-                                <div style="width: 40px; height: 40px;">
-                                    <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
-                                        style="width: 100%;">
-                                </div>
-                                <div>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                <div class="d-flex align-items-center gap-1 mb-2">
+                                    <div style="width: 40px; height: 40px;">
+                                        <img src="https://via.placeholder.com/50" alt="Avatar" class="rounded-pill"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta?
+                                    </div>
                                 </div>
                             </div>
                         </div>

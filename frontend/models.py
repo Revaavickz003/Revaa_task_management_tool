@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.utils.text import slugify
 
 # Files Created
 def lead_and_customer_companylogo(instance, org_name):
@@ -66,6 +68,7 @@ class EmployeeDetail(models.Model):
 
     def __str__(self):
         return self.name
+
 # Product Table
 class ProductTable(models.Model):
     Product_Name = models.CharField(max_length=25)
@@ -181,7 +184,6 @@ class status(models.Model):
         return self.name
 
 # Task Type
-
 class Type(models.Model):
     NONE = 'None'
     GRAY = 'Gray'
@@ -245,7 +247,6 @@ class TaskSheet(models.Model):
 
     def __str__(self):
         return f"{self.title}"
-    
 
 class tasktimeing(models.Model):
     task = models.ForeignKey(TaskSheet, on_delete=models.CASCADE)
@@ -255,10 +256,6 @@ class tasktimeing(models.Model):
 
     def __str__(self):
         return f"{self.task}"
-
-
-from django.db import models
-from django.utils.text import slugify
 
 def comments_image_upload_to(instance, filename):
     return f'comments/{slugify(instance.task.project.team.name)}/{slugify(instance.task.project.project_name)}/{slugify(instance.task.title)}/{filename}'
@@ -286,3 +283,40 @@ class comments(models.Model):
 
     def __str__(self):
         return f"Comment by {self.user.name} on {self.task.title}"
+
+class events(models.Model):
+    NONE = 'None'
+    GRAY = 'Gray'
+    BLUE = 'Blue'
+    GREEN = 'Green'
+    YELLOW = 'Yellow'
+    ORANGE = 'Orange'
+    RED = 'Red'
+    PINK = 'Pink'
+    PURPLE = 'Purple'
+
+    COLOR = [
+        (NONE, 'None'),
+        (GRAY, 'Gray'),
+        (BLUE, 'Blue'),
+        (GREEN, 'Green'),
+        (YELLOW, 'Yellow'),
+        (ORANGE, 'Orange'),
+        (RED, 'Red'),
+        (PINK, 'Pink'),
+        (PURPLE, 'Purple'),
+    ]
+    
+    name = models.CharField(max_length=150, null=False, blank=False)
+    description = models.TextField(null=False, blank=False)
+    color = models.CharField(choices=COLOR, max_length=16, null=False, blank=False)
+    start_date = models.DateTimeField(null=False, blank=False)
+    end_date = models.DateTimeField(null=True, blank=True)
+
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_created', null=True)
+    created_date = models.DateField(auto_now_add=True)
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_updated', null=True)
+    updated_date = models.DateField(auto_now=True)
+    
+    def __str__(self):
+        return self.name

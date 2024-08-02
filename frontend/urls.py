@@ -28,6 +28,10 @@ urlpatterns = [
     path('get_projects/<int:client_id>/', project.get_projects, name='get_projects'),
     path('messages/', messages.messages, name='messages'),
     path('teams/', teams.teams, name='teams'),
+
+    # Home page
+    path('calendar/', home.calendar, name='calendar'),
+
     
     # Open project page
     path('project/closed/<int:pk>/', project.closeproject, name='closeproject'),

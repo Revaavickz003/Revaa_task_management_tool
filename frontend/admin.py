@@ -11,6 +11,7 @@ from .models import (
     customersTable,
     tasktimeing,
     comments,
+    events,
 )
 
 admin.site.register(ProductTable)
@@ -23,3 +24,4 @@ admin.site.register(Type)
 admin.site.register(customersTable)
 admin.site.register(tasktimeing)
 admin.site.register(comments)
+admin.site.register(events)
