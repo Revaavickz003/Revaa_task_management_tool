@@ -285,31 +285,9 @@ class comments(models.Model):
         return f"Comment by {self.user.name} on {self.task.title}"
 
 class events(models.Model):
-    NONE = 'None'
-    GRAY = 'Gray'
-    BLUE = 'Blue'
-    GREEN = 'Green'
-    YELLOW = 'Yellow'
-    ORANGE = 'Orange'
-    RED = 'Red'
-    PINK = 'Pink'
-    PURPLE = 'Purple'
-
-    COLOR = [
-        (NONE, 'None'),
-        (GRAY, 'Gray'),
-        (BLUE, 'Blue'),
-        (GREEN, 'Green'),
-        (YELLOW, 'Yellow'),
-        (ORANGE, 'Orange'),
-        (RED, 'Red'),
-        (PINK, 'Pink'),
-        (PURPLE, 'Purple'),
-    ]
-    
     name = models.CharField(max_length=150, null=False, blank=False)
     description = models.TextField(null=False, blank=False)
-    color = models.CharField(choices=COLOR, max_length=16, null=False, blank=False)
+    color = models.TextField(null=False, blank=False)
     start_date = models.DateTimeField(null=False, blank=False)
     end_date = models.DateTimeField(null=True, blank=True)
 
