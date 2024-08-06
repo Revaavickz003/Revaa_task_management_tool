@@ -18,16 +18,24 @@
                 min-height: 130px;
                 overflow-x: hidden;
                 position: relative;
-                cursor: pointer;
                 color: #fff;
                 /* White text for better readability */
             }
 
             .day-header {
-                background-color: #d8d8d8;
-                /* Darker header for the days */
-                padding: 0 0.5rem;
+                /* background-color: ; */
+                border: 1px solid rgb(226, 226, 226);
+                padding: 0.6rem  ;
+                text-align: center;
                 color: #000;
+
+            }
+
+            .day .day-header{
+                cursor: pointer;
+                background-color: rgb(193, 202, 223);
+                padding: 0rem 0.5rem !important;
+                text-align: start;
             }
 
             .event {
@@ -76,8 +84,8 @@
                 </style>
             </section>
         </div>
-        <div class="container mt-5">
-            <div class="d-flex justify-content-start gap-2 align-items-center mb-3">
+        <div class=" mt-3">
+            <div class="container d-flex justify-content-start gap-2 align-items-center mb-3">
                 <button class="btn btn-primary btn-sm" id="prev-month">Previous Month</button>
                 <h2 id="month-year" class="fs-5 fw-bold"></h2>
                 <button class="btn btn-primary btn-sm" id="next-month">Next Month</button>
@@ -167,10 +175,11 @@
                     <div class="day-header">${i}</div>
                 </div>`);
 
-                // Ensure that the entire day cell is clickable
-                dayElement.on('click', function () {
-                    $("#eventStartDate").val($(this).data('date'));
-                    $("#eventEndDate").val($(this).data('date'));
+                // Ensure that the day-header element is clickable
+                dayElement.find('.day-header').on('click', function (e) {
+                    e.stopPropagation();
+                    $("#eventStartDate").val($(this).parent().data('date'));
+                    $("#eventEndDate").val($(this).parent().data('date'));
                     $("#eventModal").modal('show');
                 });
 
@@ -183,7 +192,7 @@
                 let endDate = new Date(event.fields.end_date);
                 startDate.setDate(startDate.getDate() + 1);
                 endDate.setDate(endDate.getDate() + 1);
-                let bgColor = event.fields.color || '#007bff';; // Default to primary color if no bgColor is specified
+                let bgColor = event.fields.color || '#007bff'; // Default to primary color if no bgColor is specified
 
                 let current = new Date(startDate);
 
@@ -191,7 +200,7 @@
                     let dayDate = current.toISOString().split('T')[0];
                     let dayElement = calendar.find(`.day[data-date="${dayDate}"]`);
                     if (dayElement.length > 0) {
-                        let eventElement = $(`<div class="event text-truncate" style="background-color:${bgColor};"> 
+                        let eventElement = $(`<div class="event text-truncate" style="background-color:${bgColor};">
                             <button type="button" class="border-0 rounded-1" data-bs-toggle="modal" data-bs-target="#update" style="background-color: rgba(236, 236, 236, .2);">
                                 <i class='bx bx-calendar-event text-light'></i>
                             </button>
