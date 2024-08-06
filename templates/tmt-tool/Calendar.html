@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% block title %}Home Page | Revaa{% endblock %}
+{% block container %}
+{% load static %}
+<div class="mb-3">
+    {% include 'includes/sidebar.html' %}
+    <div class="content">
+        <style>
+            .calendar {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                gap: 1px;
+                padding: 10px;
+            }
+
+            .day {
+                border: 1px solid #e2e2e2;
+                min-height: 130px;
+                overflow-x: hidden;
+                position: relative;
+                color: #fff;
+                /* White text for better readability */
+            }
+
+            .day-header {
+                /* background-color: ; */
+                border: 1px solid rgb(226, 226, 226);
+                padding: 0.6rem  ;
+                text-align: center;
+                color: #000;
+
+            }
+
+            .day .day-header{
+                cursor: pointer;
+                background-color: rgb(193, 202, 223);
+                padding: 0rem 0.5rem !important;
+                text-align: start;
+            }
+
+            .event {
+                color: white;
+                padding: 2px 2px;
+                margin: 2px 0;
+                border-radius: 3px;
+                font-size: 0.8em;
+            }
+        </style>
+        <div class="container">
+            <div class="mt-4">
+                <h4 class="m-0 p-0 mb-1 fs-5 fw-bold">Good Morning, Suresh Krishnan</h4>                
+            </div>
+            <section class="border-bottom">
+                <div class="d-flex align-items-center gap-1 py-2">
+                    <a href="{% url 'home' %}"
+                        class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link">
+                        <i class='bx bx-doughnut-chart fs-5 text-muted'></i> <span class="text-muted">Summary</span>
+                    </a>
+                    <a href="#"
+                        class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link nave-active">
+                        <i class='bx bx-calendar fs-5 text-muted'></i> <span class="text-muted">Calendar</span>
+                    </a>
+                    <a href="#"
+                        class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link">
+                        <i class='bx bx-package fs-5 text-muted'></i> <span class="text-muted">Board</span>
+                    </a>
+                    <a href="#"
+                        class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link">
+                        <i class='bx bx-timer fs-4 text-muted'></i> <span class="text-muted">Time Line</span>
+                    </a>
+                    <a href="#"
+                        class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link">
+                        <i class='bx bx-list-ol fs-4 text-muted'></i> <span class="text-muted">Task List</span>
+                    </a>
+                </div>
+                <style>
+                    .nave-active {
+                        background-color: #eaeef1;
+                    }
+
+                    .custom-nav-link:hover {
+                        background-color: #eaeef1;
+                    }
+                </style>
+            </section>
+        </div>
+        <div class=" mt-3">
+            <div class="container d-flex justify-content-start gap-2 align-items-center mb-3">
+                <button class="btn btn-primary btn-sm" id="prev-month">Previous Month</button>
+                <h2 id="month-year" class="fs-5 fw-bold"></h2>
+                <button class="btn btn-primary btn-sm" id="next-month">Next Month</button>
+            </div>
+            <div class="calendar" id="calendar"></div>
+        </div>
+
+        <!-- Modal for Adding Events -->
+        <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventModalLabel">Add Event</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="eventForm" action="{% url 'add_event' %}" method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="eventSummary" class="form-label">Summary</label>
+                                <input type="text" class="form-control" id="eventSummary" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="eventDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="eventDescription" name="description"
+                                    required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="eventBgColor" class="form-label">Background Color</label>
+                                <input type="color" class="form-control form-control-color" id="eventBgColor"
+                                    name="bgColor" value="#7D2C2C" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="eventStartDate" class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="eventStartDate" name="start_date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="eventEndDate" class="form-label">End Date</label>
+                                <input type="date" class="form-control" id="eventEndDate" name="end_date" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Event</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+        const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+        let today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+        let events = JSON.parse('{{ events|escapejs }}');
+
+        function generateCalendar(month, year) {
+            $("#month-year").text(monthNames[month] + " " + year);
+            const calendar = $("#calendar");
+            calendar.empty();
+
+            // Days of the week header
+            daysOfWeek.forEach(day => {
+                calendar.append(`<div class="day-header">${day}</div>`);
+            });
+
+            let firstDay = new Date(year, month, 1).getDay();
+            let daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Blank days before the first day of the month
+            for (let i = 0; i < firstDay; i++) {
+                calendar.append('<div class="day"></div>');
+            }
+
+            // Actual days of the month
+            for (let i = 1; i <= daysInMonth; i++) {
+                let dayElement = $(`<div class="day" data-date="${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}">
+                    <div class="day-header">${i}</div>
+                </div>`);
+
+                // Ensure that the day-header element is clickable
+                dayElement.find('.day-header').on('click', function (e) {
+                    e.stopPropagation();
+                    $("#eventStartDate").val($(this).parent().data('date'));
+                    $("#eventEndDate").val($(this).parent().data('date'));
+                    $("#eventModal").modal('show');
+                });
+
+                calendar.append(dayElement);
+            }
+
+            // Append events to days
+            events.forEach(event => {
+                let startDate = new Date(event.fields.start_date);
+                let endDate = new Date(event.fields.end_date);
+                startDate.setDate(startDate.getDate() + 1);
+                endDate.setDate(endDate.getDate() + 1);
+                let bgColor = event.fields.color || '#007bff'; // Default to primary color if no bgColor is specified
+
+                let current = new Date(startDate);
+
+                while (current <= endDate) {
+                    let dayDate = current.toISOString().split('T')[0];
+                    let dayElement = calendar.find(`.day[data-date="${dayDate}"]`);
+                    if (dayElement.length > 0) {
+                        let eventElement = $(`<div class="event text-truncate" style="background-color:${bgColor};">
+                            <button type="button" class="border-0 rounded-1" data-bs-toggle="modal" data-bs-target="#update" style="background-color: rgba(236, 236, 236, .2);">
+                                <i class='bx bx-calendar-event text-light'></i>
+                            </button>
+                            <div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            ${event.fields.name}</div>`);
+                        dayElement.append(eventElement);
+                    }
+                    current.setDate(current.getDate() + 1);
+                }
+            });
+        }
+
+        $("#prev-month").click(function () {
+            currentMonth = (currentMonth - 1 + 12) % 12;
+            if (currentMonth === 11) currentYear--;
+            generateCalendar(currentMonth, currentYear);
+        });
+
+        $("#next-month").click(function () {
+            currentMonth = (currentMonth + 1) % 12;
+            if (currentMonth === 0) currentYear++;
+            generateCalendar(currentMonth, currentYear);
+        });
+
+        generateCalendar(currentMonth, currentYear);
+    });
+</script>
+{% endblock %}

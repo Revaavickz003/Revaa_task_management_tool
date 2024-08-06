@@ -39,3 +39,10 @@ div.content {
 .logout {
     margin-top: auto;
 }
+
+@media only screen and (max-width: 991px) {
+    div.content {
+        margin: 0px;
+        padding: 1px 16px;
+      }
+  }
