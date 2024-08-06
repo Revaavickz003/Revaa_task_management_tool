@@ -285,11 +285,37 @@ class comments(models.Model):
         return f"Comment by {self.user.name} on {self.task.title}"
 
 class events(models.Model):
+
+    CALL = 'Call'
+    EVENT = 'Event'
+    MEETING = 'Meeting'
+
+    TYPE_OF_EVENT_CHOICES = [
+        (CALL, 'Call'),
+        (EVENT, 'Event'),
+        (MEETING, 'Meeting'),
+    ]
+
+    typeOfEvent = models.CharField(choices=TYPE_OF_EVENT_CHOICES, max_length=10, null=True, blank=True)
     name = models.CharField(max_length=150, null=False, blank=False)
     description = models.TextField(null=False, blank=False)
     color = models.TextField(null=False, blank=False)
-    start_date = models.DateTimeField(null=False, blank=False)
-    end_date = models.DateTimeField(null=True, blank=True)
+    start_date = models.DateField(null=False, blank=False)
+    satrt_time = models.TimeField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    end_time = models.TimeField(null=True, blank=True)
+    meeting_url = models.URLField(null=True, blank=True)
+
+    all_team = models.BooleanField(default=True )
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, blank=True, null=True)
+
+    weekday = models.BooleanField(default=True)
+    all_Monday = models.BooleanField(default=False)
+    all_Tuesday = models.BooleanField(default=False)
+    all_Wednesday = models.BooleanField(default=False)
+    all_Thursday = models.BooleanField(default=False)
+    all_Friday = models.BooleanField(default=False)
+    all_Saturday = models.BooleanField(default=False)
 
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_created', null=True)
     created_date = models.DateField(auto_now_add=True)

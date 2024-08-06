@@ -25,13 +25,12 @@
             .day-header {
                 /* background-color: ; */
                 border: 1px solid rgb(226, 226, 226);
-                padding: 0.6rem  ;
+                padding: 0.6rem;
                 text-align: center;
                 color: #000;
-
             }
 
-            .day .day-header{
+            .day .day-header {
                 cursor: pointer;
                 background-color: rgb(193, 202, 223);
                 padding: 0rem 0.5rem !important;
@@ -45,10 +44,14 @@
                 border-radius: 3px;
                 font-size: 0.8em;
             }
+
+            .today-border {
+                border: 2px solid rgb(62, 136, 62);
+            }
         </style>
         <div class="container">
             <div class="mt-4">
-                <h4 class="m-0 p-0 mb-1 fs-5 fw-bold">Good Morning, Suresh Krishnan</h4>                
+                <h4 class="m-0 p-0 mb-1 fs-5 fw-bold">Good Morning, Suresh Krishnan</h4>
             </div>
             <section class="border-bottom">
                 <div class="d-flex align-items-center gap-1 py-2">
@@ -84,15 +87,147 @@
                 </style>
             </section>
         </div>
-        <div class=" mt-3">
-            <div class="container d-flex justify-content-start gap-2 align-items-center mb-3">
-                <button class="btn btn-primary btn-sm" id="prev-month">Previous Month</button>
-                <h2 id="month-year" class="fs-5 fw-bold"></h2>
-                <button class="btn btn-primary btn-sm" id="next-month">Next Month</button>
+        <div class="mt-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="container d-flex justify-content-start gap-2 align-items-center">
+                    <a href="{% url 'calendar' %}" class="btn btn-sm btn-primary">Today</a>
+                    <button class="btn btn-primary btn-sm" id="prev-month">Previous Month</button>
+                    <h2 id="month-year" class="fs-5 fw-bold"></h2>
+                    <button class="btn btn-primary btn-sm" id="next-month">Next Month</button>
+                </div>
+                <div class="container d-flex align-items-center justify-content-end w-25">
+                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        Recurring Event
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="eventModalLabel">Add Recurring Event</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="eventForm" action="" method="post">
+                                        {% csrf_token %}
+                                        <div id="section1">
+                                            <div class="mb-3">
+                                                <label for="eventType" class="form-label">Event Type <span
+                                                        class="text-danger">*</span></label>
+                                                <select name="eventType" id="eventType" class="form-control" required>
+                                                    <option value="">Select Event Type</option>
+                                                    {% for value, label in events_types %}
+                                                    <option value="{{ value }}">{{ label }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="eventSummary" class="form-label">Summary <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="eventSummary" name="name"
+                                                    required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="eventDescription" class="form-label">Description <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea class="form-control" id="eventDescription" name="description"
+                                                    required></textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="eventBgColor" class="form-label">Background Color</label>
+                                                <input type="color" class="form-control form-control-color"
+                                                    id="eventBgColor" name="bgColor" value="#7D2C2C" required>
+                                            </div>
+                                            <button type="button" class="btn btn-primary btn-sm px-3" id="nextStep">Next
+                                                Step</button>
+                                        </div>
+                                        <div id="section2" class="d-none">
+                                            <label for="" class="form-label">Team <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    id="allTeams" name="business_development" checked>
+                                                <label class="form-check-label" for="allTeams">All Teams</label>
+                                            </div>
+                                            <div class="mb-3" id="teamSelect" style="display: none;">
+                                                <select name="team" id="team" class="form-control">
+                                                    <option value="">Select Team</option>
+                                                    {% for team in teams %}
+                                                    <option value="{{team.pk}}">{{team.name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <hr>
+                                            <label for="" class="form-label">Custom day <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
+                                                    id="monday" name="monday">
+                                                <label class="form-check-label" for="monday">All Monday</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
+                                                    id="tuesday" name="tuesday">
+                                                <label class="form-check-label" for="tuesday">All Tuesday</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
+                                                    id="wednesday" name="wednesday">
+                                                <label class="form-check-label" for="wednesday">All Wednesday</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
+                                                    id="thursday" name="thursday">
+                                                <label class="form-check-label" for="thursday">All Thursday</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
+                                                    id="friday" name="friday">
+                                                <label class="form-check-label" for="friday">All Friday</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
+                                                    id="saturday" name="saturday">
+                                                <label class="form-check-label" for="saturday">All Saturday</label>
+                                            </div>
+                                            <button type="button" class="btn btn-primary btn-sm px-3" id="goBack">Go
+                                                Back</button>
+                                            <input type="submit" class="btn btn-primary btn-sm px-3" value="Save event">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="calendar" id="calendar"></div>
         </div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#abcdef">
+            Launch demo modal
+        </button>
 
+        <!-- Modal -->
+        <div class="modal fade" id="abcdef" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header d-flex dlex-column align-items-start justify-content-end bg-primary text-start" style="height: 120px; flex-direction: column;">
+                        <h1 class="modal-title fs-5 fw-bold text-light" id="exampleModalLabel">Modal title</h1>
+                        <p class="text-light m-0 p-0">Thursday 15 August</p>
+                    </div>
+                    <div class="modal-body">
+                        <div class="">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Modal for Adding Events -->
         <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -105,6 +240,16 @@
                         <form id="eventForm" action="{% url 'add_event' %}" method="post">
                             {% csrf_token %}
                             <div class="mb-3">
+                                <label for="eventType" class="form-label">Event Type <span
+                                        class="text-danger">*</span></label>
+                                <select name="eventType" id="eventType" class="form-control" required>
+                                    <option value="">Select Event Type</option>
+                                    {% for value, label in events_types %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
                                 <label for="eventSummary" class="form-label">Summary</label>
                                 <input type="text" class="form-control" id="eventSummary" name="name" required>
                             </div>
@@ -116,16 +261,39 @@
                             <div class="mb-3">
                                 <label for="eventBgColor" class="form-label">Background Color</label>
                                 <input type="color" class="form-control form-control-color" id="eventBgColor"
-                                    name="bgColor" value="#7D2C2C" required>
+                                    name="bgColor" value="#00878A" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="eventStartDate" class="form-label">Start Date</label>
-                                <input type="date" class="form-control" id="eventStartDate" name="start_date" required>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="eventStartDate" class="form-label">Start Date</label>
+                                        <input type="date" class="form-control" id="eventStartDate" name="start_date"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="starttime" class="form-label">Start Time</label>
+                                        <input type="time" class="form-control" id="starttime" name="starttime">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="eventEndDate" class="form-label">End Date</label>
-                                <input type="date" class="form-control" id="eventEndDate" name="end_date" required>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="eventEndDate" class="form-label">End Date</label>
+                                        <input type="date" class="form-control" id="eventEndDate" name="end_date"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="endtime" class="form-label">End Time</label>
+                                        <input type="time" class="form-control" id="endtime" name="endtime">
+                                    </div>
+                                </div>
                             </div>
+
                             <button type="submit" class="btn btn-primary">Save Event</button>
                         </form>
                     </div>
@@ -144,7 +312,7 @@
     $(document).ready(function () {
         const monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"];
-        const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
         let today = new Date();
         let currentMonth = today.getMonth();
@@ -175,6 +343,11 @@
                     <div class="day-header">${i}</div>
                 </div>`);
 
+                // Add class for today's date
+                if (year === today.getFullYear() && month === today.getMonth() && i === today.getDate()) {
+                    dayElement.addClass('today-border');
+                }
+
                 // Ensure that the day-header element is clickable
                 dayElement.find('.day-header').on('click', function (e) {
                     e.stopPropagation();
@@ -190,8 +363,8 @@
             events.forEach(event => {
                 let startDate = new Date(event.fields.start_date);
                 let endDate = new Date(event.fields.end_date);
-                startDate.setDate(startDate.getDate() + 1);
-                endDate.setDate(endDate.getDate() + 1);
+                startDate.setDate(startDate.getDate());
+                endDate.setDate(endDate.getDate());
                 let bgColor = event.fields.color || '#007bff'; // Default to primary color if no bgColor is specified
 
                 let current = new Date(startDate);
@@ -199,31 +372,50 @@
                 while (current <= endDate) {
                     let dayDate = current.toISOString().split('T')[0];
                     let dayElement = calendar.find(`.day[data-date="${dayDate}"]`);
+
                     if (dayElement.length > 0) {
-                        let eventElement = $(`<div class="event text-truncate" style="background-color:${bgColor};">
-                            <button type="button" class="border-0 rounded-1" data-bs-toggle="modal" data-bs-target="#update" style="background-color: rgba(236, 236, 236, .2);">
-                                <i class='bx bx-calendar-event text-light'></i>
+                        // Generate a unique ID for each modal
+                        let modalId = `update-${event.pk}-${dayDate.replace(/-/g, '')}`;
+                        let icon;
+
+                        // Determine the correct icon based on the typeOfEvent
+                        switch (event.fields.typeOfEvent) {
+                            case 'Call':
+                                icon = '<i class="bx bx-phone-call text-light"></i>';
+                                break;
+                            case 'Event':
+                                icon = '<i class="bx bx-calendar-event text-light"></i>';
+                                break;
+                            case 'Meeting':
+                                icon = '<i class="bx bx-video text-light"></i>';
+                                break;
+                            default:
+                                icon = '<i class="bx bx-calendar text-light"></i>'; // Default icon if typeOfEvent is not matched
+                        }
+
+                        let eventElement = $(`
+                        <div class="event text-truncate" style="background-color:${bgColor};">
+                            <button type="button" class="border-0 rounded-1" data-bs-toggle="modal" data-bs-target="#${modalId}" style="background-color: rgba(236, 236, 236, .2);">
+                                ${icon}
                             </button>
-                            <div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    ...
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
+                            <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}Label" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-sm">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="${modalId}Label">Event Details</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-                            ${event.fields.name}</div>`);
+                        ${event.fields.name}</div>)`);
+
                         dayElement.append(eventElement);
                     }
+
                     current.setDate(current.getDate() + 1);
                 }
             });
@@ -241,6 +433,92 @@
             generateCalendar(currentMonth, currentYear);
         });
 
+        // Function to validate section 1
+        function validateSection1() {
+            let isValid = true;
+
+            // Validate inputs, selects, and textareas
+            $('#section1 input, #section1 select, #section1 textarea').each(function () {
+                if (!this.checkValidity()) {
+                    isValid = false;
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            // Additional validation for Event Type
+            if ($('#eventType').val() === '') {
+                isValid = false;
+                $('#eventType').addClass('is-invalid');
+            } else {
+                $('#eventType').removeClass('is-invalid');
+            }
+
+            // Validation for Team Select if All Teams is unchecked
+            if (!$('#allTeams').is(':checked') && $('#team').val() === '') {
+                isValid = false;
+                $('#team').addClass('is-invalid');
+            } else {
+                $('#team').removeClass('is-invalid');
+            }
+
+            return isValid;
+        }
+
+        // Next Step button click handler
+        $('#nextStep').click(function () {
+            if (validateSection1()) {
+                $('#section1').addClass('d-none');
+                $('#section2').removeClass('d-none');
+            }
+        });
+
+        // Previous Step button click handler
+        $('#goBack').click(function () {
+            $('#section2').addClass('d-none');
+            $('#section1').removeClass('d-none');
+        });
+
+        // All Teams checkbox change handler
+        $('#allTeams').change(function () {
+            if ($(this).is(':checked')) {
+                $('#teamSelect').hide();
+                $('#team').val('');
+                $('#team').removeClass('is-invalid');
+            } else {
+                $('#teamSelect').show();
+            }
+        });
+
+        // Team dropdown change handler
+        $('#team').change(function () {
+            if ($(this).val()) {
+                $('#allTeams').prop('checked', false);
+            }
+        });
+
+        // Form submit handler
+        $('#eventForm').submit(function (event) {
+            let customDayChecked = false;
+            $('.custom-day').each(function () {
+                if ($(this).is(':checked')) {
+                    customDayChecked = true;
+                }
+            });
+            if (!customDayChecked) {
+                alert('Please select at least one custom day.');
+                event.preventDefault();
+            }
+
+            // Additional validation for All Teams checkbox
+            if (!$('#allTeams').is(':checked') && $('#team').val() === '') {
+                $('#team').addClass('is-invalid');
+                event.preventDefault();
+            } else {
+                $('#team').removeClass('is-invalid');
+            }
+        });
         generateCalendar(currentMonth, currentYear);
     });
 </script>
