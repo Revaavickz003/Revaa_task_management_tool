@@ -307,15 +307,7 @@ class events(models.Model):
     meeting_url = models.URLField(null=True, blank=True)
 
     all_team = models.BooleanField(default=True )
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, blank=True, null=True)
-
-    weekday = models.BooleanField(default=True)
-    all_Monday = models.BooleanField(default=False)
-    all_Tuesday = models.BooleanField(default=False)
-    all_Wednesday = models.BooleanField(default=False)
-    all_Thursday = models.BooleanField(default=False)
-    all_Friday = models.BooleanField(default=False)
-    all_Saturday = models.BooleanField(default=False)
+    team = models.ManyToManyField(Team, related_name='teams')
 
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_created', null=True)
     created_date = models.DateField(auto_now_add=True)

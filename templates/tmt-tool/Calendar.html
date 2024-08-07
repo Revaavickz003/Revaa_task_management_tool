@@ -4,6 +4,7 @@
 {% load static %}
 <div class="mb-3">
     {% include 'includes/sidebar.html' %}
+    {% include 'includes/message.html' %}
     <div class="content">
         <style>
             .calendar {
@@ -100,7 +101,6 @@
                         data-bs-target="#exampleModal">
                         Recurring Event
                     </button>
-
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
@@ -112,13 +112,12 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="eventForm" action="" method="post">
+                                    <form id="eventForm" action="{% url 'recurring_event' %}" method="post">
                                         {% csrf_token %}
                                         <div id="section1">
                                             <div class="mb-3">
-                                                <label for="eventType" class="form-label">Event Type <span
-                                                        class="text-danger">*</span></label>
-                                                <select name="eventType" id="eventType" class="form-control" required>
+                                                <label for="eventType" class="form-label">Event Type <span class="text-danger">*</span></label>
+                                                <select name="eventType" id="eventType" class="form-select" required>
                                                     <option value="">Select Event Type</option>
                                                     {% for value, label in events_types %}
                                                     <option value="{{ value }}">{{ label }}</option>
@@ -126,79 +125,68 @@
                                                 </select>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="eventSummary" class="form-label">Summary <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="eventSummary" name="name"
-                                                    required>
+                                                <label for="eventSummary" class="form-label">Summary <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="eventSummary" name="eventSummary" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="eventDescription" class="form-label">Description <span
-                                                        class="text-danger">*</span></label>
-                                                <textarea class="form-control" id="eventDescription" name="description"
-                                                    required></textarea>
+                                                <label for="eventDescription" class="form-label">Description <span class="text-danger">*</span></label>
+                                                <textarea class="form-control" id="eventDescription" name="description" required></textarea>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="eventBgColor" class="form-label">Background Color</label>
-                                                <input type="color" class="form-control form-control-color"
-                                                    id="eventBgColor" name="bgColor" value="#7D2C2C" required>
+                                                <input type="color" class="form-control form-control-color" id="eventBgColor" name="bgColor" value="#7D2C2C" required>
                                             </div>
-                                            <button type="button" class="btn btn-primary btn-sm px-3" id="nextStep">Next
-                                                Step</button>
+                                            <button type="button" class="btn btn-primary btn-sm px-3" id="nextStep">Next Step</button>
                                         </div>
                                         <div id="section2" class="d-none">
-                                            <label for="" class="form-label">Team <span
-                                                    class="text-danger">*</span></label>
-                                            <div class="form-check form-switch mb-3">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                    id="allTeams" name="business_development" checked>
-                                                <label class="form-check-label" for="allTeams">All Teams</label>
-                                            </div>
-                                            <div class="mb-3" id="teamSelect" style="display: none;">
-                                                <select name="team" id="team" class="form-control">
-                                                    <option value="">Select Team</option>
-                                                    {% for team in teams %}
-                                                    <option value="{{team.pk}}">{{team.name}}</option>
-                                                    {% endfor %}
-                                                </select>
+                                            <div class="col-md-12">
+                                                <div class="dropdown">
+                                                    <label for="" class="form-label">Teams <span class="text-danger">*</span></label>
+                                                    <div id="teamsoptionsinput" class="form-control selected-items-container" onclick="toggleDropdown(event, 'employeeOptions')" style="min-height: 45px;">
+                                                        <div class="selected-tags"></div>
+                                                    </div>
+                                                    <div id="employeeOptions" class="dropdown-content w-100">
+                                                        <input type="text" id="employeeSearch" placeholder="Search.." class="form-control" onkeyup="filterOptions('employeeSearch', 'employeeOptions')">
+                                                        {% for team in teams %}
+                                                        <label class="w-100">
+                                                            <input class="form-check-input" type="checkbox" role="switch" value="{{team.pk}}" data-name="{{team.name}}" name="selectemployees">
+                                                            {{team.name}}
+                                                        </label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
                                             </div>
                                             <hr>
-                                            <label for="" class="form-label">Custom day <span
-                                                    class="text-danger">*</span></label>
+                                            <label for="" class="form-label">Custom day <span class="text-danger">*</span></label>
                                             <div class="form-check form-switch mb-3">
-                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
-                                                    id="monday" name="monday">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch" id="monday" name="monday">
                                                 <label class="form-check-label" for="monday">All Monday</label>
                                             </div>
                                             <div class="form-check form-switch mb-3">
-                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
-                                                    id="tuesday" name="tuesday">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch" id="tuesday" name="tuesday">
                                                 <label class="form-check-label" for="tuesday">All Tuesday</label>
                                             </div>
                                             <div class="form-check form-switch mb-3">
-                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
-                                                    id="wednesday" name="wednesday">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch" id="wednesday" name="wednesday">
                                                 <label class="form-check-label" for="wednesday">All Wednesday</label>
                                             </div>
                                             <div class="form-check form-switch mb-3">
-                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
-                                                    id="thursday" name="thursday">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch" id="thursday" name="thursday">
                                                 <label class="form-check-label" for="thursday">All Thursday</label>
                                             </div>
                                             <div class="form-check form-switch mb-3">
-                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
-                                                    id="friday" name="friday">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch" id="friday" name="friday">
                                                 <label class="form-check-label" for="friday">All Friday</label>
                                             </div>
                                             <div class="form-check form-switch mb-3">
-                                                <input class="form-check-input custom-day" type="checkbox" role="switch"
-                                                    id="saturday" name="saturday">
+                                                <input class="form-check-input custom-day" type="checkbox" role="switch" id="saturday" name="saturday">
                                                 <label class="form-check-label" for="saturday">All Saturday</label>
                                             </div>
-                                            <button type="button" class="btn btn-primary btn-sm px-3" id="goBack">Go
-                                                Back</button>
+                                            <button type="button" class="btn btn-primary btn-sm px-3" id="goBack">Go Back</button>
                                             <input type="submit" class="btn btn-primary btn-sm px-3" value="Save event">
                                         </div>
                                     </form>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -206,27 +194,6 @@
                 </div>
             </div>
             <div class="calendar" id="calendar"></div>
-        </div>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#abcdef">
-            Launch demo modal
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="abcdef" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header d-flex dlex-column align-items-start justify-content-end bg-primary text-start" style="height: 120px; flex-direction: column;">
-                        <h1 class="modal-title fs-5 fw-bold text-light" id="exampleModalLabel">Modal title</h1>
-                        <p class="text-light m-0 p-0">Thursday 15 August</p>
-                    </div>
-                    <div class="modal-body">
-                        <div class="">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- Modal for Adding Events -->
         <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
@@ -293,16 +260,15 @@
                                     </div>
                                 </div>
                             </div>
-
                             <button type="submit" class="btn btn-primary">Save Event</button>
                         </form>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
+
 {% endblock %}
 {% block script %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -360,11 +326,15 @@
             }
 
             // Append events to days
+            // Function to format date in the desired format
+            function formatDate(date) {
+                const options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+                return date.toLocaleDateString('en-US', options);
+            }
+
             events.forEach(event => {
                 let startDate = new Date(event.fields.start_date);
                 let endDate = new Date(event.fields.end_date);
-                startDate.setDate(startDate.getDate());
-                endDate.setDate(endDate.getDate());
                 let bgColor = event.fields.color || '#007bff'; // Default to primary color if no bgColor is specified
 
                 let current = new Date(startDate);
@@ -376,6 +346,7 @@
                     if (dayElement.length > 0) {
                         // Generate a unique ID for each modal
                         let modalId = `update-${event.pk}-${dayDate.replace(/-/g, '')}`;
+                        let epk = `${event.pk}`
                         let icon;
 
                         // Determine the correct icon based on the typeOfEvent
@@ -394,24 +365,46 @@
                         }
 
                         let eventElement = $(`
-                        <div class="event text-truncate" style="background-color:${bgColor};">
-                            <button type="button" class="border-0 rounded-1" data-bs-toggle="modal" data-bs-target="#${modalId}" style="background-color: rgba(236, 236, 236, .2);">
-                                ${icon}
-                            </button>
-                            <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}Label" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-sm">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="${modalId}Label">Event Details</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            
-                                        </div>
+            <div class="event text-truncate" style="background-color:${bgColor};">
+                <button type="button" class="border-0 rounded-1" data-bs-toggle="modal" data-bs-target="#${modalId}" style="background-color: rgba(236, 236, 236, .2);">
+                    ${icon}
+                </button>
+                <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}Label" aria-hidden="true">
+                    <div class="modal-dialog" style="height: 83vh; width: 350px;">
+                        <div class="modal-content rounded-4 border-0 h-100 bg-none bg-transparent">
+                            <div class="container rounded-top-4 modal-header d-flex dlex-column align-items-start justify-content-end text-start" style="height: 180px; background-color:${bgColor}; flex-direction: column;">
+                                <h1 class="modal-title fs-5 fw-bold text-light mb-1 text-wrap" id="${modalId}Label">${event.fields.name} ( ${event.fields.typeOfEvent} )</h1>
+                                <p class="text-light m-0 p-0 fs-6"><i class='bx bx-time text-light'></i> ${formatDate(new Date(event.fields.start_date))}</p>
+                                <p class="text-light m-0 p-0 fs-6"><i class='bx bx-time text-light'></i> ${formatDate(new Date(event.fields.end_date))}</p>
+                            </div>
+                            <div class="modal-body rounded-bottom-4 bg-light">
+                                <div class="mb-5 rounded-bottom-4">
+                                    <p class="fs-6">Description:</p>
+                                    <div style="height:6.4rem; overflow-y:auto;">
+                                        <p class="text-wrap fs-6">${event.fields.description || 'No description available.'}</p>
                                     </div>
+                                    <hr style="border-top: 1px dotted;">
+                                    ${event.fields.meeting_url ?
+                                `<div>
+                                        <a href="${event.fields.meeting_url}" class="fs-6">Google Meet Link</a>
+                                        <i class='bx bx-copy-alt fs-6 copy-icon' data-url="${event.fields.meeting_url}" style="cursor: pointer;"></i>
+                                    </div>` : ''
+                            }
                                 </div>
                             </div>
-                        ${event.fields.name}</div>)`);
+                            <div class="d-flex align-items-center justify-content-center gap-2 mt-3">
+                                <a href="#" class="btn btn-white d-flex align-items-center justify-content-center border-0 p-3"><i class='bx bx-edit-alt fs-4'></i></i></a>
+                                <form action="delete_event/${epk}/" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-white d-flex align-items-center justify-content-center border-0 p-3">
+                                        <i class='bx bx-trash fs-4'></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                ${event.fields.name}</div>`);
 
                         dayElement.append(eventElement);
                     }
@@ -419,6 +412,23 @@
                     current.setDate(current.getDate() + 1);
                 }
             });
+
+            // Event listener to copy the link to clipboard
+            $(document).on('click', '.copy-icon', function () {
+                let link = $(this).data('url');
+                navigator.clipboard.writeText(link).then(() => {
+                    // Show the toast
+                    let toastEl = $('#copyToast');
+                    let toast = new bootstrap.Toast(toastEl);
+                    toast.show();
+                }).catch(err => {
+                    console.error('Failed to copy link: ', err);
+                });
+            });
+
+
+
+
         }
 
         $("#prev-month").click(function () {
@@ -432,94 +442,173 @@
             if (currentMonth === 0) currentYear++;
             generateCalendar(currentMonth, currentYear);
         });
-
-        // Function to validate section 1
-        function validateSection1() {
-            let isValid = true;
-
-            // Validate inputs, selects, and textareas
-            $('#section1 input, #section1 select, #section1 textarea').each(function () {
-                if (!this.checkValidity()) {
-                    isValid = false;
-                    $(this).addClass('is-invalid');
-                } else {
-                    $(this).removeClass('is-invalid');
-                }
-            });
-
-            // Additional validation for Event Type
-            if ($('#eventType').val() === '') {
-                isValid = false;
-                $('#eventType').addClass('is-invalid');
-            } else {
-                $('#eventType').removeClass('is-invalid');
-            }
-
-            // Validation for Team Select if All Teams is unchecked
-            if (!$('#allTeams').is(':checked') && $('#team').val() === '') {
-                isValid = false;
-                $('#team').addClass('is-invalid');
-            } else {
-                $('#team').removeClass('is-invalid');
-            }
-
-            return isValid;
-        }
-
-        // Next Step button click handler
-        $('#nextStep').click(function () {
-            if (validateSection1()) {
-                $('#section1').addClass('d-none');
-                $('#section2').removeClass('d-none');
-            }
-        });
-
-        // Previous Step button click handler
-        $('#goBack').click(function () {
-            $('#section2').addClass('d-none');
-            $('#section1').removeClass('d-none');
-        });
-
-        // All Teams checkbox change handler
-        $('#allTeams').change(function () {
-            if ($(this).is(':checked')) {
-                $('#teamSelect').hide();
-                $('#team').val('');
-                $('#team').removeClass('is-invalid');
-            } else {
-                $('#teamSelect').show();
-            }
-        });
-
-        // Team dropdown change handler
-        $('#team').change(function () {
-            if ($(this).val()) {
-                $('#allTeams').prop('checked', false);
-            }
-        });
-
-        // Form submit handler
-        $('#eventForm').submit(function (event) {
-            let customDayChecked = false;
-            $('.custom-day').each(function () {
-                if ($(this).is(':checked')) {
-                    customDayChecked = true;
-                }
-            });
-            if (!customDayChecked) {
-                alert('Please select at least one custom day.');
-                event.preventDefault();
-            }
-
-            // Additional validation for All Teams checkbox
-            if (!$('#allTeams').is(':checked') && $('#team').val() === '') {
-                $('#team').addClass('is-invalid');
-                event.preventDefault();
-            } else {
-                $('#team').removeClass('is-invalid');
-            }
-        });
         generateCalendar(currentMonth, currentYear);
     });
+
+    function validateSection1() {
+    let isValid = true;
+
+    // Validate inputs, selects, and textareas in section 1
+    $('#section1 input, #section1 select, #section1 textarea').each(function () {
+        if (!this.checkValidity()) {
+            isValid = false;
+            $(this).addClass('is-invalid');
+        } else {
+            $(this).removeClass('is-invalid');
+        }
+    });
+
+    // Additional validation for Event Type
+    if ($('#eventType').val() === '') {
+        isValid = false;
+        $('#eventType').addClass('is-invalid');
+    } else {
+        $('#eventType').removeClass('is-invalid');
+    }
+
+    return isValid;
+}
+
+function validateSection2() {
+    let isValid = true;
+
+    // Validate multi-selection for Teams
+    const checkboxes = document.querySelectorAll('input[name="selectemployees"]:checked');
+    if (checkboxes.length === 0) {
+        isValid = false;
+        document.getElementById('teamsoptionsinput').classList.add('is-invalid');
+    }
+    else{
+        isValid = true;
+        document.getElementById('teamsoptionsinput').classList.remove('is-invalid');
+    }
+
+    // Validate at least one custom day is selected
+    let customDayChecked = false;
+    $('.custom-day').each(function () {
+        if ($(this).is(':checked')) {
+            customDayChecked = true;
+        }
+    });
+
+    if (!customDayChecked) {
+        isValid = false;
+        alert('Please select at least one custom day.');
+    }
+
+    return isValid;
+}
+
+function toggleDropdown(event, dropdownId) {
+    event.stopPropagation();
+    const dropdown = document.getElementById(dropdownId);
+    dropdown.classList.toggle("show");
+}
+
+function filterOptions(searchId, dropdownId) {
+    const input = document.getElementById(searchId);
+    const filter = input.value.toLowerCase();
+    const dropdown = document.getElementById(dropdownId);
+    const labels = dropdown.getElementsByTagName('label');
+
+    for (let i = 0; i < labels.length; i++) {
+        const txtValue = labels[i].textContent || labels[i].innerText;
+        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+            labels[i].style.display = "";
+        } else {
+            labels[i].style.display = "none";
+        }
+    }
+}
+
+document.addEventListener('click', function (event) {
+    const dropdowns = document.querySelectorAll('.dropdown-content');
+    dropdowns.forEach(dropdown => {
+        if (!dropdown.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+});
+
+$('#nextStep').click(function () {
+    if (validateSection1()) {
+        $('#section1').addClass('d-none');
+        $('#section2').removeClass('d-none');
+    }
+});
+
+$('#goBack').click(function () {
+    $('#section2').addClass('d-none');
+    $('#section1').removeClass('d-none');
+});
+
+$('#eventForm').submit(function (event) {
+    if (!validateSection1() || !validateSection2()) {
+        event.preventDefault();
+    }
+});
+
+    // Show drap down
+    function toggleDropdown(event, dropdownId) {
+        event.stopPropagation();
+        const options = document.getElementById(dropdownId);
+        options.classList.toggle("show");
+    }
+
+    window.onclick = function (event) {
+        if (!event.target.closest('.dropdown')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    document.querySelectorAll('.dropdown-content input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const selectedTagsContainer = checkbox.closest('.dropdown').querySelector('.selected-tags');
+            let selectedValues = Array.from(checkbox.closest('.dropdown-content').querySelectorAll('input[type="checkbox"]:checked'))
+                .map(cb => ({ id: cb.value, name: cb.getAttribute('data-name') }));
+            updateSelectedTags(selectedValues, selectedTagsContainer);
+        });
+    });
+
+    function updateSelectedTags(selectedValues, container) {
+        container.innerHTML = '';
+        selectedValues.forEach(value => {
+            const tag = document.createElement('div');
+            tag.className = 'tag';
+            tag.innerHTML = `<span>${value.name}</span><span class="remove-tag" onclick="removeTag('${value.id}', this)">x</span>`;
+            container.appendChild(tag);
+        });
+    }
+
+    function removeTag(id, element) {
+        const checkbox = element.closest('.dropdown').querySelector(`input[value="${id}"]`);
+        if (checkbox) {
+            checkbox.checked = false;
+            const selectedTagsContainer = checkbox.closest('.dropdown').querySelector('.selected-tags');
+            let selectedValues = Array.from(checkbox.closest('.dropdown-content').querySelectorAll('input[type="checkbox"]:checked'))
+                .map(cb => ({ id: cb.value, name: cb.getAttribute('data-name') }));
+            updateSelectedTags(selectedValues, selectedTagsContainer);
+        }
+    }
+
+    function filterOptions(searchId, dropdownId) {
+        const searchInput = document.getElementById(searchId).value.toLowerCase();
+        const labels = document.getElementById(dropdownId).querySelectorAll('label');
+
+        labels.forEach(label => {
+            const text = label.textContent.toLowerCase();
+            if (text.includes(searchInput)) {
+                label.style.display = "";
+            } else {
+                label.style.display = "none";
+            }
+        });
+    }
 </script>
 {% endblock %}
