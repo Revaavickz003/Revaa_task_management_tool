@@ -33,6 +33,15 @@ urlpatterns = [
     path('calendar/', home.calendar, name='calendar'),
     path('add_event/', home.add_event, name='add_event'),
     path('recurring_event/', home.recurring_event, name='recurring_event'),
+    
+    path('calendar/update_event/<int:epk>/', home.update_event, name='update_event'),
+    path('update_event/<int:epk>', home.update_event_name, name='update_event_name'),
+    path('update-event-color/<int:epk>/', home.update_event_color, name='update_event_color'),
+    path('update-event-start-date/<int:epk>/', home.update_event_start_date, name='update_event_start_date'),
+    path('update_event_end_date/<int:epk>/', home.update_event_end_date, name='update_event_end_date'),
+    path('update_event_start_time/<int:epk>/', home.update_event_start_time, name='update_event_start_time'),
+    path('update_event_end_time/<int:epk>/', home.update_event_end_time, name='update_event_end_time'),
+
     path('calendar/delete_event/<int:epk>/', home.delete_event, name='delete_event'),
 
     # Open project page

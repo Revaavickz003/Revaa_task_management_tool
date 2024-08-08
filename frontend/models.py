@@ -307,11 +307,11 @@ class events(models.Model):
     meeting_url = models.URLField(null=True, blank=True)
 
     all_team = models.BooleanField(default=True )
-    team = models.ManyToManyField(Team, related_name='teams')
+    team = models.ManyToManyField(Team, null=False, blank=True, related_name='teams')
 
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_created', null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_created', null=True, blank=True)
     created_date = models.DateField(auto_now_add=True)
-    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_updated', null=True)
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_updated', null=True, blank=True)
     updated_date = models.DateField(auto_now=True)
     
     def __str__(self):

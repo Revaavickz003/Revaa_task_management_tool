@@ -1,0 +1,594 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home Page | Revaa{% endblock %}
+{% block style %}
+{% endblock %}
+{% block container %}
+<div class="mb-3">
+    {% include 'includes/sidebar.html' %}
+    {% include 'includes/message.html' %}
+    {% include 'alert_popup/add_new_event.html' %}
+    {% include 'alert_popup/add_new_recurring_event.html' %}
+    <div class="content">
+        {% include 'includes/navbar.html' %}
+        <div class="row mt-3">
+            <div class="col-5">
+                <div>
+                    <div class="container d-flex align-items-end justify-content-between">
+                        <p id="eventText" class="m-0 p-0 fs-5 fw-bold">{{get_event}}</p>
+                        <i id="editIcon" class='bx bxs-edit-alt m-0 p-0 fs-5' onclick="toggleEdit()"></i>
+                    </div>
+                    <div id="editForm" class="container d-none">
+                        <form action="{% url 'update_event_name' epk=get_event.pk %}"
+                            class="d-flex align-items-center justify-content-between gap-1" id="editForm" method="post">
+                            {% csrf_token %}
+                            <input type="text" name="name" value="{{get_event.name}}"
+                                class="border-0 fs-5 p-0 m-0 fw-bold w-100" style="outline: none;">
+                            <input type="submit" class="btn btn-primary btn-sm rounded-2"
+                                style="border-radius: 5px !important;" value="Save">
+                        </form>
+                    </div>
+                </div>
+                <div class="mt-4 container">
+                    <div class="row mt-1">
+                        <div class="col-6">
+                            Type Of Event
+                        </div>
+                        <div class="col-6">
+                            <div class="btn-group w-100">
+                                <button
+                                    class="btn dropdown-toggle d-flex align-items-center justify-content-start gap-1"
+                                    type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                    aria-expanded="false">
+                                    {% if get_event.typeOfEvent == 'Event' %}
+                                    <i class='bx bxs-megaphone fs-5' style="color: {{get_event.color}};"></i>
+                                    {% elif get_event.typeOfEvent == 'Call' %}
+                                    <i class='bx bx-phone-call fs-5' style="color: {{get_event.color}};"></i>
+                                    {% elif get_event.typeOfEvent == 'Meeting' %}
+                                    <i class='bx bx-group fs-5' style="color: {{get_event.color}};"></i>
+                                    {% endif %}
+                                    <span>{{get_event.typeOfEvent}}</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    {% for typeofevent in typeofevents %}
+                                    <li>
+                                        <a class="dropdown-item {% if get_event.typeOfEvent == typeofevent.0 %} active {% endif %}"
+                                            href="">{{typeofevent.0}}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-6">
+                            Colour
+                        </div>
+                        <div class="col-6">
+                            <div class="btn-group w-100">
+                                <button id="colorButton"
+                                    class="btn d-flex align-items-center justify-content-start gap-1"
+                                    style="border-radius: 5px !important;" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i id="colorIcon" class='bx bxs-square-rounded fs-5'
+                                        style="color: {{get_event.color}};"></i>
+                                    <span id="colorDisplay">{{get_event.color}}</span>
+                                </button>
+                                <ul class="dropdown-menu p-0">
+                                    <li class="dropdown-item">
+                                        <input type="color" id="colorPicker" value="{{get_event.color}}" class="form-control" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-6">
+                            Start Date
+                        </div>
+                        <div class="col-6">
+                            <div class="btn-group w-100">
+                                <button id="dateButton"
+                                    class="btn dropdown-toggle d-flex align-items-center justify-content-start gap-1"
+                                    type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                    aria-expanded="false">
+                                    <i class='bx bx-calendar fs-5' style="color: {{get_event.color}};"></i>
+                                    <span id="selectedDate">{{get_event.start_date}}</span>
+                                </button>
+                                <ul class="dropdown-menu p-0">
+                                    <li>
+                                        <input type="date" id="dateInput" value="{{get_event.start_date}}"
+                                            class="dropdown-item form-control" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-6">
+                            Start Time
+                        </div>
+                        <div class="col-6">
+                            <div class="btn-group w-100">
+                                <button id="startTimeButton"
+                                    class="btn dropdown-toggle d-flex align-items-center justify-content-start gap-1"
+                                    type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                    aria-expanded="false">
+                                    <i class='bx bx-time-five fs-5' style="color: {{get_event.color}};"></i>
+                                    <span id="startTimeDisplay">{{get_event.satrt_time}}</span>
+                                </button>
+                                <ul class="dropdown-menu p-0">
+                                    <li>
+                                        <input type="time" id="startTimeInput" value="{{get_event.satrt_time}}"
+                                            class="dropdown-item form-control" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-6">
+                            End Date
+                        </div>
+                        <div class="col-6">
+                            <div class="btn-group w-100">
+                                <button id="endDateButton"
+                                    class="btn dropdown-toggle d-flex align-items-center justify-content-start gap-1"
+                                    type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                    aria-expanded="false">
+                                    <i class='bx bx-calendar fs-5' style="color: {{get_event.color}};"></i>
+                                    <span id="endDateDisplay">{{get_event.end_date}}</span>
+                                </button>
+                                <ul class="dropdown-menu p-0">
+                                    <li>
+                                        <input type="date" id="endDateInput" value="{{get_event.end_date}}"
+                                            class="dropdown-item form-control" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-6">
+                            End Time
+                        </div>
+                        <div class="col-6">
+                            <div class="btn-group w-100">
+                                <button id="endTimeButton"
+                                    class="btn dropdown-toggle d-flex align-items-center justify-content-start gap-1"
+                                    type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                    aria-expanded="false">
+                                    <i class='bx bx-time-five fs-5' style="color: {{get_event.color}};"></i>
+                                    <span id="endTimeDisplay">{{get_event.end_time}}</span>
+                                </button>
+                                <ul class="dropdown-menu p-0">
+                                    <li>
+                                        <input type="time" id="endTimeInput" value="{{get_event.end_time}}"
+                                            class="dropdown-item form-control" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% if get_event.typeOfEvent != 'Event' %}
+                    <div class="row mt-1">
+                        <div class="col-6">
+                            meeting_url
+                        </div>
+                        <div class="col-6">
+                            <div class="btn-group w-100">
+                                <button
+                                    class="btn d-flex align-items-center justify-content-start gap-1 dropdown-toggle"
+                                    type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                    aria-expanded="false">
+                                    <i class='bx bx-video fs-5'
+                                        style="color: {{get_event.color}};"></i>{{get_event.meeting_url}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="row mt-1">
+                        <div class="col-6">
+                            Teams
+                        </div>
+                        <div class="col-6 d-flex align-items-end justify-content-between">
+                            {% if teams %}
+                            <div>
+                                {% for team in teams %}
+                                <span class="mb-1 cs-alert-primary">{{team}}</span>
+                                <span class="mb-1 cs-alert-primary">{{team}}</span>
+                                <span class="mb-1 cs-alert-primary">{{team}}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <span class="cs-alert-danger">No Teams</span>
+                            {% endif %}
+                            <i id="editIcon" class='bx bxs-edit-alt m-0 p-0 fs-5'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-7" style="overflow: auto; height: 78.5vh;">
+                <p class="fs-5 fw-bold m-0 p-0">Comments</p>
+                <p>{{task.description}}</p>
+                <ol class="timeline">
+                    <li class="timeline-item">
+                        <span class="timeline-item-icon | avatar-icon">
+                            <i class="avatar">
+                                <img src="{% static 'images/Employee_avathar.png' %}" />
+                            </i>
+                        </span>
+                        <form action="" class="new-comment w-100 d-flex align-items-end" method="post"
+                            enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="me-2">
+                                <textarea name="comment" id="comment" placeholder="Add a comment..."
+                                    class="form-control me-2" rows="4" cols="100"></textarea>
+                                <input type="file" name="attachment" id="attachment" class="form-control mt-2">
+                            </div>
+                            <input type="submit" class="btn btn-primary btn-sm" style="border-radius: 5px !important;"
+                                value="Submit">
+                        </form>
+                    </li>
+                    {% for comments in commentss %}
+                    <li class="timeline-item d-flex align-items-start">
+                        <span class="timeline-item-icon | faded-icon bg-gray">
+                            {% if comments.user.employee_photo %}
+                            <img src="{{comments.user.employee_photo.url}}" />
+                            {% else %}
+                            <img src="{% static 'images/Employee_avathar.png' %}" />
+                            {% endif %}
+                        </span>
+                        <div class="timeline-item-description border p-3 rounded ">
+                            <span style="font-size:medium;"><a href="#"
+                                    class="fw-semibold text-decoration-none text-primary">{{comments.user}}</a>
+                                {{comments.comments}}
+
+                                {% if comments.BeforeAssignees %}
+                                <a href="{% url 'showemployee' epk=comments.BeforeAssignees.pk %}"
+                                    class="fw-semibold text-decoration-none text-primary cs-alert-gray"
+                                    style="border-radius: 3px !important;">{{comments.BeforeAssignees}}</a> to
+                                <a href="{% url 'showemployee' epk=comments.AfterAssignees.pk %}"
+                                    class="fw-semibold text-decoration-none text-primary cs-alert-gray"
+                                    style="border-radius: 3px !important;">{{comments.AfterAssignees}}</a>
+                                {% endif %}
+
+                                {% if comments.BeforePriority %}
+                                <del><span class="
+                            {% if comments.BeforePriority == 'High' %}
+                            cs-alert-danger
+                            {% elif comments.BeforePriority == 'Medium' %}
+                            cs-alert-orange
+                            {% elif comments.BeforePriority == 'Low' %}
+                            cs-alert-primary
+                            {% endif %} 
+                            ">{{comments.BeforePriority}}</span></del> to
+                                <span class="
+                            {% if comments.AfterPriority == 'High' %}
+                            cs-alert-danger
+                            {% elif comments.AfterPriority == 'Medium' %}
+                            cs-alert-orange
+                            {% elif comments.AfterPriority == 'Low' %}
+                            cs-alert-primary
+                            {% endif %} 
+                            " data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}"
+                                    aria-controls="offcanvasRight">{{comments.AfterPriority}}</span>
+                                {% endif %}
+
+                                {% if comments.BeforeDescription %}
+                                <del>{{comments.BeforeDescription}}</del> to
+                                <span>{{comments.AfterDescription}}</span>
+                                {% endif %}
+
+                                {% if comments.BeforeAttachment %}
+                                <a href="{{comments.BeforeAttachment.url}}" class="text-danger">Before attachment</a> to
+                                <a href="{{comments.AfterAttachment.url}}" class="text-primary">After attachment</a>
+                                {% endif %}
+
+                                {% if comments.BeforeStatus %}
+                                <span class="
+                            {% if comments.BeforeStatus.color == 'None' %}
+                            border
+                            {% elif comments.BeforeStatus.color == 'Gray' %}
+                            cs-alert-gray
+                            {% elif comments.BeforeStatus.color == 'Blue' %}
+                            cs-alert-primary
+                            {% elif comments.BeforeStatus.color == 'Green' %}
+                            cs-alert-green
+                            {% elif comments.BeforeStatus.color == 'Yellow' %}
+                            cs-alert-yellow
+                            {% elif comments.BeforeStatus.color == 'Orange' %}
+                            cs-alert-orange
+                            {% elif comments.BeforeStatus.color == 'Red' %}
+                            cs-alert-danger
+                            {% elif comments.BeforeStatus.color == 'Pink' %}
+                            cs-alert-pink
+                            {% elif comments.BeforeStatus.color == 'Purple' %}
+                            cs-alert-purple
+                            {% endif %}
+                            " data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}"
+                                    aria-controls="offcanvasRight"><del>{{comments.BeforeStatus}}</del></span> to
+                                <span class="
+                            {% if comments.AfterStatus.color == 'None' %}
+                            border
+                            {% elif comments.AfterStatus.color == 'Gray' %}
+                            cs-alert-gray
+                            {% elif comments.AfterStatus.color == 'Blue' %}
+                            cs-alert-primary
+                            {% elif comments.AfterStatus.color == 'Green' %}
+                            cs-alert-green
+                            {% elif comments.AfterStatus.color == 'Yellow' %}
+                            cs-alert-yellow
+                            {% elif comments.AfterStatus.color == 'Orange' %}
+                            cs-alert-orange
+                            {% elif comments.AfterStatus.color == 'Red' %}
+                            cs-alert-danger
+                            {% elif comments.AfterStatus.color == 'Pink' %}
+                            cs-alert-pink
+                            {% elif comments.AfterStatus.color == 'Purple' %}
+                            cs-alert-purple
+                            {% endif %}
+                            " data-bs-toggle="offcanvas" data-bs-target="#taskid{{task.pk}}"
+                                    aria-controls="offcanvasRight">{{comments.AfterStatus}}</span>
+                                {% endif %}
+
+
+                                <time class="text-muted small"> on {{comments.corrent_date_time}}</time></span>
+                            {% if comments.comments_img %}
+                            <br><a href="{{comments.comments_img.url}}" target="_blank"><img class="mt-3 border rounded"
+                                    src="{{comments.comments_img.url}}" alt=""></a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ol>
+                <style>
+                    img {
+                        max-width: 100%;
+                    }
+
+                    .timeline {
+                        width: 85%;
+                        max-width: 700px;
+                        margin-left: auto;
+                        margin-right: auto;
+                        display: flex;
+                        flex-direction: column;
+                        padding: 32px 0 32px 32px;
+                        border-left: 2px solid rgb(218, 218, 218);
+                        font-size: 1.125rem;
+                    }
+
+                    .timeline-item {
+                        display: flex;
+                        gap: 8px;
+
+                        &+* {
+                            margin-top: 30px;
+                        }
+
+                        &+.extra-space {
+                            margin-top: 48px;
+                        }
+                    }
+
+                    .timeline-item-icon {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        margin-left: -52px;
+                        flex-shrink: 0;
+                        overflow: hidden;
+                        box-shadow: 0 0 0 6px #fff;
+
+                        svg {
+                            width: 20px;
+                            height: 20px;
+                        }
+
+                        &.faded-icon {
+                            background-color: var(--c-grey-100);
+                            color: var(--c-grey-400);
+                        }
+
+                        &.filled-icon {
+                            background-color: var(--c-blue-500);
+                            color: #fff;
+                        }
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function toggleEdit() {
+        var editForm = document.getElementById('editForm');
+        var eventText = document.getElementById('eventText');
+        var editIcon = document.getElementById('editIcon');
+        if (editForm.classList.contains('d-none')) {
+            editForm.classList.remove('d-none');
+            editForm.classList.add('d-block');
+            eventText.classList.add('d-none');
+            editIcon.classList.add('d-none');
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+    const colorButton = document.querySelector('#colorButton');
+    const colorPicker = document.querySelector('#colorPicker');
+    const colorIcon = document.querySelector('#colorIcon');
+    const colorDisplay = document.querySelector('#colorDisplay');
+
+    // Handle color selection
+    colorPicker.addEventListener('input', function() {
+        const selectedColor = colorPicker.value;
+
+        // Update the color icon and display
+        colorIcon.style.color = selectedColor;
+        colorDisplay.textContent = selectedColor;
+
+        // Send the color update to the server using AJAX
+        $.ajax({
+            url: "{% url 'update_event_color' epk=get_event.pk %}",
+            type: "POST",
+            data: {
+                color: selectedColor,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+        });
+    });
+});
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const dateButton = document.querySelector('#dateButton');
+    const dateInput = document.querySelector('#dateInput');
+    const selectedDate = document.querySelector('#selectedDate');
+
+    // Show the date input when the button is clicked
+    dateButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default action
+        // Optionally, you could toggle the visibility of the dropdown menu here if needed
+    });
+
+    // Handle date selection
+    dateInput.addEventListener('change', function() {
+        const selectedDateValue = dateInput.value;
+
+        // Update the displayed date
+        selectedDate.textContent = selectedDateValue;
+
+        // Send the date update to the server using AJAX
+        $.ajax({
+            url: "{% url 'update_event_start_date' epk=get_event.pk %}",
+            type: "POST",
+            data: {
+                start_date: selectedDateValue,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    alert(response.message);  // Optional: Show success message
+                } else {
+                    alert(response.message);  // Show error message
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error: ' + error);
+            }
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const endDateButton = document.querySelector('#endDateButton');
+    const endDateInput = document.querySelector('#endDateInput');
+    const endDateDisplay = document.querySelector('#endDateDisplay');
+
+    // Handle date selection
+    endDateInput.addEventListener('change', function() {
+        const selectedEndDate = endDateInput.value;
+
+        // Update the displayed end date
+        endDateDisplay.textContent = selectedEndDate;
+
+        // Send the date update to the server using AJAX
+        $.ajax({
+            url: "{% url 'update_event_end_date' epk=get_event.pk %}",
+            type: "POST",
+            data: {
+                end_date: selectedEndDate,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    alert(response.message);  // Optional: Show success message
+                } else {
+                    alert(response.message);  // Show error message
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error: ' + error);
+            }
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const startTimeButton = document.querySelector('#startTimeButton');
+    const startTimeInput = document.querySelector('#startTimeInput');
+    const startTimeDisplay = document.querySelector('#startTimeDisplay');
+
+    // Handle time selection
+    startTimeInput.addEventListener('change', function() {
+        const selectedStartTime = startTimeInput.value;
+
+        // Update the displayed start time
+        startTimeDisplay.textContent = selectedStartTime;
+
+        // Send the time update to the server using AJAX
+        $.ajax({
+            url: "{% url 'update_event_start_time' epk=get_event.pk %}",
+            type: "POST",
+            data: {
+                start_time: selectedStartTime,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    alert(response.message);  // Optional: Show success message
+                } else {
+                    alert(response.message);  // Show error message
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error: ' + error);
+            }
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const endTimeButton = document.querySelector('#endTimeButton');
+    const endTimeInput = document.querySelector('#endTimeInput');
+    const endTimeDisplay = document.querySelector('#endTimeDisplay');
+
+    // Handle time selection
+    endTimeInput.addEventListener('change', function() {
+        const selectedEndTime = endTimeInput.value;
+
+        // Update the displayed end time
+        endTimeDisplay.textContent = selectedEndTime;
+
+        // Send the time update to the server using AJAX
+        $.ajax({
+            url: "{% url 'update_event_end_time' epk=get_event.pk %}",
+            type: "POST",
+            data: {
+                end_time: selectedEndTime,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    alert(response.message);  // Optional: Show success message
+                } else {
+                    alert(response.message);  // Show error message
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error: ' + error);
+            }
+        });
+    });
+});
+
+</script>
+{% endblock %}

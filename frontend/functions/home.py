@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from django.utils import timezone
 from frontend.models import *
 from django.core.serializers import serialize
@@ -7,12 +8,14 @@ import json
 from django.contrib import messages
 from django.utils.timezone import now
 from datetime import timedelta, datetime
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 @login_required(login_url='/login')
 def home(request):
     context = {
         'home': 'active',
-        'nav-link-calender': 'custom-nav-link',
+        'nave_home':'nave-active',
     }
     return render(request, 'tmt-tool/home.html', context)
 
@@ -25,11 +28,10 @@ def date_view(request, date=None):
 @login_required(login_url='/login')
 def calendar(request):
     event = events.objects.all()
-    # Serialize the queryset to JSON
-    events_json = serialize('json', event, fields=('id', 'name', 'description', 'meeting_url', 'color', 'start_date', 'end_date', 'typeOfEvent', 'updated_by'))
+    events_json = serialize('json', event)
     context = {
         'home': 'active',
-        'nav-link-calender': 'custom-nav-link',
+        'nave_calender':'nave-active',
         'events_types': events.TYPE_OF_EVENT_CHOICES,
         'teams': Team.objects.all(),
         'events': events_json,
@@ -63,14 +65,11 @@ def add_event(request):
             end_date = End_Date,
             end_time = end_time,
             created_by = request.user,
-            weekday = False,
         )
         event.save()
         messages.success(request, f"{eventType} Added successfully...")
 
     return redirect('calendar')
-
-
 
 @login_required(login_url='/login')
 def recurring_event(request):
@@ -137,7 +136,151 @@ def recurring_event(request):
 @login_required(login_url='/login')
 def delete_event(request, epk):
     if request.method == 'POST':
+        try:
+            get_event = events.objects.get(pk=epk)
+            get_event.delete()
+            response_data = {
+                'status': 'success',
+                'message': f"{get_event.typeOfEvent} Deleted successfully..."
+            }
+        except events.DoesNotExist:
+            response_data = {
+                'status': 'error',
+                'message': "Event not found."
+            }
+        return JsonResponse(response_data)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
+
+@login_required(login_url='/login')
+def update_event(request, epk):
+    get_event = events.objects.get(pk = epk)
+    teams = get_event.team.all()
+    context = {
+        'home': 'active',
+        'nave_calender':'nave-active',
+        'get_event':get_event,
+        'teams':teams,
+        'typeofevents':events.TYPE_OF_EVENT_CHOICES
+    }
+    return render(request, 'tmt-tool/open_calender.html', context)
+
+# 
+# 
+# 
+def update_event_name(request, epk):
+    if request.method == 'POST':
+        event_name = request.POST.get('name')
         get_event = events.objects.get(pk = epk)
-        get_event.delete()
-        messages.success(request, f"{get_event.typeOfEvent} Deleted successfully...")
-    return redirect('calendar')
+        get_event.name = event_name
+        get_event.save()
+        messages.success(request, 'Event name updated success fully ...')
+    return redirect(reverse('update_event', kwargs={'epk': epk}))
+
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def update_event_color(request, epk):
+    if request.method == "POST":
+        try:
+            event = events.objects.get(pk=epk)
+            new_color = request.POST.get('color')
+
+            event.color = new_color
+            event.save()
+
+            return JsonResponse({'status': 'success', 'message': 'Color updated successfully!'})
+        except events.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Event does not exist.'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request.'}, status=400)
+    
+def update_event_start_date(request, epk):
+    if request.method == 'POST':
+        event = get_object_or_404(events, pk=epk)
+        start_date = request.POST.get('start_date')
+        if start_date:
+            event.start_date = start_date
+            event.save()
+            return JsonResponse({'status': 'success', 'message': 'Start date updated successfully.'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid date.'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request.'})
+
+@csrf_exempt
+def update_event_end_date(request, epk):
+    if request.method == 'POST':
+        end_date = request.POST.get('end_date')
+        event = get_object_or_404(events, pk=epk)
+        
+        try:
+            # Update the event's end date
+            event.end_date = end_date
+            event.save()
+            
+            response = {
+                'status': 'success',
+                'message': 'End date updated successfully!'
+            }
+        except Exception as e:
+            response = {
+                'status': 'error',
+                'message': str(e)
+            }
+        
+        return JsonResponse(response)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+@csrf_exempt
+def update_event_start_time(request, epk):
+    if request.method == 'POST':
+        start_time = request.POST.get('start_time')
+        event = get_object_or_404(events, pk=epk)
+        
+        try:
+            # Update the event's start time
+            event.satrt_time = start_time
+            event.save()
+            
+            response = {
+                'status': 'success',
+                'message': 'Start time updated successfully!'
+            }
+        except Exception as e:
+            response = {
+                'status': 'error',
+                'message': str(e)
+            }
+        
+        return JsonResponse(response)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+@csrf_exempt
+def update_event_end_time(request, epk):
+    if request.method == 'POST':
+        end_time = request.POST.get('end_time')
+        event = get_object_or_404(events, pk=epk)
+        
+        try:
+            # Update the event's end time
+            event.end_time = end_time
+            event.save()
+            
+            response = {
+                'status': 'success',
+                'message': 'End time updated successfully!'
+            }
+        except Exception as e:
+            response = {
+                'status': 'error',
+                'message': str(e)
+            }
+        
+        return JsonResponse(response)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+
