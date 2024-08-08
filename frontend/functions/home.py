@@ -11,6 +11,7 @@ import json
 def home(request):
     context = {
         'home': 'active',
+        'summary': 'nave-active',
         'nav-link-calender': 'custom-nav-link',
     }
     return render(request, 'tmt-tool/home.html', context)
@@ -28,6 +29,7 @@ def calendar(request):
     events_json = serialize('json', event, fields=('id', 'name', 'description', 'color', 'start_date', 'end_date'))
     context = {
         'home': 'active',
+        'calendar': 'nave-active',
         'nav-link-calender': 'custom-nav-link',
         'events': events_json  # Pass the JSON data to the template
     }
@@ -53,3 +55,21 @@ def add_event(request):
         event.save()
 
     return redirect('calendar')
+
+@login_required(login_url='/login')
+def board(request):
+    projects = Project.objects.all()
+    statuss = status.objects.all()
+    status_choices = Project.STATUS_CHOICES
+
+    context = {
+        'home': 'active',
+        'board': 'nave-active',
+        'projects': projects,
+        'status_choices': status_choices,
+        'statuss' : statuss
+    }
+    return render(request, 'tmt-tool/board.html', context)
+
+
+
