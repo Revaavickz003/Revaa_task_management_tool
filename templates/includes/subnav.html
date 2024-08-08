@@ -1,0 +1,18 @@
+{% load static %}
+<section class="border-bottom">
+    <div class="d-flex align-items-center gap-1  py-2">
+        <a href="{% url 'home' %}"  class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link {{summary}}"><i class='bx bx-doughnut-chart fs-5 text-muted'></i> <span class="text-muted">Summary</span></a>
+        <a href="{% url 'calendar' %}"  class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link {{calendar}}"><i class='bx bx-calendar fs-5 text-muted'></i> <span class="text-muted">Calendar</span></a>
+        <a href="{% url 'board' %}" class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link {{board}}"> <i class='bx bx-package fs-5 text-muted'></i> <span class="text-muted">Board</span></a>
+        <a href="" class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link"><i class='bx bx-timer fs-4 text-muted'></i> <span class="text-muted">Time Line</span></a>
+        <a href="" class="d-flex align-items-center gap-1 text-decoration-none px-3 py-1 rounded-2 border custom-nav-link"><i class='bx bx-list-ol fs-4 text-muted'></i> <span class="text-muted">Task List</span></a>
+    </div>
+    <style>
+        .nave-active {
+            background-color: #eaeef1;
+        }
+        .custom-nav-link:hover{
+            background-color: #eaeef1;
+        }
+    </style>
+</section>

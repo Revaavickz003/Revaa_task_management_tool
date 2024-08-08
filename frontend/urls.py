@@ -32,6 +32,7 @@ urlpatterns = [
     # Home page
     path('calendar/', home.calendar, name='calendar'),
     path('add_event/', home.add_event, name='add_event'),
+    path('board/', home.board, name='board'),
 
     # Open project page
     path('project/closed/<int:pk>/', project.closeproject, name='closeproject'),
