@@ -15,7 +15,12 @@ from django.shortcuts import get_object_or_404
 def home(request):
     context = {
         'home': 'active',
+
         'nave_home':'nave-active',
+
+        'summary': 'nave-active',
+        'nav-link-calender': 'custom-nav-link',
+
     }
     return render(request, 'tmt-tool/home.html', context)
 
@@ -31,10 +36,16 @@ def calendar(request):
     events_json = serialize('json', event)
     context = {
         'home': 'active',
+
         'nave_calender':'nave-active',
         'events_types': events.TYPE_OF_EVENT_CHOICES,
         'teams': Team.objects.all(),
         'events': events_json,
+
+        'calendar': 'nave-active',
+        'nav-link-calender': 'custom-nav-link',
+        'events': events_json  # Pass the JSON data to the template
+
     }
     return render(request, 'tmt-tool/Calendar.html', context)
 
@@ -323,6 +334,7 @@ def update_event_teams_description(request,epk):
             teams = request.POST.getlist('selectteams')
             description = request.POST.get('description')
 
+
             event = events.objects.get(pk=epk)
             event.description = description
             selected_teams = Team.objects.filter(pk__in=teams)
@@ -335,3 +347,22 @@ def update_event_teams_description(request,epk):
         messages.error(request, 'Invalid request method')
     return redirect(reverse('update_event', kwargs={'epk':epk}))
         
+
+    return redirect('calendar')
+
+@login_required(login_url='/login')
+def board(request):
+    projects = Project.objects.all()
+    statuss = status.objects.all()
+    status_choices = Project.STATUS_CHOICES
+
+    context = {
+        'home': 'active',
+        'board': 'nave-active',
+        'projects': projects,
+        'status_choices': status_choices,
+        'statuss' : statuss
+    }
+    return render(request, 'tmt-tool/board.html', context)
+
+
