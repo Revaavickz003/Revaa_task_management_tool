@@ -307,7 +307,7 @@ class events(models.Model):
     meeting_url = models.URLField(null=True, blank=True)
 
     all_team = models.BooleanField(default=True )
-    team = models.ManyToManyField(Team, null=False, blank=True, related_name='teams')
+    team = models.ManyToManyField(Team, related_name='teams')
 
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_created', null=True, blank=True)
     created_date = models.DateField(auto_now_add=True)

@@ -37,5 +37,66 @@
 <script src="{% static 'js/calendar.js' %}"></script>
 <script>
     let eventsData = JSON.parse('{{ events|escapejs }}');
+    function toggleDropdown(event, dropdownId) {
+    event.stopPropagation();
+    const options = document.getElementById(dropdownId);
+    options.classList.toggle("show");
+}
+
+window.onclick = function(event) {
+    if (!event.target.closest('.dropdown')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+
+document.querySelectorAll('.dropdown-content input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const selectedTagsContainer = checkbox.closest('.dropdown').querySelector('.selected-tags');
+        let selectedValues = Array.from(checkbox.closest('.dropdown-content').querySelectorAll('input[type="checkbox"]:checked'))
+                                  .map(cb => ({id: cb.value, name: cb.getAttribute('data-name')}));
+        updateSelectedTags(selectedValues, selectedTagsContainer);
+    });
+});
+
+function updateSelectedTags(selectedValues, container) {
+    container.innerHTML = '';
+    selectedValues.forEach(value => {
+        const tag = document.createElement('div');
+        tag.className = 'tag';
+        tag.innerHTML = `<span>${value.name}</span><span class="remove-tag" onclick="removeTag('${value.id}', this)">x</span>`;
+        container.appendChild(tag);
+    });
+}
+
+function removeTag(id, element) {
+    const checkbox = element.closest('.dropdown').querySelector(`input[value="${id}"]`);
+    if (checkbox) {
+        checkbox.checked = false;
+        const selectedTagsContainer = checkbox.closest('.dropdown').querySelector('.selected-tags');
+        let selectedValues = Array.from(checkbox.closest('.dropdown-content').querySelectorAll('input[type="checkbox"]:checked'))
+                                  .map(cb => ({id: cb.value, name: cb.getAttribute('data-name')}));
+        updateSelectedTags(selectedValues, selectedTagsContainer);
+    }
+}
+
+function filterOptions(searchId, dropdownId) {
+    const searchInput = document.getElementById(searchId).value.toLowerCase();
+    const labels = document.getElementById(dropdownId).querySelectorAll('label');
+
+    labels.forEach(label => {
+        const text = label.textContent.toLowerCase();
+        if (text.includes(searchInput)) {
+            label.style.display = "";
+        } else {
+            label.style.display = "none";
+        }
+    });
+}
 </script>
 {% endblock %}

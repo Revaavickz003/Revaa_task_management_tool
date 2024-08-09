@@ -41,6 +41,9 @@ urlpatterns = [
     path('update_event_end_date/<int:epk>/', home.update_event_end_date, name='update_event_end_date'),
     path('update_event_start_time/<int:epk>/', home.update_event_start_time, name='update_event_start_time'),
     path('update_event_end_time/<int:epk>/', home.update_event_end_time, name='update_event_end_time'),
+    path('update_event_meeting_url/<int:epk>/', home.update_event_meeting_url, name='update_event_meeting_url'),
+    path('update-event-teams/<int:epk>/', home.update_event_teams_description, name='update_event_teams_description'),
+    path('update_event_type/<int:event_id>/', home.update_event_type, name='update_event_type'),
 
     path('calendar/delete_event/<int:epk>/', home.delete_event, name='delete_event'),
 

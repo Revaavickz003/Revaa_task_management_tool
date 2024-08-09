@@ -155,11 +155,13 @@ def delete_event(request, epk):
 def update_event(request, epk):
     get_event = events.objects.get(pk = epk)
     teams = get_event.team.all()
+    all_teams = Team.objects.all()
     context = {
         'home': 'active',
         'nave_calender':'nave-active',
         'get_event':get_event,
         'teams':teams,
+        'all_teams':all_teams,
         'typeofevents':events.TYPE_OF_EVENT_CHOICES
     }
     return render(request, 'tmt-tool/open_calender.html', context)
@@ -283,4 +285,53 @@ def update_event_end_time(request, epk):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
+@csrf_exempt
+def update_event_meeting_url(request, epk):
+    if request.method == 'POST':
+        event = events.objects.get(pk=epk)
+        new_meeting_url = request.POST.get('meeting_url')
+        event.meeting_url = new_meeting_url
+        event.save()
+        return JsonResponse({'status': 'success', 'message': 'Meeting URL updated successfully.'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request.'})
 
+@csrf_exempt
+def update_event_type(request, event_id):
+    if request.method == 'POST':
+        try:
+            event = events.objects.get(pk=event_id)
+            new_type = request.POST.get('typeOfEvent')
+
+            if new_type in [choice[0] for choice in events.TYPE_OF_EVENT_CHOICES]:
+                event.typeOfEvent = new_type
+                event.save()
+                return JsonResponse({'status': 'success', 'new_type': new_type})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Invalid event type'})
+        except events.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Event not found'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+
+def update_event_teams_description(request,epk):
+    if request.method == 'POST':
+        try:
+            # Get the selected teams and description from the POST request
+            teams = request.POST.getlist('selectteams')
+            description = request.POST.get('description')
+
+            event = events.objects.get(pk=epk)
+            event.description = description
+            selected_teams = Team.objects.filter(pk__in=teams)
+            event.team.set(selected_teams)
+            event.save()
+            messages.success(request, 'Event Updated success fully ...')
+        except Team.DoesNotExist:
+            messages.error(request ,'Somthing Rong ...')
+    else:
+        messages.error(request, 'Invalid request method')
+    return redirect(reverse('update_event', kwargs={'epk':epk}))
+        
