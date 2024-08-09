@@ -285,15 +285,33 @@ class comments(models.Model):
         return f"Comment by {self.user.name} on {self.task.title}"
 
 class events(models.Model):
+
+    CALL = 'Call'
+    EVENT = 'Event'
+    MEETING = 'Meeting'
+
+    TYPE_OF_EVENT_CHOICES = [
+        (CALL, 'Call'),
+        (EVENT, 'Event'),
+        (MEETING, 'Meeting'),
+    ]
+
+    typeOfEvent = models.CharField(choices=TYPE_OF_EVENT_CHOICES, max_length=10, null=True, blank=True)
     name = models.CharField(max_length=150, null=False, blank=False)
     description = models.TextField(null=False, blank=False)
     color = models.TextField(null=False, blank=False)
-    start_date = models.DateTimeField(null=False, blank=False)
-    end_date = models.DateTimeField(null=True, blank=True)
+    start_date = models.DateField(null=False, blank=False)
+    satrt_time = models.TimeField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    end_time = models.TimeField(null=True, blank=True)
+    meeting_url = models.URLField(null=True, blank=True)
 
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_created', null=True)
+    all_team = models.BooleanField(default=True )
+    team = models.ManyToManyField(Team, related_name='teams')
+
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_created', null=True, blank=True)
     created_date = models.DateField(auto_now_add=True)
-    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_updated', null=True)
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='event_updated', null=True, blank=True)
     updated_date = models.DateField(auto_now=True)
     
     def __str__(self):

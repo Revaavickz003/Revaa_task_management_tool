@@ -1,10 +1,31 @@
 {% extends 'base.html' %}
-{% block title %}Home Page | Revaa{% endblock %}
-{% block container %}
 {% load static %}
+{% block title %}Home Page | Revaa{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+{% endblock %}
+{% block container %}
 <div class="mb-3">
     {% include 'includes/sidebar.html' %}
+    {% include 'includes/message.html' %}
+    {% include 'alert_popup/add_new_event.html' %}
+    {% include 'alert_popup/add_new_recurring_event.html' %}
     <div class="content">
+
+        {% include 'includes/navbar.html' %}
+        <div class="mt-3">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="container d-flex justify-content-start gap-2 align-items-center">
+                    <a href="{% url 'calendar' %}" class="btn btn-sm btn-primary">Today</a>
+                    <button class="btn btn-primary btn-sm" id="prev-month">Previous Month</button>
+                    <h2 id="month-year" class="fs-5 fw-bold"></h2>
+                    <button class="btn btn-primary btn-sm" id="next-month">Next Month</button>
+                </div>
+                <div class="container d-flex align-items-center justify-content-end w-25">
+                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Recurring Event
+                    </button>
+
         <style>
             .calendar {
                 display: grid;
@@ -97,119 +118,80 @@
                             <button type="submit" class="btn btn-primary">Save Event</button>
                         </form>
                     </div>
-                </div>
 
+                </div>
             </div>
+            <div class="calendar" id="calendar"></div>
         </div>
     </div>
 </div>
 {% endblock %}
 {% block script %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+<script src="{% static 'js/calendar.js' %}"></script>
 <script>
-    $(document).ready(function () {
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"];
-        const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    let eventsData = JSON.parse('{{ events|escapejs }}');
+    function toggleDropdown(event, dropdownId) {
+    event.stopPropagation();
+    const options = document.getElementById(dropdownId);
+    options.classList.toggle("show");
+}
 
-        let today = new Date();
-        let currentMonth = today.getMonth();
-        let currentYear = today.getFullYear();
-        let events = JSON.parse('{{ events|escapejs }}');
-
-        function generateCalendar(month, year) {
-            $("#month-year").text(monthNames[month] + " " + year);
-            const calendar = $("#calendar");
-            calendar.empty();
-
-            // Days of the week header
-            daysOfWeek.forEach(day => {
-                calendar.append(`<div class="day-header">${day}</div>`);
-            });
-
-            let firstDay = new Date(year, month, 1).getDay();
-            let daysInMonth = new Date(year, month + 1, 0).getDate();
-
-            // Blank days before the first day of the month
-            for (let i = 0; i < firstDay; i++) {
-                calendar.append('<div class="day"></div>');
+window.onclick = function(event) {
+    if (!event.target.closest('.dropdown')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
             }
-
-            // Actual days of the month
-            for (let i = 1; i <= daysInMonth; i++) {
-                let dayElement = $(`<div class="day" data-date="${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}">
-                    <div class="day-header">${i}</div>
-                </div>`);
-
-                // Ensure that the day-header element is clickable
-                dayElement.find('.day-header').on('click', function (e) {
-                    e.stopPropagation();
-                    $("#eventStartDate").val($(this).parent().data('date'));
-                    $("#eventEndDate").val($(this).parent().data('date'));
-                    $("#eventModal").modal('show');
-                });
-
-                calendar.append(dayElement);
-            }
-
-            // Append events to days
-            events.forEach(event => {
-                let startDate = new Date(event.fields.start_date);
-                let endDate = new Date(event.fields.end_date);
-                startDate.setDate(startDate.getDate() + 1);
-                endDate.setDate(endDate.getDate() + 1);
-                let bgColor = event.fields.color || '#007bff'; // Default to primary color if no bgColor is specified
-
-                let current = new Date(startDate);
-
-                while (current <= endDate) {
-                    let dayDate = current.toISOString().split('T')[0];
-                    let dayElement = calendar.find(`.day[data-date="${dayDate}"]`);
-                    if (dayElement.length > 0) {
-                        let eventElement = $(`<div class="event text-truncate" style="background-color:${bgColor};">
-                            <button type="button" class="border-0 rounded-1" data-bs-toggle="modal" data-bs-target="#update" style="background-color: rgba(236, 236, 236, .2);">
-                                <i class='bx bx-calendar-event text-light'></i>
-                            </button>
-                            <div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    ...
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            ${event.fields.name}</div>`);
-                        dayElement.append(eventElement);
-                    }
-                    current.setDate(current.getDate() + 1);
-                }
-            });
         }
+    }
+}
 
-        $("#prev-month").click(function () {
-            currentMonth = (currentMonth - 1 + 12) % 12;
-            if (currentMonth === 11) currentYear--;
-            generateCalendar(currentMonth, currentYear);
-        });
-
-        $("#next-month").click(function () {
-            currentMonth = (currentMonth + 1) % 12;
-            if (currentMonth === 0) currentYear++;
-            generateCalendar(currentMonth, currentYear);
-        });
-
-        generateCalendar(currentMonth, currentYear);
+document.querySelectorAll('.dropdown-content input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const selectedTagsContainer = checkbox.closest('.dropdown').querySelector('.selected-tags');
+        let selectedValues = Array.from(checkbox.closest('.dropdown-content').querySelectorAll('input[type="checkbox"]:checked'))
+                                  .map(cb => ({id: cb.value, name: cb.getAttribute('data-name')}));
+        updateSelectedTags(selectedValues, selectedTagsContainer);
     });
+});
+
+function updateSelectedTags(selectedValues, container) {
+    container.innerHTML = '';
+    selectedValues.forEach(value => {
+        const tag = document.createElement('div');
+        tag.className = 'tag';
+        tag.innerHTML = `<span>${value.name}</span><span class="remove-tag" onclick="removeTag('${value.id}', this)">x</span>`;
+        container.appendChild(tag);
+    });
+}
+
+function removeTag(id, element) {
+    const checkbox = element.closest('.dropdown').querySelector(`input[value="${id}"]`);
+    if (checkbox) {
+        checkbox.checked = false;
+        const selectedTagsContainer = checkbox.closest('.dropdown').querySelector('.selected-tags');
+        let selectedValues = Array.from(checkbox.closest('.dropdown-content').querySelectorAll('input[type="checkbox"]:checked'))
+                                  .map(cb => ({id: cb.value, name: cb.getAttribute('data-name')}));
+        updateSelectedTags(selectedValues, selectedTagsContainer);
+    }
+}
+
+function filterOptions(searchId, dropdownId) {
+    const searchInput = document.getElementById(searchId).value.toLowerCase();
+    const labels = document.getElementById(dropdownId).querySelectorAll('label');
+
+    labels.forEach(label => {
+        const text = label.textContent.toLowerCase();
+        if (text.includes(searchInput)) {
+            label.style.display = "";
+        } else {
+            label.style.display = "none";
+        }
+    });
+}
 </script>
 {% endblock %}

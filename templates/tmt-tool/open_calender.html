@@ -1,0 +1,595 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home Page | Revaa{% endblock %}
+{% block style %}
+{% endblock %}
+{% block container %}
+<div class="mb-3">
+    {% include 'includes/sidebar.html' %}
+    {% include 'includes/message.html' %}
+    {% include 'alert_popup/add_new_event.html' %}
+    {% include 'alert_popup/add_new_recurring_event.html' %}
+    <div class="content">
+        {% include 'includes/navbar.html' %}
+        <div class="row mt-2">
+            <div>
+                <div class="container d-flex align-items-end justify-content-between">
+                    <p id="eventText" class="m-0 p-0 fs-5 fw-bold">{{get_event}}</p>
+                    <i id="editIcon" class='bx bxs-edit-alt m-0 p-0 fs-5' onclick="toggleEdit()"></i>
+                </div>
+                <div id="editForm" class="container d-none">
+                    <form action="{% url 'update_event_name' epk=get_event.pk %}"
+                        class="d-flex align-items-center justify-content-between gap-1" id="editForm" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="name" value="{{get_event.name}}"
+                            class="border fs-5 py-1 px-2 rounded m-0 fw-bold w-100" style="outline: none;">
+                        <input type="submit" class="btn btn-primary btn-sm rounded-2"
+                            style="border-radius: 5px !important;" value="Save">
+                    </form>
+                </div>
+                <div class="container">
+                    <hr class="">
+                </div>
+                
+            </div>
+            <div class="col-5">
+                <div class="mt-4 container">
+                    <div class="row mt-3">
+                        <div class="col-4">Type Of Event</div>
+                        <div class="col-8">
+                            <div class="btn-group w-100">
+                                <button
+                                    class="btn dropdown-toggle d-flex align-items-center justify-content-start gap-1"
+                                    type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                    aria-expanded="false" id="eventTypeBtn">
+                                    {% if get_event.typeOfEvent == 'Event' %}
+                                    <i class='bx bxs-megaphone fs-5' style="color: {{get_event.color}};"></i>
+                                    {% elif get_event.typeOfEvent == 'Call' %}
+                                    <i class='bx bx-phone-call fs-5' style="color: {{get_event.color}};"></i>
+                                    {% elif get_event.typeOfEvent == 'Meeting' %}
+                                    <i class='bx bx-group fs-5' style="color: {{get_event.color}};"></i>
+                                    {% endif %}
+                                    <span id="eventTypeText">{{get_event.typeOfEvent}}</span>
+                                </button>
+                                <ul class="dropdown-menu w-100">
+                                    {% for typeofevent in typeofevents %}
+                                    <li class="dropdown-item {% if get_event.typeOfEvent == typeofevent.0 %} active {% endif %}" onclick="updateEventType('{{ get_event.id }}', '{{ typeofevent.0 }}')">
+                                        {{typeofevent.0}}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <script>
+                    function updateEventType(eventId, newType) {
+                        $.ajax({
+                            url: `/update_event_type/${eventId}/`,
+                            method: 'POST',
+                            data: {
+                                typeOfEvent: newType,
+                                csrfmiddlewaretoken: '{{ csrf_token }}'
+                            },
+                            success: function(response) {
+                                if (response.status === 'success') {
+                                    $('#eventTypeText').text(newType);
+                                    $('#eventTypeBtn i').removeClass().addClass(getIconClass(newType));
+                                    console.log('Event type updated successfully');
+                                } else {
+                                    console.log('Error updating event type:', response.message);
+                                }
+                            },
+                            error: function(response) {
+                                console.log('Error updating event type:', response.statusText);
+                            }
+                        });
+                    }
+                    
+                    function getIconClass(eventType) {
+                        switch(eventType) {
+                            case 'Event':
+                                return 'bx bxs-megaphone fs-5';
+                            case 'Call':
+                                return 'bx bx-phone-call fs-5';
+                            case 'Meeting':
+                                return 'bx bx-group fs-5';
+                            default:
+                                return '';
+                        }
+                    }
+                    </script>                    
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            Colour
+                        </div>
+                        <div class="col-8">
+                            <div class="btn-group w-100">
+                                <button id="colorButton"
+                                    class="btn d-flex align-items-center justify-content-start gap-1"
+                                    style="border-radius: 5px !important;" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i id="colorIcon" class='bx bxs-square-rounded fs-5'
+                                        style="color: {{get_event.color}};"></i>
+                                    <span id="colorDisplay">{{get_event.color}}</span>
+                                </button>
+                                <ul class="dropdown-menu p-0 w-100">
+                                    <li class="dropdown-item p-0 m-0">
+                                        <input type="color" id="colorPicker" value="{{get_event.color}}"
+                                            class="form-control" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            Start Date
+                        </div>
+                        <div class="col-8">
+                            <div class="btn-group w-100">
+                                <button id="dateButton"
+                                    class="btn dropdown-toggle d-flex align-items-center justify-content-start gap-1"
+                                    type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                    aria-expanded="false">
+                                    <i class='bx bx-calendar fs-5' style="color: {{get_event.color}};"></i>
+                                    <span id="selectedDate">{{get_event.start_date}}</span>
+                                </button>
+                                <ul class="dropdown-menu p-0 w-100">
+                                    <li>
+                                        <input type="date" id="dateInput" value="{{get_event.start_date}}"
+                                            class="dropdown-item form-control" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            Start Time
+                        </div>
+                        <div class="col-8">
+                            <div class="btn-group w-100">
+                                <button id="startTimeButton"
+                                    class="btn dropdown-toggle d-flex align-items-center justify-content-start gap-1"
+                                    type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                    aria-expanded="false">
+                                    <i class='bx bx-time-five fs-5' style="color: {{get_event.color}};"></i>
+                                    <span id="startTimeDisplay">{{get_event.satrt_time}}</span>
+                                </button>
+                                <ul class="dropdown-menu p-0 w-100">
+                                    <li>
+                                        <input type="time" id="startTimeInput" value="{{get_event.satrt_time}}"
+                                            class="dropdown-item form-control" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            End Date
+                        </div>
+                        <div class="col-8">
+                            <div class="btn-group w-100">
+                                <button id="endDateButton"
+                                    class="btn dropdown-toggle d-flex align-items-center justify-content-start gap-1"
+                                    type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                    aria-expanded="false">
+                                    <i class='bx bx-calendar fs-5' style="color: {{get_event.color}};"></i>
+                                    <span id="endDateDisplay">{{get_event.end_date}}</span>
+                                </button>
+                                <ul class="dropdown-menu p-0 w-100">
+                                    <li>
+                                        <input type="date" id="endDateInput" value="{{get_event.end_date}}"
+                                            class="dropdown-item form-control" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            End Time
+                        </div>
+                        <div class="col-8">
+                            <div class="btn-group w-100">
+                                <button id="endTimeButton"
+                                    class="btn dropdown-toggle d-flex align-items-center justify-content-start gap-1"
+                                    type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                    aria-expanded="false">
+                                    <i class='bx bx-time-five fs-5' style="color: {{get_event.color}};"></i>
+                                    <span id="endTimeDisplay">{{get_event.end_time}}</span>
+                                </button>
+                                <ul class="dropdown-menu p-0 w-100">
+                                    <li>
+                                        <input type="time" id="endTimeInput" value="{{get_event.end_time}}"
+                                            class="dropdown-item form-control" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% if get_event.typeOfEvent != 'Event' %}
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            Meeting URL
+                        </div>
+                        <div class="col-8">
+                            <div class="btn-group w-100">
+                                <button id="meetingUrlButton"
+                                    class="btn d-flex align-items-center justify-content-start gap-1" type="button"
+                                    data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false"
+                                    style="border-radius: 5px !important;">
+                                    <i class='bx bx-video fs-5' style="color: {{get_event.color}};"></i>
+                                    {% if get_event.meeting_url %}
+                                    <span id="meetingUrlDisplay">Meeting URL</span>
+                                    {% else %}
+                                    <span id="meetingUrlDisplay">Add URL</span>
+                                    {% endif %}
+                                </button>
+                                <ul class="dropdown-menu p-0 m-0 w-100">
+                                    <li class="p-0 m-0">
+                                        <input type="url" id="meetingUrlInput" value="{{get_event.meeting_url}}"
+                                            class="form-control " placeholder="Enter Meeting URL" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}                          
+                </div>
+            </div>
+            <div class="col-7">
+                <form action="{% url 'update_event_teams_description' epk=get_event.pk %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="dropdown">
+                                <label for="teamlead" class="form-label">Teams</label>
+                                <div class="form-control selected-items-container"
+                                    onclick="toggleDropdown(event, 'teamOptions')" style="min-height: 45px;">
+                                    <div class="selected-tags">
+                                        {% for team in teams %}
+                                        <div class="tag">
+                                            <span>{{ team.name }}</span>
+                                            <span class="remove-tag" onclick="removeTag('{{ team.pk }}', this)">x</span>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div id="teamOptions" class="dropdown-content w-100 bg-secandary" style="height: 180px;">
+                                    <input type="text" id="teamSearch" placeholder="Search.." class="form-control"
+                                        onkeyup="filterOptions('teamSearch', 'teamOptions')">
+                                    {% for team in all_teams %}
+                                    <label class="w-100">
+                                        <input class="form-check-input" type="checkbox" value="{{team.pk}}"
+                                            data-name="{{team.name}}" name="selectteams" {% if team in teams %} checked {% endif %}>
+                                        {{team.name}}
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="dropdown">
+                                <div>
+                                    <label for="teamlead" class="form-label">Description</label>
+                                    <textarea class="form-control" name="description" id="description" rows="5" placeholder="Enter description">{{get_event.description}}</textarea>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>  
+                    <div class="d-flex align-items-center justify-content-start mt-3">
+                        <input type="submit" class="btn btn-primary" style="border-radius: 5px !important;" value="Save Changes">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function toggleEdit() {
+        var editForm = document.getElementById('editForm');
+        var eventText = document.getElementById('eventText');
+        var editIcon = document.getElementById('editIcon');
+        if (editForm.classList.contains('d-none')) {
+            editForm.classList.remove('d-none');
+            editForm.classList.add('d-block');
+            eventText.classList.add('d-none');
+            editIcon.classList.add('d-none');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const colorButton = document.querySelector('#colorButton');
+        const colorPicker = document.querySelector('#colorPicker');
+        const colorIcon = document.querySelector('#colorIcon');
+        const colorDisplay = document.querySelector('#colorDisplay');
+
+        // Handle color selection
+        colorPicker.addEventListener('input', function () {
+            const selectedColor = colorPicker.value;
+
+            // Update the color icon and display
+            colorIcon.style.color = selectedColor;
+            colorDisplay.textContent = selectedColor;
+
+            // Send the color update to the server using AJAX
+            $.ajax({
+                url: "{% url 'update_event_color' epk=get_event.pk %}",
+                type: "POST",
+                data: {
+                    color: selectedColor,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+            });
+        });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const dateButton = document.querySelector('#dateButton');
+        const dateInput = document.querySelector('#dateInput');
+        const selectedDate = document.querySelector('#selectedDate');
+
+        // Show the date input when the button is clicked
+        dateButton.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default action
+            // Optionally, you could toggle the visibility of the dropdown menu here if needed
+        });
+
+        // Handle date selection
+        dateInput.addEventListener('change', function () {
+            const selectedDateValue = dateInput.value;
+
+            // Update the displayed date
+            selectedDate.textContent = selectedDateValue;
+
+            // Send the date update to the server using AJAX
+            $.ajax({
+                url: "{% url 'update_event_start_date' epk=get_event.pk %}",
+                type: "POST",
+                data: {
+                    start_date: selectedDateValue,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        alert(response.message);  // Optional: Show success message
+                    } else {
+                        alert(response.message);  // Show error message
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const endDateButton = document.querySelector('#endDateButton');
+        const endDateInput = document.querySelector('#endDateInput');
+        const endDateDisplay = document.querySelector('#endDateDisplay');
+
+        // Handle date selection
+        endDateInput.addEventListener('change', function () {
+            const selectedEndDate = endDateInput.value;
+
+            // Update the displayed end date
+            endDateDisplay.textContent = selectedEndDate;
+
+            // Send the date update to the server using AJAX
+            $.ajax({
+                url: "{% url 'update_event_end_date' epk=get_event.pk %}",
+                type: "POST",
+                data: {
+                    end_date: selectedEndDate,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        alert(response.message);  // Optional: Show success message
+                    } else {
+                        alert(response.message);  // Show error message
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const startTimeButton = document.querySelector('#startTimeButton');
+        const startTimeInput = document.querySelector('#startTimeInput');
+        const startTimeDisplay = document.querySelector('#startTimeDisplay');
+
+        // Handle time selection
+        startTimeInput.addEventListener('change', function () {
+            const selectedStartTime = startTimeInput.value;
+
+            // Update the displayed start time
+            startTimeDisplay.textContent = selectedStartTime;
+
+            // Send the time update to the server using AJAX
+            $.ajax({
+                url: "{% url 'update_event_start_time' epk=get_event.pk %}",
+                type: "POST",
+                data: {
+                    start_time: selectedStartTime,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        alert(response.message);  // Optional: Show success message
+                    } else {
+                        alert(response.message);  // Show error message
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const endTimeButton = document.querySelector('#endTimeButton');
+        const endTimeInput = document.querySelector('#endTimeInput');
+        const endTimeDisplay = document.querySelector('#endTimeDisplay');
+
+        // Handle time selection
+        endTimeInput.addEventListener('change', function () {
+            const selectedEndTime = endTimeInput.value;
+
+            // Update the displayed end time
+            endTimeDisplay.textContent = selectedEndTime;
+
+            // Send the time update to the server using AJAX
+            $.ajax({
+                url: "{% url 'update_event_end_time' epk=get_event.pk %}",
+                type: "POST",
+                data: {
+                    end_time: selectedEndTime,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        alert(response.message);  // Optional: Show success message
+                    } else {
+                        alert(response.message);  // Show error message
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const meetingUrlButton = document.querySelector('#meetingUrlButton');
+        const meetingUrlInput = document.querySelector('#meetingUrlInput');
+        const meetingUrlDisplay = document.querySelector('#meetingUrlDisplay');
+
+        // Handle meeting URL input change
+        meetingUrlInput.addEventListener('change', function () {
+            const newMeetingUrl = meetingUrlInput.value;
+
+            // Update the display with the new URL
+
+            // Send the updated URL to the server using AJAX
+            $.ajax({
+                url: "{% url 'update_event_meeting_url' epk=get_event.pk %}",
+                type: "POST",
+                data: {
+                    meeting_url: newMeetingUrl,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        alert(response.message);  // Optional: Show success message
+                    } else {
+                        alert(response.message);  // Show error message
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + error);
+                }
+            });
+        });
+    });
+    // Toggle Dropdown
+    function toggleDropdown(event, dropdownId) {
+                        event.stopPropagation();
+                        const options = document.getElementById(dropdownId);
+                        options.classList.toggle("show");
+                    }
+                
+                    // Close Dropdown on Outside Click
+                    window.onclick = function(event) {
+                        if (!event.target.closest('.dropdown')) {
+                            var dropdowns = document.getElementsByClassName("dropdown-content");
+                            for (var i = 0; i < dropdowns.length; i++) {
+                                var openDropdown = dropdowns[i];
+                                if (openDropdown.classList.contains('show')) {
+                                    openDropdown.classList.remove('show');
+                                }
+                            }
+                        }
+                    }
+                
+                    // Handle Checkbox Change
+                    document.querySelectorAll('.dropdown-content input[type="checkbox"]').forEach(checkbox => {
+                        checkbox.addEventListener('change', function() {
+                            const selectedTagsContainer = checkbox.closest('.dropdown').querySelector('.selected-tags');
+                            let selectedValues = Array.from(checkbox.closest('.dropdown-content').querySelectorAll('input[type="checkbox"]:checked'))
+                                .map(cb => ({ id: cb.value, name: cb.getAttribute('data-name') }));
+                            updateSelectedTags(selectedValues, selectedTagsContainer);
+                        });
+                    });
+                
+                    // Initialize Selected Tags
+                    function initializeSelectedTags() {
+                        const selectedTagsContainer = document.querySelector('.selected-tags');
+                        const checkedCheckboxes = document.querySelectorAll('.dropdown-content input[type="checkbox"]:checked');
+                        
+                        console.log('Initializing selected tags...');
+                        console.log('Checked checkboxes:', checkedCheckboxes);
+                
+                        const selectedValues = Array.from(checkedCheckboxes)
+                            .map(cb => ({ id: cb.value, name: cb.getAttribute('data-name') }));
+                        
+                        updateSelectedTags(selectedValues, selectedTagsContainer);
+                    }
+                
+                    // Update Selected Tags Display
+                    function updateSelectedTags(selectedValues, container) {
+                        container.innerHTML = '';
+                        selectedValues.forEach(value => {
+                            const tag = document.createElement('div');
+                            tag.className = 'tag';
+                            tag.innerHTML = `<span>${value.name}</span><span class="remove-tag" onclick="removeTag('${value.id}', this)">x</span>`;
+                            container.appendChild(tag);
+                        });
+                    }
+                
+                    // Remove Tag and Uncheck Checkbox
+                    function removeTag(id, element) {
+                        const checkbox = element.closest('.dropdown').querySelector(`input[value="${id}"]`);
+                        if (checkbox) {
+                            checkbox.checked = false;
+                            const selectedTagsContainer = checkbox.closest('.dropdown').querySelector('.selected-tags');
+                            let selectedValues = Array.from(checkbox.closest('.dropdown-content').querySelectorAll('input[type="checkbox"]:checked'))
+                                .map(cb => ({ id: cb.value, name: cb.getAttribute('data-name') }));
+                            updateSelectedTags(selectedValues, selectedTagsContainer);
+                
+                            // Optionally, you can call saveSelectedTeams here to update the backend immediately when a tag is removed
+                            // saveSelectedTeams(eventId);
+                        }
+                    }
+                
+                    // Filter Options Based on Search Input
+                    function filterOptions(searchId, dropdownId) {
+                        const searchInput = document.getElementById(searchId).value.toLowerCase();
+                        const labels = document.getElementById(dropdownId).querySelectorAll('label');
+                
+                        labels.forEach(label => {
+                            const text = label.textContent.toLowerCase();
+                            if (text.includes(searchInput)) {
+                                label.style.display = "";
+                            } else {
+                                label.style.display = "none";
+                            }
+                        });
+                    }
+</script>
+{% endblock %}

@@ -1,0 +1,89 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="eventModalLabel">Add Recurring Event</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="eventForm" action="{% url 'recurring_event' %}" method="post">
+                {% csrf_token %}
+                <div id="section1">
+                    <div class="mb-3">
+                        <label for="eventType" class="form-label">Event Type <span class="text-danger">*</span></label>
+                        <select name="eventType" id="eventType" class="form-select" required>
+                            <option value="">Select Event Type</option>
+                            {% for value, label in events_types %}
+                            <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventSummary" class="form-label">Summary <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="eventSummary" name="eventSummary" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventDescription" class="form-label">Description <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="eventDescription" name="description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="eventBgColor" class="form-label">Background Color</label>
+                        <input type="color" class="form-control form-control-color" id="eventBgColor" name="bgColor" value="#7D2C2C" required>
+                    </div>
+                </div>
+                <div id="section2">
+                    <div class="col-md-12">
+                        <div class="dropdown">
+                            <label for="" class="form-label">Teams <span class="text-danger">*</span></label>
+                            <div id="teamsoptionsinput" class="form-control selected-items-container" onclick="toggleDropdown(event, 'employeeOptions')" style="min-height: 45px;">
+                                <div class="selected-tags"></div>
+                            </div>
+                            <div id="employeeOptions" class="dropdown-content w-100">
+                                <input type="text" id="employeeSearch" placeholder="Search.." class="form-control" onkeyup="filterOptions('employeeSearch', 'employeeOptions')">
+                                {% for team in teams %}
+                                <label class="w-100">
+                                    <input class="form-check-input" type="checkbox" role="switch" value="{{team.pk}}" data-name="{{team.name}}" name="selectemployees">
+                                    {{team.name}}
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <label for="" class="form-label">Custom day <span class="text-danger">*</span></label>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input custom-day" type="checkbox" role="switch" id="monday" name="monday">
+                        <label class="form-check-label" for="monday">All Monday</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input custom-day" type="checkbox" role="switch" id="tuesday" name="tuesday">
+                        <label class="form-check-label" for="tuesday">All Tuesday</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input custom-day" type="checkbox" role="switch" id="wednesday" name="wednesday">
+                        <label class="form-check-label" for="wednesday">All Wednesday</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input custom-day" type="checkbox" role="switch" id="thursday" name="thursday">
+                        <label class="form-check-label" for="thursday">All Thursday</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input custom-day" type="checkbox" role="switch" id="friday" name="friday">
+                        <label class="form-check-label" for="friday">All Friday</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input custom-day" type="checkbox" role="switch" id="saturday" name="saturday">
+                        <label class="form-check-label" for="saturday">All Saturday</label>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm px-3" id="goBack">Go Back</button>
+                    <input type="submit" class="btn btn-primary btn-sm px-3" value="Save event">
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+</div>

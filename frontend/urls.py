@@ -32,7 +32,24 @@ urlpatterns = [
     # Home page
     path('calendar/', home.calendar, name='calendar'),
     path('add_event/', home.add_event, name='add_event'),
+
+    path('recurring_event/', home.recurring_event, name='recurring_event'),
+    
+    path('calendar/update_event/<int:epk>/', home.update_event, name='update_event'),
+    path('update_event/<int:epk>', home.update_event_name, name='update_event_name'),
+    path('update-event-color/<int:epk>/', home.update_event_color, name='update_event_color'),
+    path('update-event-start-date/<int:epk>/', home.update_event_start_date, name='update_event_start_date'),
+    path('update_event_end_date/<int:epk>/', home.update_event_end_date, name='update_event_end_date'),
+    path('update_event_start_time/<int:epk>/', home.update_event_start_time, name='update_event_start_time'),
+    path('update_event_end_time/<int:epk>/', home.update_event_end_time, name='update_event_end_time'),
+    path('update_event_meeting_url/<int:epk>/', home.update_event_meeting_url, name='update_event_meeting_url'),
+    path('update-event-teams/<int:epk>/', home.update_event_teams_description, name='update_event_teams_description'),
+    path('update_event_type/<int:event_id>/', home.update_event_type, name='update_event_type'),
+
+    path('calendar/delete_event/<int:epk>/', home.delete_event, name='delete_event'),
+
     path('board/', home.board, name='board'),
+
 
     # Open project page
     path('project/closed/<int:pk>/', project.closeproject, name='closeproject'),

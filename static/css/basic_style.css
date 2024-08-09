@@ -76,7 +76,7 @@
     color: #373737;
     transform: translate(.5s);
 }
-.form-control {
+.form-control, .form-select {
     border: 1px solid #DCE5F6 !important;
   }
 
@@ -263,7 +263,7 @@ i, #currentMonthYear{
     cursor: pointer;
 }
 
-.form-control {
+.form-control, .form-select {
     display: block;
     width: 100%;
     padding: .375rem .75rem;
@@ -280,7 +280,7 @@ i, #currentMonthYear{
     border-radius: .375rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
 }
-.form-control:focus {
+.form-control:focus, .form-select:focus {
     color: #212529;
     background-color: #fff;
     border-color: var(--bs-primary) !important;
